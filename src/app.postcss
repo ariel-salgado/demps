@@ -1,11 +1,36 @@
+@import url('./lib/assets/fonts/inter/inter-font.css');
+
 /* Write your global styles here, in PostCSS syntax */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+	:root {
+		--primary-hue: 268deg;
+		--clr-primary-50: var(--primary-hue) 43% 96%;
+		--clr-primary-100: var(--primary-hue) 45% 92%;
+		--clr-primary-200: var(--primary-hue) 44% 84%;
+		--clr-primary-300: var(--primary-hue) 44% 76%;
+		--clr-primary-400: var(--primary-hue) 44% 67%;
+		--clr-primary-500: var(--primary-hue) 44% 59%;
+		--clr-primary-600: var(--primary-hue) 44% 51%;
+		--clr-primary-700: var(--primary-hue) 44% 43%;
+		--clr-primary-800: var(--primary-hue) 45% 29%;
+		--clr-primary-900: var(--primary-hue) 44% 14%;
+		--clr-primary-950: var(--primary-hue) 44% 7%;
+	}
+
 	html,
 	body {
 		height: 100%;
+	}
+
+	body {
+		font-family: 'Inter', sans-serif;
+	}
+
+	*:focus {
+		outline: none;
 	}
 }
