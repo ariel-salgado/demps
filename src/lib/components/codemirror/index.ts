@@ -1,1 +1,4 @@
-export { default as CodeMirror } from './codemirror.svelte';
+import Codemirror from './codemirror.svelte';
+import { extensions } from './config';
+
+export { Codemirror, extensions };
