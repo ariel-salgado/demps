@@ -53,7 +53,8 @@
 		// @ts-expect-error - no types for leaflet-geosearch
 		const search = new leaflet_geosearch.GeoSearchControl({
 			provider: new leaflet_geosearch.OpenStreetMapProvider(),
-			style: 'bar'
+			style: 'bar',
+			searchLabel: 'Buscar una dirección'
 		}).addTo(map);
 
 		map.on('draw:created', (e: L.LeafletEvent) => {
