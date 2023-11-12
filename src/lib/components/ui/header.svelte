@@ -42,7 +42,7 @@
 					href={URLdata}
 					download={'data.geojson'}
 					on:click={downloadGeoJSON}
-					class="bg-primary-600 px-6 py-2 text-white rounded-md hover:bg-primary-800 focus-visible:bg-primary-800 transition-colors duration-300"
+					class="block bg-primary-600 px-6 py-2 text-white rounded-md hover:bg-primary-800 focus-visible:bg-primary-800 transition-colors duration-300"
 					>Download GeoJSON</a
 				>
 			</li>
