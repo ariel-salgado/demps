@@ -4,9 +4,11 @@
 
 	import type L from 'leaflet';
 	import type D from 'leaflet-draw';
+	import type S from 'leaflet-geosearch';
 
 	import 'leaflet/dist/leaflet.css';
 	import 'leaflet-draw/dist/leaflet.draw.css';
+	import 'leaflet-geosearch/dist/geosearch.css';
 
 	export let view: L.LatLngExpression;
 	export let zoom: number;
@@ -14,6 +16,7 @@
 	let leaflet: typeof L;
 	let leaflet_draw: typeof D;
 	let leaflet_path_drag: any;
+	let leaflet_geosearch: typeof S;
 
 	let map: L.Map;
 	let draw: L.Control.Draw;
@@ -30,6 +33,7 @@
 		leaflet_draw = await import('leaflet-draw');
 		// @ts-expect-error - no types for leaflet-path-drag
 		leaflet_path_drag = await import('leaflet-path-drag');
+		leaflet_geosearch = await import('leaflet-geosearch');
 
 		map = leaflet.map(mapContainer).setView(view, zoom);
 		leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
@@ -44,6 +48,12 @@
 			edit: {
 				featureGroup: features
 			}
+		}).addTo(map);
+
+		// @ts-expect-error - no types for leaflet-geosearch
+		const search = new leaflet_geosearch.GeoSearchControl({
+			provider: new leaflet_geosearch.OpenStreetMapProvider(),
+			style: 'bar'
 		}).addTo(map);
 
 		map.on('draw:created', (e: L.LeafletEvent) => {
@@ -84,5 +94,9 @@
 <style lang="postcss">
 	:global(.leaflet-marker-icon) {
 		@apply rounded-full;
+	}
+
+	:global(.leaflet-geosearch-bar button) {
+		@apply text-lg;
 	}
 </style>

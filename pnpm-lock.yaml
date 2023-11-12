@@ -71,6 +71,9 @@ devDependencies:
   leaflet-draw:
     specifier: ^1.0.4
     version: 1.0.4
+  leaflet-geosearch:
+    specifier: ^3.10.2
+    version: 3.10.2
   leaflet-path-drag:
     specifier: 1.8.0-beta.3
     version: 1.8.0-beta.3
@@ -433,6 +436,14 @@ packages:
     resolution: {integrity: sha512-JUFJad5lv7jxj926GPgymrWQxxjPYuJNiNjNMzqT+HiuP6Vl3dk5xzG+8sTX96np0ZAluvaMzPsjhHZ5rNuNQQ==}
     engines: {node: '>=14'}
     dev: true
+
+  /@googlemaps/js-api-loader@1.16.2:
+    resolution: {integrity: sha512-psGw5u0QM6humao48Hn4lrChOM2/rA43ZCm3tKK9qQsEj1/VzqkCqnvGfEOshDbBQflydfaRovbKwZMF4AyqbA==}
+    requiresBuild: true
+    dependencies:
+      fast-deep-equal: 3.1.3
+    dev: true
+    optional: true
 
   /@humanwhocodes/config-array@0.11.13:
     resolution: {integrity: sha512-JSBDMiDKSzQVngfRjOdFXgFfklaXI4K9nLF49Auh21lmBWRLIK3+xTErTWD4KU54pb6coM6ESE7Awz/FNU3zgQ==}
@@ -1826,6 +1837,13 @@ packages:
 
   /leaflet-draw@1.0.4:
     resolution: {integrity: sha512-rsQ6saQO5ST5Aj6XRFylr5zvarWgzWnrg46zQ1MEOEIHsppdC/8hnN8qMoFvACsPvTioAuysya/TVtog15tyAQ==}
+    dev: true
+
+  /leaflet-geosearch@3.10.2:
+    resolution: {integrity: sha512-tXi+/7Mt+K3n3rvPmORUra8BrGxY8/e22XSsCciZNQfMan4a2lID4MLzzvnZomiEHEdlYxVLId/yUxRPvf60fA==}
+    optionalDependencies:
+      '@googlemaps/js-api-loader': 1.16.2
+      leaflet: 1.9.4
     dev: true
 
   /leaflet-path-drag@1.8.0-beta.3:
