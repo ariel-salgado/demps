@@ -22,16 +22,16 @@
 	</div>
 	<div class="w-1/3 grid grid-rows-[1fr_auto]">
 		<div class="w-auto overflow-auto">
-			<Codemirror geojson={$GeoJSONStore} />
+			<Codemirror geojson={$GeoJSONStore} enableClipboard />
 		</div>
 		<form
-			class="flex px-4 py-6 outline outline-1 outline-slate-300 rounded-t-md"
+			class="flex px-4 py-6 outline outline-1 outline-slate-300 rounded-t-md bg-primary-50"
 			method="post"
 			use:enhance
 			enctype="multipart/form-data"
 		>
 			<input
-				class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-l-md file:border-0 file:bg-primary-600 file:text-white hover:file:bg-primary-800 border border-slate-300 rounded-l-md file:transition-colors file:duration-300"
+				class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-l-md file:border-0 file:bg-primary-600 file:text-white hover:file:bg-primary-800 border border-slate-300 rounded-l-md file:transition-colors file:duration-300 bg-white"
 				type="file"
 				name="fileToUpload"
 				accept=".geojson"
