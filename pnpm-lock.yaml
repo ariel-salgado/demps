@@ -38,6 +38,9 @@ devDependencies:
   '@types/leaflet':
     specifier: ^1.9.8
     version: 1.9.8
+  '@types/leaflet-draw':
+    specifier: ^1.0.10
+    version: 1.0.10
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.0.0
     version: 6.10.0(@typescript-eslint/parser@6.10.0)(eslint@8.53.0)(typescript@5.2.2)
@@ -65,6 +68,12 @@ devDependencies:
   leaflet:
     specifier: ^1.9.4
     version: 1.9.4
+  leaflet-draw:
+    specifier: ^1.0.4
+    version: 1.0.4
+  leaflet-path-drag:
+    specifier: 1.8.0-beta.3
+    version: 1.8.0-beta.3
   postcss:
     specifier: ^8.4.24
     version: 8.4.31
@@ -682,6 +691,12 @@ packages:
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+    dev: true
+
+  /@types/leaflet-draw@1.0.10:
+    resolution: {integrity: sha512-1tV0QW5qAcTCmuZZwH19qngHayLxTE9vyDGicfMoASnrFf0oo3+lFOnn/ZRKSskyHKB7T8s6DTk7Henaq4ueyg==}
+    dependencies:
+      '@types/leaflet': 1.9.8
     dev: true
 
   /@types/leaflet@1.9.8:
@@ -1807,6 +1822,14 @@ packages:
 
   /known-css-properties@0.29.0:
     resolution: {integrity: sha512-Ne7wqW7/9Cz54PDt4I3tcV+hAyat8ypyOGzYRJQfdxnnjeWsTxt1cy8pjvvKeI5kfXuyvULyeeAvwvvtAX3ayQ==}
+    dev: true
+
+  /leaflet-draw@1.0.4:
+    resolution: {integrity: sha512-rsQ6saQO5ST5Aj6XRFylr5zvarWgzWnrg46zQ1MEOEIHsppdC/8hnN8qMoFvACsPvTioAuysya/TVtog15tyAQ==}
+    dev: true
+
+  /leaflet-path-drag@1.8.0-beta.3:
+    resolution: {integrity: sha512-kpZ6sPOKlR+m+VChIzZZ7XFH4C+VGTrAxgnM4UN5iYl7lJ00iDOxS+r717bDf/xFFHB6n2jpUp9vvzjjteMpeQ==}
     dev: true
 
   /leaflet@1.9.4:
