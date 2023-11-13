@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { EditorContext } from '$lib/components/codemirror';
+	import { key } from '$lib/components/codemirror';
 
 	let copied: boolean = false;
 
-	const { getEditor } = getContext<EditorContext>('codemirror');
+	const { getEditor } = getContext<EditorContext>(key);
 	const editor = getEditor();
 
 	const copyToClipboard = () => {

@@ -4,35 +4,36 @@
 	import { EditorView } from '@codemirror/view';
 	import { EditorState } from '@codemirror/state';
 	import { extensions } from '$lib/components/codemirror';
+	import { key } from '$lib/components/codemirror';
 
-	export let geojson: GeoJSON.FeatureCollection;
+	export let source: GeoJSON.FeatureCollection;
 
 	let editor: EditorView | undefined;
 
-	setContext('codemirror', {
+	setContext(key, {
 		getEditor: () => editor
 	});
 
 	const initEditor: Action<HTMLDivElement, GeoJSON.FeatureCollection> = (
 		editorContainer: HTMLDivElement,
-		geojson: GeoJSON.FeatureCollection
+		source: GeoJSON.FeatureCollection
 	) => {
 		editor = new EditorView({
 			parent: editorContainer,
 			state: EditorState.create({
-				doc: JSON.stringify(geojson, null, 2),
+				doc: JSON.stringify(source, null, 2),
 				extensions: [...extensions]
 			})
 		});
 
 		return {
-			update: (geojson: GeoJSON.FeatureCollection) => {
+			update: (source: GeoJSON.FeatureCollection) => {
 				if (editor) {
 					editor?.dispatch({
 						changes: {
 							from: 0,
 							to: editor.state.doc.length,
-							insert: JSON.stringify(geojson, null, 2)
+							insert: JSON.stringify(source, null, 2)
 						}
 					});
 
@@ -47,8 +48,13 @@
 	};
 </script>
 
-<div class="w-full h-full relative overflow-y-scroll text-sm" use:initEditor={geojson}>
+<div class="h-full grid grid-rows-[1fr_auto]">
+	<div class="relative overflow-y-scroll text-sm" use:initEditor={source}>
+		{#if editor}
+			<slot name="clipboard" />
+		{/if}
+	</div>
 	{#if editor}
-		<slot />
+		<slot name="file-upload" />
 	{/if}
 </div>
