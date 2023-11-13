@@ -2,7 +2,7 @@
 	import type { ActionData } from './$types';
 	import { enhance } from '$app/forms';
 	import { Leaflet } from '$lib/components/leaflet';
-	import { Codemirror } from '$lib/components/codemirror';
+	import { Codemirror, Clipboard } from '$lib/components/codemirror';
 	import { GeoJSONStore } from '$lib/stores';
 
 	export let form: ActionData;
@@ -22,7 +22,9 @@
 	</div>
 	<div class="w-1/3 grid grid-rows-[1fr_auto]">
 		<div class="w-auto overflow-auto">
-			<Codemirror geojson={$GeoJSONStore} enableClipboard />
+			<Codemirror geojson={$GeoJSONStore}>
+				<Clipboard />
+			</Codemirror>
 		</div>
 		<form
 			class="flex px-4 py-6 outline outline-1 outline-slate-300 rounded-t-md bg-primary-50"
