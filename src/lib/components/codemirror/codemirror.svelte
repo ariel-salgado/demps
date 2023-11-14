@@ -37,8 +37,6 @@
 							insert: stringify(source)
 						}
 					});
-
-					console.log(editor.state.doc.toString());
 				}
 			},
 			destroy: () => {
@@ -49,8 +47,8 @@
 	};
 </script>
 
-<div class="h-full grid grid-rows-[1fr_auto]">
-	<div class="relative overflow-y-scroll text-sm" use:initEditor={source}>
+<div class="map-container">
+	<div class="map" use:initEditor={source}>
 		{#if editor}
 			<slot name="clipboard" />
 		{/if}
@@ -59,3 +57,12 @@
 		<slot name="file-upload" />
 	{/if}
 </div>
+
+<style lang="postcss">
+	.map-container {
+		@apply h-full grid grid-rows-[1fr_auto];
+	}
+	.map-container > .map {
+		@apply relative overflow-y-scroll text-sm;
+	}
+</style>
