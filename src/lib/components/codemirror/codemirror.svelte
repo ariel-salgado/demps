@@ -5,6 +5,7 @@
 	import { EditorState } from '@codemirror/state';
 	import { extensions } from '$lib/components/codemirror';
 	import { key } from '$lib/components/codemirror';
+	import { stringify } from '$lib/utils/helpers';
 
 	export let source: GeoJSON.FeatureCollection;
 
@@ -21,7 +22,7 @@
 		editor = new EditorView({
 			parent: editorContainer,
 			state: EditorState.create({
-				doc: JSON.stringify(source, null, 2),
+				doc: stringify(source),
 				extensions: [...extensions]
 			})
 		});
@@ -33,7 +34,7 @@
 						changes: {
 							from: 0,
 							to: editor.state.doc.length,
-							insert: JSON.stringify(source, null, 2)
+							insert: stringify(source)
 						}
 					});
 
