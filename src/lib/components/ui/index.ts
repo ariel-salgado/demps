@@ -1,3 +1,4 @@
 import Header from './header.svelte';
+import DownloadJson from './download-json.svelte';
 
-export { Header };
+export { Header, DownloadJson };
