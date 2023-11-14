@@ -34,17 +34,10 @@
 	<div class="col-span-3">
 		<form class="px-14 py-10" action="">
 			<div id="general">
-				<div class="flex flex-col">
-					<label class="text-lg font-medium leading-tight p-1" for="duration">Duration</label>
-					<input
-						class="border border-slate-300 rounded-md px-3 py-2 shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-transparent"
-						type="text"
-						name="duration"
-						placeholder="Enter the simulation duration"
-					/>
-					<small class="text-slate-600 italic p-1"
-						>Lorem ipsum dolor sit amet consectetur adipisicing elit.</small
-					>
+				<div class="input-form">
+					<label for="duration">Duration</label>
+					<input type="text" name="duration" placeholder="Enter the simulation duration" />
+					<small>Lorem ipsum dolor sit amet consectetur adipisicing elit.</small>
 				</div>
 			</div>
 			<div id="section-2">
@@ -66,5 +59,21 @@
 <style lang="postcss">
 	.selected {
 		@apply bg-primary-600 border-primary-600 text-white;
+	}
+
+	.input-form {
+		@apply flex flex-col;
+	}
+
+	.input-form > label {
+		@apply text-lg font-medium leading-tight p-1;
+	}
+
+	.input-form > input {
+		@apply border border-slate-300 rounded-md px-3 py-2 shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-transparent;
+	}
+
+	.input-form > small {
+		@apply text-slate-600 italic p-1;
 	}
 </style>
