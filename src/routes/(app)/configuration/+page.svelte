@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { FormGroup, Input, Select, Label, Hint } from '$lib/components/ui/form';
 	import { configurationFormFields as fields } from '$lib/utils/form-fields';
+	import { capitalize, toKebabCase } from '$lib/utils/helpers';
 
 	let selected: number | null = null;
 	let formData = {};
 
-	const asideItems: Array<{ title: string; href: string }> = [
-		{ title: 'General', href: '#general' },
-		{ title: 'Como', href: '#section-2' },
-		{ title: 'estas?', href: '#section-3' }
-	];
+	const asideItems: Array<{ title: string; href: string }> = Object.keys(fields).map((section) => {
+		return {
+			title: capitalize(section),
+			href: `#${toKebabCase(section)}`
+		};
+	});
 
 	const handleSelected = (index: number) => {
 		selected = index;
@@ -36,11 +38,11 @@
 		</ul>
 	</aside>
 	<div class="col-span-3">
-		<form class="flex flex-col gap-y-2 px-14 py-10" action="">
+		<form class="flex flex-col gap-y-2 px-14 py-6" action="">
 			{#each Object.keys(fields) as section}
-				<div class="mb-4" id={section.toLowerCase()}>
+				<div class="py-4" id={section.toLowerCase()}>
 					<h2 class="text-3xl font-medium p-3">
-						{section.slice(0, 1).toUpperCase() + section.slice(1)}
+						{capitalize(section)}
 					</h2>
 					<hr />
 				</div>
