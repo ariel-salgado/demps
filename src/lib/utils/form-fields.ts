@@ -227,5 +227,207 @@ export const configurationFormFields: TConfigurationFormFields = {
 			},
 			hint: 'Directorio base de la simulación'
 		}
+	],
+	input: [
+		{
+			name: 'Directory',
+			element: 'input',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el directorio'
+			},
+			hint: 'Directorio'
+		},
+		{
+			name: 'Map',
+			element: 'input',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el mapa'
+			},
+			hint: 'Mapa'
+		},
+		{
+			name: 'Zones',
+			element: 'input',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese las zonas'
+			},
+			hint: 'Zonas'
+		}
+	],
+	output: [
+		{
+			name: 'ProgressBar',
+			element: 'select',
+			attributes: {
+				placeholder: 'Seleccione la barra de progreso',
+				options: [
+					{
+						value: true,
+						text: 'Habilitado'
+					},
+					{
+						value: false,
+						text: 'Deshabilitado'
+					}
+				]
+			},
+			hint: 'Barra de progreso'
+		},
+		{
+			name: 'Interval',
+			element: 'input',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el intervalo'
+			},
+			hint: 'Intervalo'
+		},
+		{
+			name: 'Directory',
+			element: 'input',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el directorio'
+			},
+			hint: 'Directorio'
+		},
+		{
+			name: 'AgentsOut',
+			element: 'select',
+			attributes: {
+				placeholder: 'Seleccione la salida de agentes',
+				options: [
+					{
+						value: true,
+						text: 'Habilitado'
+					},
+					{
+						value: false,
+						text: 'Deshabilitado'
+					}
+				]
+			},
+			hint: 'Salida de agentes'
+		},
+		{
+			name: 'AgentsPath',
+			element: 'input',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el directorio de agentes'
+			},
+			hint: 'Directorio de agentes'
+		},
+		{
+			name: 'AgentsPrecision',
+			element: 'input',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese la precisión de agentes'
+			},
+			hint: 'Precisión de agentes'
+		},
+		{
+			name: 'AgentsSufix',
+			element: 'input',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el sufijo de agentes'
+			},
+			hint: 'Sufijo de agentes'
+		},
+		{
+			name: 'StatsOut',
+			element: 'select',
+			attributes: {
+				placeholder: 'Seleccione la salida de estadísticas',
+				options: [
+					{
+						value: true,
+						text: 'Habilitado'
+					},
+					{
+						value: false,
+						text: 'Deshabilitado'
+					}
+				]
+			},
+			hint: 'Salida de estadísticas'
+		},
+		{
+			name: 'StatsInterval',
+			element: 'input',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el intervalo de estadísticas'
+			},
+			hint: 'Intervalo de estadísticas'
+		},
+		{
+			name: 'StatsPath',
+			element: 'input',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el directorio de estadísticas'
+			},
+			hint: 'Directorio de estadísticas'
+		},
+		{
+			name: 'Anim Config',
+			element: 'input',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese nombre de archivo de configuración de animación'
+			},
+			hint: 'Nombre de archivo de configuración de animación'
+		},
+		{
+			name: 'HeatMapOut',
+			element: 'select',
+			attributes: {
+				placeholder: 'Seleccione la salida de mapa de calor',
+				options: [
+					{
+						value: true,
+						text: 'Habilitado'
+					},
+					{
+						value: false,
+						text: 'Deshabilitado'
+					}
+				]
+			},
+			hint: 'Salida de mapa de calor'
+		},
+		{
+			name: 'HeatMapSize',
+			element: 'input',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el tamaño del mapa de calor'
+			},
+			hint: 'Tamaño del mapa de calor'
+		},
+		{
+			name: 'HeatMapInterval',
+			element: 'input',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el intervalo del mapa de calor'
+			},
+			hint: 'Intervalo del mapa de calor'
+		},
+		{
+			name: 'HeatMapPath',
+			element: 'input',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el directorio del mapa de calor'
+			},
+			hint: 'Directorio del mapa de calor'
+		}
 	]
 };
