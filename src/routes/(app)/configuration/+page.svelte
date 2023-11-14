@@ -2,7 +2,7 @@
 	let selected: number | null = null;
 
 	const asideItems: Array<{ title: string; href: string }> = [
-		{ title: 'Hola', href: '#section-1' },
+		{ title: 'General', href: '#general' },
 		{ title: 'Como', href: '#section-2' },
 		{ title: 'estas?', href: '#section-3' }
 	];
@@ -32,11 +32,19 @@
 		</ul>
 	</aside>
 	<div class="col-span-3">
-		<form action="">
-			<div id="section-1">
-				<div>
-					<label for="">Input 1</label>
-					<input type="text" name="" />
+		<form class="px-14 py-10" action="">
+			<div id="general">
+				<div class="flex flex-col">
+					<label class="text-lg font-medium leading-tight p-1" for="duration">Duration</label>
+					<input
+						class="border border-slate-300 rounded-md px-3 py-2 shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-transparent"
+						type="text"
+						name="duration"
+						placeholder="Enter the simulation duration"
+					/>
+					<small class="text-slate-600 italic p-1"
+						>Lorem ipsum dolor sit amet consectetur adipisicing elit.</small
+					>
 				</div>
 			</div>
 			<div id="section-2">
