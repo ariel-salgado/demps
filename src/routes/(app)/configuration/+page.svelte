@@ -1,5 +1,9 @@
 <script lang="ts">
+	import { FormGroup, Input, Select, Label, Hint } from '$lib/components/ui/form';
+	import { configurationFormFields as fields } from '$lib/utils/form-fields';
+
 	let selected: number | null = null;
+	let formData = {};
 
 	const asideItems: Array<{ title: string; href: string }> = [
 		{ title: 'General', href: '#general' },
@@ -32,26 +36,36 @@
 		</ul>
 	</aside>
 	<div class="col-span-3">
-		<form class="px-14 py-10" action="">
-			<div id="general">
-				<div class="input-form">
-					<label for="duration">Duration</label>
-					<input type="text" name="duration" placeholder="Enter the simulation duration" />
-					<small>Lorem ipsum dolor sit amet consectetur adipisicing elit.</small>
+		<form class="flex flex-col gap-y-2 px-14 py-10" action="">
+			{#each Object.keys(fields) as section}
+				<div class="mb-4" id={section.toLowerCase()}>
+					<h2 class="text-3xl font-medium p-3">
+						{section.slice(0, 1).toUpperCase() + section.slice(1)}
+					</h2>
+					<hr />
 				</div>
-			</div>
-			<div id="section-2">
-				<div>
-					<label for="">Input 1</label>
-					<input type="text" name="" />
-				</div>
-			</div>
-			<div id="section-3">
-				<div>
-					<label for="">Input 1</label>
-					<input type="text" name="" />
-				</div>
-			</div>
+				{#each Object.values(fields[section]) as el}
+					<FormGroup>
+						<Label for={el.name.toLowerCase}>{el.name}</Label>
+						{#if el.element === 'input'}
+							<Input
+								name={el.name.toLowerCase()}
+								type={el.attributes.type}
+								placeholder={el.attributes.placeholder}
+								bind:value={formData[el.name.toLowerCase()]}
+							/>
+						{:else}
+							<Select
+								name={el.name.toLowerCase()}
+								placeholder={el.attributes.placeholder}
+								bind:value={formData[el.name.toLowerCase()]}
+								options={el.attributes.options}
+							/>
+						{/if}
+						<Hint>{el.hint}</Hint>
+					</FormGroup>
+				{/each}
+			{/each}
 		</form>
 	</div>
 </div>
@@ -59,21 +73,5 @@
 <style lang="postcss">
 	.selected {
 		@apply bg-primary-600 border-primary-600 text-white;
-	}
-
-	.input-form {
-		@apply flex flex-col;
-	}
-
-	.input-form > label {
-		@apply text-lg font-medium leading-tight p-1;
-	}
-
-	.input-form > input {
-		@apply border border-slate-300 rounded-md px-3 py-2 shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-transparent;
-	}
-
-	.input-form > small {
-		@apply text-slate-600 italic p-1;
 	}
 </style>
