@@ -21,16 +21,24 @@
 		--clr-primary-950: var(--primary-hue) 44% 7%;
 	}
 
-	html,
-	body {
-		height: 100%;
-	}
-
-	body {
-		font-family: 'Inter', sans-serif;
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+		scroll-margin-top: 6rem;
 	}
 
 	*:focus {
 		outline: none;
+	}
+
+	html,
+	body {
+		height: 100%;
+		scroll-behavior: smooth;
+	}
+
+	body {
+		font-family: 'Inter', sans-serif;
 	}
 }
