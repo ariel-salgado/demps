@@ -11,7 +11,7 @@
 			const convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
 			URLdata = 'data:' + convertedData;
 		} else {
-			// alert('El mapa no tiene datos para exportar');
+			alert('El mapa no tiene datos para exportar');
 		}
 	};
 </script>
@@ -22,6 +22,6 @@
 
 <style lang="postcss">
 	.button {
-		@apply block h-10 bg-primary-600 px-6 py-2 text-white rounded-md hover:bg-primary-800 focus-visible:bg-primary-800 transition-colors duration-300;
+		@apply block h-10 bg-primary-600 px-6 py-2 text-white rounded-md hover:bg-primary-800 focus-visible:bg-primary-800 transition-colors duration-300 cursor-pointer;
 	}
 </style>
