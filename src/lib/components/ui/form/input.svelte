@@ -6,7 +6,12 @@
 	const typeAction = (element: HTMLInputElement) => {
 		if (type === 'number') {
 			element.addEventListener('keydown', (event) => {
-				if (event.key === 'Backspace' || event.key === 'Delete' || event.key.startsWith('Arrow')) {
+				if (
+					event.key === 'Backspace' ||
+					event.key === 'Delete' ||
+					event.key.startsWith('Arrow') ||
+					event.key === 'Tab'
+				) {
 					return;
 				}
 				if (!/[\d.]/.test(event.key)) {
