@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { SEO } from '$lib/components';
 	import { FormTitle, FormGroup, Input, Select, Label, Hint } from '$lib/components/ui/form';
 	import { configurationFormFields as fields } from '$lib/utils/form-fields';
 	import { toKebabCase, capitalize, parseObjectByKeys } from '$lib/utils/helpers';
@@ -6,6 +7,8 @@
 
 	let formData: Partial<TConfiguration> = {};
 </script>
+
+<SEO title="DEMPS | Configuration" description="DEMPS Configuration" />
 
 <form action="">
 	{#each Object.keys(fields) as section}
@@ -33,6 +36,12 @@
 		{/each}
 	{/each}
 </form>
+
+<pre>
+	<code>
+		{JSON.stringify(parseObjectByKeys(formData), null, 2)}
+	</code>
+</pre>
 
 <style lang="postcss">
 	form {

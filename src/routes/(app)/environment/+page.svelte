@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { SEO } from '$lib/components';
 	import type { ActionData } from './$types';
 	import { Leaflet } from '$lib/components/leaflet';
 	import { Codemirror, Clipboard, FileUpload } from '$lib/components/codemirror';
@@ -14,6 +15,8 @@
 	const initialView: L.LatLngExpression = [-33.015348, -71.550499];
 	const zoom: number = 15;
 </script>
+
+<SEO title="DEMPS | Environment" description="DEMPS Environment Configuration" />
 
 <div class="grid grid-cols-3">
 	<div class="col-span-2">
