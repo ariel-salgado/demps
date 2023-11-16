@@ -31,7 +31,7 @@
 
 <style lang="postcss">
 	header {
-		@apply sticky top-0 w-full h-20 flex justify-around items-center bg-primary-50 shadow z-30;
+		@apply sticky top-0 w-full h-20 flex justify-around items-center bg-primary-50 shadow-sm z-30;
 	}
 
 	.logo {
