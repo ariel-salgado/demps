@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { FormTitle, FormGroup, Input, Select, Label, Hint } from '$lib/components/ui/form';
 	import { configurationFormFields as fields } from '$lib/utils/form-fields';
-	import { toKebabCase, capitalize } from '$lib/utils/helpers';
+	import { toKebabCase, capitalize, parseObjectByKeys } from '$lib/utils/helpers';
+	import type { TConfiguration } from '$lib/types';
 
-	let formData = {};
+	let formData: Partial<TConfiguration> = {};
 </script>
 
 <form action="">
@@ -11,19 +12,19 @@
 		<FormTitle id={toKebabCase(section)}>{capitalize(section)}</FormTitle>
 		{#each Object.values(fields[section]) as el}
 			<FormGroup>
-				<Label for={el.name.toLowerCase()}>{el.name}</Label>
+				<Label for={el.field}>{el.name}</Label>
 				{#if el.element === 'input'}
 					<Input
-						name={toKebabCase(el.name)}
+						name={el.field}
 						type={el.attributes.type}
 						placeholder={el.attributes.placeholder}
-						bind:value={formData[toKebabCase(el.name)]}
+						bind:value={formData[el.field]}
 					/>
 				{:else}
 					<Select
-						name={toKebabCase(el.name)}
+						name={el.field}
 						placeholder={el.attributes.placeholder}
-						bind:value={formData[toKebabCase(el.name)]}
+						bind:value={formData[el.field]}
 						options={el.attributes.options}
 					/>
 				{/if}
@@ -35,6 +36,6 @@
 
 <style lang="postcss">
 	form {
-		@apply w-full flex flex-col gap-y-2 px-14 py-4;
+		@apply w-full flex flex-col gap-y-2 px-14 pt-4 pb-20;
 	}
 </style>

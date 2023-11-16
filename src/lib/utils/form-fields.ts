@@ -2,6 +2,7 @@ type TElement =
 	| {
 			name: string;
 			element: 'input';
+			field: string;
 			attributes: {
 				type: 'text' | 'number';
 				placeholder?: string;
@@ -12,6 +13,7 @@ type TElement =
 	| {
 			name: string;
 			element: 'select';
+			field: string;
 			attributes: {
 				placeholder?: string;
 				value?: string;
@@ -32,6 +34,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Duration',
 			element: 'input',
+			field: 'duration',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese la duración de la simulación'
@@ -41,6 +44,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Calibration',
 			element: 'input',
+			field: 'calibration',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese la calibración de la simulación'
@@ -48,8 +52,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Calibración de la simulación'
 		},
 		{
-			name: 'QuadSize',
+			name: 'Quad Size',
 			element: 'input',
+			field: 'quadSize',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese el tamaño de los cuadrantes'
@@ -57,8 +62,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Tamaño de los cuadrantes'
 		},
 		{
-			name: 'CloseEnough',
+			name: 'Close Enough',
 			element: 'input',
+			field: 'closeEnough',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese la distancia de cercanía'
@@ -66,8 +72,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Distancia de cercanía'
 		},
 		{
-			name: 'RandomWalkwayRadius',
+			name: 'Random Walkway Radius',
 			element: 'input',
+			field: 'randomWalkwayRadius',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese el radio de la caminata aleatoria'
@@ -75,8 +82,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Radio de la caminata aleatoria'
 		},
 		{
-			name: 'AttractionRadius',
+			name: 'Attraction Radius',
 			element: 'input',
+			field: 'attractionRadius',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese el radio de atracción'
@@ -84,8 +92,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Radio de atracción'
 		},
 		{
-			name: 'DeltaT',
+			name: 'Delta T',
 			element: 'input',
+			field: 'deltaT',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese el delta T'
@@ -95,6 +104,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Threads',
 			element: 'input',
+			field: 'threads',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese la cantidad de hilos'
@@ -102,8 +112,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Cantidad de hilos'
 		},
 		{
-			name: 'FloodModelEnable',
+			name: 'Flood Model Enable',
 			element: 'select',
+			field: 'floodModelEnable',
 			attributes: {
 				placeholder: 'Seleccione el modelo de inundación',
 				options: [
@@ -120,8 +131,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Modelo de inundación'
 		},
 		{
-			name: 'DensityModelEnable',
+			name: 'Density Model Enable',
 			element: 'select',
+			field: 'densityModelEnable',
 			attributes: {
 				placeholder: 'Seleccione el modelo de densidad',
 				options: [
@@ -138,8 +150,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Modelo de densidad'
 		},
 		{
-			name: 'PanicModelEnable',
+			name: 'Panic Model Enable',
 			element: 'select',
+			field: 'panicModelEnable',
 			attributes: {
 				placeholder: 'Ingrese el modelo de pánico',
 				options: [
@@ -156,8 +169,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Modelo de pánico'
 		},
 		{
-			name: 'ElevationModelEnable',
+			name: 'Elevation Model Enable',
 			element: 'select',
+			field: 'elevationModelEnable',
 			attributes: {
 				placeholder: 'Ingrese el modelo de elevación',
 				options: [
@@ -174,8 +188,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Modelo de elevación'
 		},
 		{
-			name: 'DebrisModelEnable',
+			name: 'Debris Model Enable',
 			element: 'select',
+			field: 'debrisModelEnable',
 			attributes: {
 				placeholder: 'Ingrese el modelo de escombros',
 				options: [
@@ -194,6 +209,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'City',
 			element: 'input',
+			field: 'city',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese la ciudad'
@@ -203,6 +219,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Description',
 			element: 'input',
+			field: 'description',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese la descripción'
@@ -210,8 +227,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Descripción'
 		},
 		{
-			name: 'SamplingInterval',
+			name: 'Sampling Interval',
 			element: 'input',
+			field: 'samplingInterval',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese el intervalo de muestreo'
@@ -219,8 +237,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Intervalo de muestreo'
 		},
 		{
-			name: 'BaseDirSim',
+			name: 'Base Dir Sim',
 			element: 'input',
+			field: 'baseDirSim',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese el directorio base de la simulación'
@@ -232,6 +251,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Directory',
 			element: 'input',
+			field: 'input.directory',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese el directorio'
@@ -241,6 +261,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Map',
 			element: 'input',
+			field: 'input.map',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese el mapa'
@@ -250,6 +271,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Zones',
 			element: 'input',
+			field: 'input.zones',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese las zonas'
@@ -259,8 +281,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 	],
 	output: [
 		{
-			name: 'ProgressBar',
+			name: 'Progress Bar',
 			element: 'select',
+			field: 'output.progressBar',
 			attributes: {
 				placeholder: 'Seleccione la barra de progreso',
 				options: [
@@ -279,6 +302,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Interval',
 			element: 'input',
+			field: 'output.interval',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese el intervalo'
@@ -288,6 +312,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Directory',
 			element: 'input',
+			field: 'output.directory',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese el directorio'
@@ -295,8 +320,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Directorio'
 		},
 		{
-			name: 'AgentsOut',
+			name: 'Agents Out',
 			element: 'select',
+			field: 'output.agents-out',
 			attributes: {
 				placeholder: 'Seleccione la salida de agentes',
 				options: [
@@ -313,8 +339,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Salida de agentes'
 		},
 		{
-			name: 'AgentsPath',
+			name: 'Agents Path',
 			element: 'input',
+			field: 'output.agents-path',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese el directorio de agentes'
@@ -322,8 +349,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Directorio de agentes'
 		},
 		{
-			name: 'AgentsPrecision',
+			name: 'Agents Precision',
 			element: 'input',
+			field: 'output.agents-precision',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese la precisión de agentes'
@@ -331,8 +359,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Precisión de agentes'
 		},
 		{
-			name: 'AgentsSufix',
+			name: 'Agents Sufix',
 			element: 'input',
+			field: 'output.agents-sufix',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese el sufijo de agentes'
@@ -340,8 +369,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Sufijo de agentes'
 		},
 		{
-			name: 'StatsOut',
+			name: 'Stats Out',
 			element: 'select',
+			field: 'output.stats-out',
 			attributes: {
 				placeholder: 'Seleccione la salida de estadísticas',
 				options: [
@@ -358,8 +388,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Salida de estadísticas'
 		},
 		{
-			name: 'StatsInterval',
+			name: 'Stats Interval',
 			element: 'input',
+			field: 'output.stats-interval',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese el intervalo de estadísticas'
@@ -367,8 +398,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Intervalo de estadísticas'
 		},
 		{
-			name: 'StatsPath',
+			name: 'Stats Path',
 			element: 'input',
+			field: 'output.stats-path',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese el directorio de estadísticas'
@@ -378,6 +410,7 @@ export const configurationFormFields: TConfigurationFormFields = {
 		{
 			name: 'Anim Config',
 			element: 'input',
+			field: 'output.anim-config',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese nombre de archivo de configuración de animación'
@@ -385,8 +418,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Nombre de archivo de configuración de animación'
 		},
 		{
-			name: 'HeatMapOut',
+			name: 'Heat Map Out',
 			element: 'select',
+			field: 'output.heatMap-out',
 			attributes: {
 				placeholder: 'Seleccione la salida de mapa de calor',
 				options: [
@@ -403,8 +437,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Salida de mapa de calor'
 		},
 		{
-			name: 'HeatMapSize',
+			name: 'Heat Map Size',
 			element: 'input',
+			field: 'output.heatMap-size',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese el tamaño del mapa de calor'
@@ -412,8 +447,9 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Tamaño del mapa de calor'
 		},
 		{
-			name: 'HeatMapInterval',
+			name: 'Heat Map Interval',
 			element: 'input',
+			field: 'output.heatMap-interval',
 			attributes: {
 				type: 'number',
 				placeholder: 'Ingrese el intervalo del mapa de calor'
@@ -421,13 +457,189 @@ export const configurationFormFields: TConfigurationFormFields = {
 			hint: 'Intervalo del mapa de calor'
 		},
 		{
-			name: 'HeatMapPath',
+			name: 'Heat Map Path',
 			element: 'input',
+			field: 'output.heatMap-path',
 			attributes: {
 				type: 'text',
 				placeholder: 'Ingrese el directorio del mapa de calor'
 			},
 			hint: 'Directorio del mapa de calor'
+		}
+	],
+	/* floodParams: {
+		direction: string; //N->S;W->E
+		sampleStateInterval: number;
+		arrivalTime: number; //negative
+		speedWaterProp: number; //float
+		speedWaterLevel: number; //float
+		criticalLevel: number; //float
+		minSpeedFactor: number; //float
+		imagesEnable: boolean;
+		imagesDir: string;
+		stateEnable: boolean;
+		stateDir: string;
+	}; */
+	floodParams: [
+		{
+			name: 'Direction',
+			element: 'input',
+			field: 'floodParams.direction',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese la dirección'
+			},
+			hint: 'Dirección'
+		},
+		{
+			name: 'Sample State Interval',
+			element: 'input',
+			field: 'floodParams.sampleStateInterval',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el intervalo de muestreo de estado'
+			},
+			hint: 'Intervalo de muestreo de estado'
+		},
+		{
+			name: 'Arrival Time',
+			element: 'input',
+			field: 'floodParams.arrivalTime',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el tiempo de llegada'
+			},
+			hint: 'Tiempo de llegada'
+		},
+		{
+			name: 'Speed Water Prop',
+			element: 'input',
+			field: 'floodParams.speedWaterProp',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese la velocidad del agua proporcional'
+			},
+			hint: 'Velocidad del agua proporcional'
+		},
+		{
+			name: 'Speed Water Level',
+			element: 'input',
+			field: 'floodParams.speedWaterLevel',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese la velocidad del agua nivel'
+			},
+			hint: 'Velocidad del agua nivel'
+		},
+		{
+			name: 'Critical Level',
+			element: 'input',
+			field: 'floodParams.criticalLevel',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el nivel crítico'
+			},
+			hint: 'Nivel crítico'
+		},
+		{
+			name: 'Min Speed Factor',
+			element: 'input',
+			field: 'floodParams.minSpeedFactor',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el factor de velocidad mínimo'
+			},
+			hint: 'Factor de velocidad mínimo'
+		},
+		{
+			name: 'Images Enable',
+			element: 'select',
+			field: 'floodParams.imagesEnable',
+			attributes: {
+				placeholder: 'Seleccione la habilitación de imágenes',
+				options: [
+					{
+						value: true,
+						text: 'Habilitado'
+					},
+					{
+						value: false,
+						text: 'Deshabilitado'
+					}
+				]
+			},
+			hint: 'Habilitación de imágenes'
+		},
+		{
+			name: 'Images Dir',
+			element: 'input',
+			field: 'floodParams.imagesDir',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el directorio de imágenes'
+			},
+			hint: 'Directorio de imágenes'
+		},
+		{
+			name: 'State Enable',
+			element: 'select',
+			field: 'floodParams.stateEnable',
+			attributes: {
+				placeholder: 'Seleccione la habilitación de estado',
+				options: [
+					{
+						value: true,
+						text: 'Habilitado'
+					},
+					{
+						value: false,
+						text: 'Deshabilitado'
+					}
+				]
+			},
+			hint: 'Habilitación de estado'
+		},
+		{
+			name: 'State Dir',
+			element: 'input',
+			field: 'floodParams.stateDir',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el directorio de estado'
+			},
+			hint: 'Directorio de estado'
+		}
+	],
+	densityParams: [
+		{
+			name: 'Min Density',
+			element: 'input',
+			field: 'densityParams.minDensity',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese la densidad mínima'
+			},
+			hint: 'Densidad mínima'
+		},
+		{
+			name: 'Max Density',
+			element: 'input',
+			field: 'densityParams.maxDensity',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese la densidad máxima'
+			},
+			hint: 'Densidad máxima'
+		},
+		{
+			name: 'Min Velocity',
+			element: 'input',
+			field: 'densityParams.minVelocity',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese la velocidad mínima'
+			},
+			hint: 'Velocidad mínima'
 		}
 	]
 };
