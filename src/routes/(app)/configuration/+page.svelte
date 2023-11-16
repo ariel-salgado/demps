@@ -2,7 +2,7 @@
 	import { SEO } from '$lib/components';
 	import { FormTitle, FormGroup, Input, Select, Label, Hint } from '$lib/components/ui/form';
 	import { configurationFormFields as fields } from '$lib/utils/form-fields';
-	import { toKebabCase, capitalize, parseObjectByKeys } from '$lib/utils/helpers';
+	import { toKebabCase, capitalize } from '$lib/utils/helpers';
 	import type { TConfiguration } from '$lib/types';
 
 	let formData: Partial<TConfiguration> = {};
@@ -18,14 +18,16 @@
 				<Label for={el.field}>{el.name}</Label>
 				{#if el.element === 'input'}
 					<Input
-						name={el.field}
 						type={el.attributes.type}
+						name={el.field}
+						id={el.field}
 						placeholder={el.attributes.placeholder}
 						bind:value={formData[el.field]}
 					/>
 				{:else}
 					<Select
 						name={el.field}
+						id={el.field}
 						placeholder={el.attributes.placeholder}
 						bind:value={formData[el.field]}
 						options={el.attributes.options}
@@ -36,12 +38,6 @@
 		{/each}
 	{/each}
 </form>
-
-<pre>
-	<code>
-		{JSON.stringify(parseObjectByKeys(formData), null, 2)}
-	</code>
-</pre>
 
 <style lang="postcss">
 	form {
