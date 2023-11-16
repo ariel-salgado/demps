@@ -641,5 +641,67 @@ export const configurationFormFields: TConfigurationFormFields = {
 			},
 			hint: 'Velocidad mínima'
 		}
+	],
+	agents: [
+		{
+			name: 'Model',
+			element: 'input',
+			field: 'agents.model',
+			attributes: {
+				type: 'text',
+				placeholder: 'Ingrese el modelo'
+			},
+			hint: 'Modelo'
+		},
+		{
+			name: 'Number',
+			element: 'input',
+			field: 'agents.number',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el número'
+			},
+			hint: 'Número'
+		},
+		{
+			name: 'Tau',
+			element: 'input',
+			field: 'agents.responseTime.tau',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el tau'
+			},
+			hint: 'Tau'
+		},
+		{
+			name: 'Sigma',
+			element: 'input',
+			field: 'agents.responseTime.sigma',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el sigma'
+			},
+			hint: 'Sigma'
+		},
+		{
+			name: 'Mean Time Take Phone',
+			element: 'input',
+			field: 'agents.phoneUse.meanTimeTakePhone',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese el tiempo medio de toma de teléfono'
+			},
+			hint: 'Tiempo medio de toma de teléfono'
+		},
+		{
+			name: 'Prob Phone Use Const',
+			element: 'input',
+			field: 'agents.phoneUse.probPhoneUseConst',
+			attributes: {
+				type: 'number',
+				placeholder: 'Ingrese la probabilidad de uso de teléfono constante'
+			},
+			hint: 'Probabilidad de uso de teléfono constante'
+		}
 	]
 };
