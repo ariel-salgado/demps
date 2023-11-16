@@ -7,7 +7,7 @@
 
 <select bind:value {name} {...$$restProps}>
 	{#if placeholder}
-		<option value="" disabled selected>{placeholder}</option>
+		<option value={undefined} disabled selected>{placeholder}</option>
 	{/if}
 	{#each options as { value, text }}
 		<option {value}>{text}</option>
