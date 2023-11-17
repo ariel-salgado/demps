@@ -46,15 +46,15 @@
 
 <style lang="postcss">
 	.file-form {
-		@apply flex px-4 py-6 outline outline-1 outline-slate-300 rounded-t-md bg-primary-50;
+		@apply flex p-4 outline outline-1 outline-slate-300 rounded-t-md bg-primary-50;
 	}
 
 	.file-form .file-input {
-		@apply block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-l-md file:border-0 file:bg-primary-600 file:text-white hover:file:bg-primary-800 border border-slate-300 rounded-l-md file:transition-colors file:duration-300 bg-white;
+		@apply block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-3 file:rounded-l-md file:border-0 file:bg-primary-600 file:text-white hover:file:bg-primary-800 border border-slate-300 rounded-l-md file:transition-colors file:duration-300 bg-white;
 	}
 
 	.file-form .file-upload {
-		@apply px-3 py-1.5 rounded-r-md bg-primary-600 hover:bg-primary-800 focus-within:bg-primary-800 transition-colors duration-300;
+		@apply px-3 py-2 rounded-r-md bg-primary-600 hover:bg-primary-800 focus-within:bg-primary-800 transition-colors duration-300;
 	}
 
 	.file-form .icon {
