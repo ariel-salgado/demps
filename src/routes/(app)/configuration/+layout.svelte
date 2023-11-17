@@ -1,12 +1,13 @@
 <script lang="ts">
+	import { SEO } from '$lib/components';
 	import { configurationFormFields as fields } from '$lib/utils/form-fields';
-	import { capitalize, toKebabCase } from '$lib/utils/helpers';
+	import { spaceCamelCase, toKebabCase } from '$lib/utils/helpers';
 
 	let selected: number | null = null;
 
 	const asideItems: Array<{ title: string; href: string }> = Object.keys(fields).map((section) => {
 		return {
-			title: capitalize(section),
+			title: spaceCamelCase(section),
 			href: `#${toKebabCase(section)}`
 		};
 	});
@@ -15,6 +16,8 @@
 		selected = index;
 	};
 </script>
+
+<SEO title="DEMPS | Configuration" description="DEMPS Configuration" />
 
 <div class="wrapper">
 	<aside class="side-menu">

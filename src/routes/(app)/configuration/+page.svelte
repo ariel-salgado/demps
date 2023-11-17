@@ -1,14 +1,10 @@
 <script lang="ts">
-	import { SEO } from '$lib/components';
 	import { FormTitle, FormGroup, Input, Select, Label, Hint } from '$lib/components/ui/form';
 	import { configurationFormFields as fields } from '$lib/utils/form-fields';
 	import { toKebabCase, capitalize } from '$lib/utils/helpers';
-	import type { TConfiguration } from '$lib/types';
 
-	let formData: Partial<TConfiguration> = {};
+	let formData = {};
 </script>
-
-<SEO title="DEMPS | Configuration" description="DEMPS Configuration" />
 
 <form action="">
 	{#each Object.keys(fields) as section}

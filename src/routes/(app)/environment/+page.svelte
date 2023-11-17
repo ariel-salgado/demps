@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { SEO } from '$lib/components';
 	import type { ActionData } from './$types';
 	import { Leaflet } from '$lib/components/leaflet';
-	import { Codemirror, Clipboard, FileUpload } from '$lib/components/codemirror';
+	import { Codemirror, Widgets, Clipboard, Download, FileUpload } from '$lib/components/codemirror';
 	import { GeoJSONStore } from '$lib/stores';
 
 	export let form: ActionData;
@@ -16,15 +15,17 @@
 	const zoom: number = 15;
 </script>
 
-<SEO title="DEMPS | Environment" description="DEMPS Environment Configuration" />
-
 <div class="grid grid-cols-3">
 	<div class="col-span-2">
 		<Leaflet view={initialView} {zoom} />
 	</div>
 	<div class="h-[calc(100vh-5rem)] col-span-1">
 		<Codemirror source={$GeoJSONStore}>
-			<Clipboard slot="clipboard" />
+			<Widgets slot="widgets">
+				<Clipboard slot="clipboard" />
+				<Download slot="download" />
+			</Widgets>
+
 			<FileUpload slot="file-upload" accept=".geojson" />
 		</Codemirror>
 	</div>
