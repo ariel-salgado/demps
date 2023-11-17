@@ -1,11 +1,17 @@
 export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
+export const spaceCamelCase = (str: string) => {
+	const resultado = str.replace(/([a-z])([A-Z])/g, '$1 $2');
+
+	return capitalize(resultado);
+};
+
 export const toKebabCase = (str: string) => str.toLowerCase().replace(/\s+/g, '-');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
-export const parseObjectByKeys = (inputObject: object) => {
+export const parseObjectByDots = (inputObject: object) => {
 	const outputObject = {};
 
 	for (const key in inputObject) {
@@ -28,4 +34,21 @@ export const parseObjectByKeys = (inputObject: object) => {
 	}
 
 	return outputObject;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getNestedKeys = (obj: any): string[] => {
+	const keys: string[] = [];
+
+	for (const key in obj) {
+		if (obj[key] !== null && typeof obj[key] === 'object') {
+			keys.push(key);
+			const nestedKeys = getNestedKeys(obj[key]);
+			if (nestedKeys.length > 0) {
+				keys.push(...nestedKeys.map((nestedKey) => `${key}.${nestedKey}`));
+			}
+		}
+	}
+
+	return keys;
 };
