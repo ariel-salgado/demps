@@ -56,7 +56,7 @@
 
 <style lang="postcss">
 	.clipboard {
-		@apply absolute right-2 top-3 p-1 rounded-md bg-primary-50 hover:bg-primary-100 focus-within:bg-primary-100 outline outline-1 outline-slate-300 transition-colors duration-300;
+		@apply p-1 rounded-md bg-primary-50 hover:bg-primary-100 focus-within:bg-primary-100 outline outline-1 outline-slate-300 transition-colors duration-300;
 	}
 
 	.clipboard .clipboard-icon {

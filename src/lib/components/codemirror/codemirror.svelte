@@ -50,7 +50,7 @@
 <div class="map-container">
 	<div class="map" use:initEditor={source}>
 		{#if editor}
-			<slot name="clipboard" />
+			<slot name="widgets" />
 		{/if}
 	</div>
 	{#if editor}

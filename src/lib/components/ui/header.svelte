@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { DownloadJson } from '$lib/components/ui';
-
 	const navItems: Array<{ name: string; href: string }> = [
 		{ name: 'inicio', href: '/' },
 		{ name: 'environment', href: '/environment' },
@@ -19,9 +17,6 @@
 					<a {href}>{name}</a>
 				</li>
 			{/each}
-			<li>
-				<DownloadJson />
-			</li>
 			<li>
 				<button>Run</button>
 			</li>
