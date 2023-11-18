@@ -5,12 +5,22 @@
 
 	let selected: number | null = null;
 
-	const asideItems: Array<{ title: string; href: string }> = Object.keys(fields).map((section) => {
-		return {
-			title: spaceCamelCase(section),
-			href: `#${toKebabCase(section)}`
-		};
-	});
+	const extractKeys = (obj: object) => {
+		const keys: Array<string | object> = Object.keys(obj);
+
+		for (const key in obj) {
+			if (
+				typeof obj[key as keyof typeof obj] === 'object' &&
+				!Array.isArray(obj[key as keyof typeof obj])
+			) {
+				keys[keys.indexOf(key)] = { [key]: Object.keys(obj[key as keyof typeof obj]) };
+			}
+		}
+
+		return keys;
+	};
+
+	const asideItems = extractKeys(fields);
 
 	const handleSelected = (index: number) => {
 		selected = index;
@@ -28,10 +38,30 @@
 
 		<nav>
 			<ul>
-				{#each asideItems as { title, href }, index}
-					<li class:selected={index === selected}>
-						<a {href} on:click={() => handleSelected(index)}>{title}</a>
-					</li>
+				{#each asideItems as item, index}
+					{#if typeof item === 'string'}
+						{@const href = `#${toKebabCase(item)}`}
+						{@const title = spaceCamelCase(item)}
+						<li class:selected={index === selected}>
+							<a {href} on:click={() => handleSelected(index)}>{title}</a>
+						</li>
+					{:else}
+						{@const itemTitle = `${Object.keys(item)[0]}`}
+						{@const itemHref = `#${toKebabCase(itemTitle)}`}
+						<li>
+							<div class:selected={index === selected}>
+								<a href={itemHref} on:click={() => handleSelected(index)}>{itemTitle}</a>
+							</div>
+							<ul>
+								{#each Object.values(item)[0] as subItem}
+									{@const subItemHref = `#${toKebabCase(subItem)}`}
+									<li class="subitem" class:selected-subitem={index === selected}>
+										<a href={subItemHref} on:click={() => handleSelected(index)}>{subItem}</a>
+									</li>
+								{/each}
+							</ul>
+						</li>
+					{/if}
 				{/each}
 			</ul>
 		</nav>
@@ -68,6 +98,14 @@
 
 	.selected {
 		@apply bg-primary-600 border-primary-600 text-white;
+	}
+
+	.selected-subitem {
+		@apply bg-green-600 border-green-600 text-white;
+	}
+
+	.subitem {
+		@apply ml-4;
 	}
 
 	li a {
