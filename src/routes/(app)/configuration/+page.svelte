@@ -17,7 +17,7 @@
 <form action="">
 	{#each Object.keys(fields) as key}
 		{#if key !== 'agents'}
-			<FormTitle id={toKebabCase(key)}>{capitalize(key)}</FormTitle>
+			<FormTitle class="col-span-2" id={toKebabCase(key)}>{capitalize(key)}</FormTitle>
 			{#each Object.values(fields[key]) as item}
 				<FormGroup>
 					<Label for={item.field}>{item.name}</Label>
@@ -42,9 +42,11 @@
 				</FormGroup>
 			{/each}
 		{:else}
-			<FormTitle id={toKebabCase(key)}>{capitalize(key)}</FormTitle>
+			<FormTitle class="col-span-2" id={toKebabCase(key)}>{capitalize(key)}</FormTitle>
 			{#each Object.keys(fields[key]) as nestedKey}
-				<FormSubtitle id={toKebabCase(nestedKey)}>{capitalize(nestedKey)}</FormSubtitle>
+				<FormSubtitle class="col-span-2" id={toKebabCase(nestedKey)}
+					>{capitalize(nestedKey)}</FormSubtitle
+				>
 				{#each Object.values(fields[key][nestedKey]) as item}
 					<FormGroup>
 						<Label for={item.field}>{item.name}</Label>
@@ -73,14 +75,8 @@
 	{/each}
 </form>
 
-<pre>
-	<code>
-		{stringify(fields)}
-	</code>
-</pre>
-
 <style lang="postcss">
 	form {
-		@apply w-full flex flex-col gap-y-2 px-14 pt-4 pb-20;
+		@apply w-full grid grid-cols-2 gap-y-2 px-14 pt-4 pb-20;
 	}
 </style>
