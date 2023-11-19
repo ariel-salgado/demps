@@ -36,13 +36,13 @@
 				title={capitalize(item)}
 				href={`#${toKebabCase(item)}`}
 				on:click={() => setSelectedItem(`${index}`)}
-				selected={selected === `${index}`}
+				selected={String(selected).split('-')[0] === `${index}`}
 			>
 				{#if typeof item === 'object'}
 					{#each Object.values(item)[0] as subItem, subIndex}
 						<SubItem
-							title={capitalize(subItem.toString())}
-							href={`#${toKebabCase(subItem.toString())}`}
+							title={capitalize(subItem)}
+							href={`#${toKebabCase(subItem)}`}
 							on:click={() => setSelectedItem(`${index}-${subIndex}`)}
 							selected={selected === `${index}-${subIndex}`}
 						/>

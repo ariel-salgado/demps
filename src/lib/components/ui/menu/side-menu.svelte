@@ -2,7 +2,7 @@
 	export let title: string;
 </script>
 
-<aside class="side-menu">
+<aside>
 	<span>
 		<h2>
 			{title}
@@ -15,7 +15,10 @@
 </aside>
 
 <style lang="postcss">
-	.side-menu {
-		@apply sticky top-20 min-w-[20rem] min-h-[calc(100vh-5rem)] h-min flex flex-col gap-y-3 px-8 py-6 shadow-md bg-primary-50;
+	h2 {
+		@apply text-2xl font-medium px-4 py-2;
+	}
+	aside {
+		@apply sticky top-20 min-w-[20rem] min-h-[calc(100vh-5rem)] h-min flex flex-col gap-y-6 px-8 py-6 shadow-md bg-primary-50;
 	}
 </style>
