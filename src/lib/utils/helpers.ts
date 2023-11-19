@@ -1,4 +1,9 @@
-export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+export const capitalize = (input: string | object): string => {
+	if (typeof input === 'string') return input.charAt(0).toUpperCase() + input.slice(1);
+	if (typeof input === 'object' && Object.keys(input).length > 0)
+		return capitalize(Object.keys(input)[0] as string);
+	return '';
+};
 
 export const spaceCamelCase = (str: string) => {
 	const resultado = str.replace(/([a-z])([A-Z])/g, '$1 $2');
@@ -6,7 +11,11 @@ export const spaceCamelCase = (str: string) => {
 	return capitalize(resultado);
 };
 
-export const toKebabCase = (str: string) => str.toLowerCase().replace(/\s+/g, '-');
+export const toKebabCase = (input: string | object): string => {
+	if (typeof input === 'string') return input.toLowerCase().replace(/\s+/g, '-');
+	if (typeof input === 'object' && Object.keys(input).length > 0)
+		return toKebabCase(Object.keys(input)[0] as string);
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const stringify = (obj: any) => JSON.stringify(obj, null, 2);
