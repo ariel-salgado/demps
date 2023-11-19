@@ -19,6 +19,11 @@
 		return keys;
 	};
 
+	const setSelectedItem = (index: string) => {
+		selected = index;
+	};
+
+	let selected: string | null = null;
 	const asideItems = extractKeys(formFields);
 </script>
 
@@ -27,13 +32,19 @@
 <div class="wrapper">
 	<SideMenu title="Configuration">
 		{#each asideItems as item, index}
-			<Item title={capitalize(item)} href={`#${toKebabCase(item)}`} selected={false}>
+			<Item
+				title={capitalize(item)}
+				href={`#${toKebabCase(item)}`}
+				on:click={() => setSelectedItem(`${index}`)}
+				selected={selected === `${index}`}
+			>
 				{#if typeof item === 'object'}
-					{#each Object.values(item)[0] as subItem}
+					{#each Object.values(item)[0] as subItem, subIndex}
 						<SubItem
 							title={capitalize(subItem.toString())}
 							href={`#${toKebabCase(subItem.toString())}`}
-							selected={false}
+							on:click={() => setSelectedItem(`${index}-${subIndex}`)}
+							selected={selected === `${index}-${subIndex}`}
 						/>
 					{/each}
 				{/if}

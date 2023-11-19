@@ -13,7 +13,7 @@
 		@apply bg-primary-50 pl-4;
 	}
 
-	.selected a {
-		@apply bg-primary-600 text-white;
+	a {
+		@apply block w-full hover:bg-blue-500;
 	}
 </style>

@@ -5,7 +5,7 @@
 </script>
 
 <li class:selected>
-	<a {href}>{title}</a>
+	<a {href} on:click>{title}</a>
 	{#if $$slots}
 		<ul>
 			<slot />
@@ -14,7 +14,11 @@
 </li>
 
 <style lang="postcss">
-	.selected {
+	.selected a {
 		@apply bg-primary-600 text-white;
+	}
+
+	a {
+		@apply block w-full hover:bg-green-500;
 	}
 </style>
