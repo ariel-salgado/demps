@@ -5,11 +5,6 @@ type TElement =
 			field: string;
 			hint?: string;
 			error?: string;
-			attributes: {
-				type: 'text' | 'number';
-				placeholder?: string;
-				value?: string;
-			};
 	  }
 	| {
 			name: string;
@@ -17,17 +12,24 @@ type TElement =
 			field: string;
 			hint?: string;
 			error?: string;
-			attributes: {
-				placeholder?: string;
-				value?: string;
-				options: Array<{
-					value: string | number | boolean;
-					text: string;
-				}>;
-			};
+			options: Array<{
+				value: string | number | boolean;
+				text: string;
+			}>;
 	  };
 
-type TConfiguration = Record<string, Array<TElement> | Record<string, Array<TElement>>>;
+export type TAttributes = {
+	type?: 'text' | 'number';
+	name: string;
+	id?: string;
+	placeholder?: string;
+	value?: string;
+	readonly?: boolean;
+};
+
+type TFormElement = TElement & { attributes: TAttributes };
+
+type TConfiguration = Record<string, Array<TFormElement> | Record<string, Array<TFormElement>>>;
 
 export const configurationFormFields: TConfiguration = {
 	general: [
@@ -37,6 +39,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'duration',
 			hint: 'Duración de la simulación',
 			attributes: {
+				name: 'duration',
 				type: 'number',
 				placeholder: 'Ingrese la duración de la simulación'
 			}
@@ -47,6 +50,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'calibration',
 			hint: 'Calibración de la simulación',
 			attributes: {
+				name: 'calibration',
 				type: 'number',
 				placeholder: 'Ingrese la calibración de la simulación'
 			}
@@ -57,6 +61,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'quadSize',
 			hint: 'Tamaño de los cuadrantes',
 			attributes: {
+				name: 'quadSize',
 				type: 'number',
 				placeholder: 'Ingrese el tamaño de los cuadrantes'
 			}
@@ -67,6 +72,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'closeEnough',
 			hint: 'Distancia de cercanía',
 			attributes: {
+				name: 'closeEnough',
 				type: 'number',
 				placeholder: 'Ingrese la distancia de cercanía'
 			}
@@ -77,6 +83,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'randomWalkwayRadius',
 			hint: 'Radio de la caminata aleatoria',
 			attributes: {
+				name: 'randomWalkwayRadius',
 				type: 'number',
 				placeholder: 'Ingrese el radio de la caminata aleatoria'
 			}
@@ -87,6 +94,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'attractionRadius',
 			hint: 'Radio de atracción',
 			attributes: {
+				name: 'attractionRadius',
 				type: 'number',
 				placeholder: 'Ingrese el radio de atracción'
 			}
@@ -97,6 +105,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'deltaT',
 			hint: 'Delta T',
 			attributes: {
+				name: 'deltaT',
 				type: 'number',
 				placeholder: 'Ingrese el delta T'
 			}
@@ -107,6 +116,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'threads',
 			hint: 'Cantidad de hilos',
 			attributes: {
+				name: 'threads',
 				type: 'number',
 				placeholder: 'Ingrese la cantidad de hilos'
 			}
@@ -116,18 +126,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'floodModelEnable',
 			hint: 'Modelo de inundación',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Seleccione el modelo de inundación',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'floodModelEnable',
+				placeholder: 'Seleccione el modelo de inundación'
 			}
 		},
 		{
@@ -135,18 +146,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'densityModelEnable',
 			hint: 'Modelo de densidad',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Seleccione el modelo de densidad',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'densityModelEnable',
+				placeholder: 'Seleccione el modelo de densidad'
 			}
 		},
 		{
@@ -154,18 +166,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'panicModelEnable',
 			hint: 'Modelo de pánico',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Ingrese el modelo de pánico',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'panicModelEnable',
+				placeholder: 'Ingrese el modelo de pánico'
 			}
 		},
 		{
@@ -173,18 +186,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'elevationModelEnable',
 			hint: 'Modelo de elevación',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Ingrese el modelo de elevación',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'elevationModelEnable',
+				placeholder: 'Ingrese el modelo de elevación'
 			}
 		},
 		{
@@ -192,18 +206,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'debrisModelEnable',
 			hint: 'Modelo de escombros',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Ingrese el modelo de escombros',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'debrisModelEnable',
+				placeholder: 'Ingrese el modelo de escombros'
 			}
 		},
 		{
@@ -213,6 +228,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Ciudad',
 			attributes: {
 				type: 'text',
+				name: 'city',
 				placeholder: 'Ingrese la ciudad'
 			}
 		},
@@ -223,6 +239,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Descripción',
 			attributes: {
 				type: 'text',
+				name: 'description',
 				placeholder: 'Ingrese la descripción'
 			}
 		},
@@ -233,6 +250,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Intervalo de muestreo',
 			attributes: {
 				type: 'number',
+				name: 'samplingInterval',
 				placeholder: 'Ingrese el intervalo de muestreo'
 			}
 		},
@@ -243,6 +261,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Directorio base de la simulación',
 			attributes: {
 				type: 'text',
+				name: 'baseDirSim',
 				placeholder: 'Ingrese el directorio base de la simulación'
 			}
 		}
@@ -255,6 +274,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Directorio',
 			attributes: {
 				type: 'text',
+				name: 'input.directory',
 				placeholder: 'Ingrese el directorio'
 			}
 		},
@@ -264,6 +284,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'input.map',
 			hint: 'Mapa',
 			attributes: {
+				name: 'input.map',
 				type: 'text',
 				placeholder: 'Ingrese el mapa'
 			}
@@ -274,6 +295,7 @@ export const configurationFormFields: TConfiguration = {
 			field: 'input.zones',
 			hint: 'Zonas',
 			attributes: {
+				name: 'input.zones',
 				type: 'text',
 				placeholder: 'Ingrese las zonas'
 			}
@@ -285,18 +307,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'output.progressBar',
 			hint: 'Barra de progreso',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Seleccione la barra de progreso',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'output.progressBar',
+				placeholder: 'Seleccione la barra de progreso'
 			}
 		},
 		{
@@ -306,6 +329,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Intervalo',
 			attributes: {
 				type: 'number',
+				name: 'output.interval',
 				placeholder: 'Ingrese el intervalo'
 			}
 		},
@@ -316,6 +340,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Directorio',
 			attributes: {
 				type: 'text',
+				name: 'output.directory',
 				placeholder: 'Ingrese el directorio'
 			}
 		},
@@ -324,18 +349,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'output.agents-out',
 			hint: 'Salida de agentes',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Seleccione la salida de agentes',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'output.agents-out',
+				placeholder: 'Seleccione la salida de agentes'
 			}
 		},
 		{
@@ -345,6 +371,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Directorio de agentes',
 			attributes: {
 				type: 'text',
+				name: 'output.agents-path',
 				placeholder: 'Ingrese el directorio de agentes'
 			}
 		},
@@ -355,6 +382,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Precisión de agentes',
 			attributes: {
 				type: 'number',
+				name: 'output.agents-precision',
 				placeholder: 'Ingrese la precisión de agentes'
 			}
 		},
@@ -365,6 +393,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Sufijo de agentes',
 			attributes: {
 				type: 'text',
+				name: 'output.agents-sufix',
 				placeholder: 'Ingrese el sufijo de agentes'
 			}
 		},
@@ -373,18 +402,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'output.stats-out',
 			hint: 'Salida de estadísticas',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Seleccione la salida de estadísticas',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'output.stats-out',
+				placeholder: 'Seleccione la salida de estadísticas'
 			}
 		},
 		{
@@ -394,6 +424,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Intervalo de estadísticas',
 			attributes: {
 				type: 'number',
+				name: 'output.stats-interval',
 				placeholder: 'Ingrese el intervalo de estadísticas'
 			}
 		},
@@ -404,6 +435,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Directorio de estadísticas',
 			attributes: {
 				type: 'text',
+				name: 'output.stats-path',
 				placeholder: 'Ingrese el directorio de estadísticas'
 			}
 		},
@@ -414,6 +446,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Nombre de archivo de configuración de animación',
 			attributes: {
 				type: 'text',
+				name: 'output.anim-config',
 				placeholder: 'Ingrese nombre de archivo de configuración de animación'
 			}
 		},
@@ -422,18 +455,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'output.heatMap-out',
 			hint: 'Salida de mapa de calor',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Seleccione la salida de mapa de calor',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'output.heatMap-out',
+				placeholder: 'Seleccione la salida de mapa de calor'
 			}
 		},
 		{
@@ -443,6 +477,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Tamaño del mapa de calor',
 			attributes: {
 				type: 'number',
+				name: 'output.heatMap-size',
 				placeholder: 'Ingrese el tamaño del mapa de calor'
 			}
 		},
@@ -453,6 +488,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Intervalo del mapa de calor',
 			attributes: {
 				type: 'number',
+				name: 'output.heatMap-interval',
 				placeholder: 'Ingrese el intervalo del mapa de calor'
 			}
 		},
@@ -463,6 +499,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Directorio del mapa de calor',
 			attributes: {
 				type: 'text',
+				name: 'output.heatMap-path',
 				placeholder: 'Ingrese el directorio del mapa de calor'
 			}
 		}
@@ -475,6 +512,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Dirección',
 			attributes: {
 				type: 'text',
+				name: 'floodParams.direction',
 				placeholder: 'Ingrese la dirección'
 			}
 		},
@@ -485,6 +523,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Intervalo de muestreo de estado',
 			attributes: {
 				type: 'number',
+				name: 'floodParams.sampleStateInterval',
 				placeholder: 'Ingrese el intervalo de muestreo de estado'
 			}
 		},
@@ -495,6 +534,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Tiempo de llegada',
 			attributes: {
 				type: 'number',
+				name: 'floodParams.arrivalTime',
 				placeholder: 'Ingrese el tiempo de llegada'
 			}
 		},
@@ -505,6 +545,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Velocidad del agua proporcional',
 			attributes: {
 				type: 'number',
+				name: 'floodParams.speedWaterProp',
 				placeholder: 'Ingrese la velocidad del agua proporcional'
 			}
 		},
@@ -515,6 +556,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Velocidad del agua nivel',
 			attributes: {
 				type: 'number',
+				name: 'floodParams.speedWaterLevel',
 				placeholder: 'Ingrese la velocidad del agua nivel'
 			}
 		},
@@ -525,6 +567,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Nivel crítico',
 			attributes: {
 				type: 'number',
+				name: 'floodParams.criticalLevel',
 				placeholder: 'Ingrese el nivel crítico'
 			}
 		},
@@ -535,6 +578,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Factor de velocidad mínimo',
 			attributes: {
 				type: 'number',
+				name: 'floodParams.minSpeedFactor',
 				placeholder: 'Ingrese el factor de velocidad mínimo'
 			}
 		},
@@ -543,18 +587,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'floodParams.imagesEnable',
 			hint: 'Habilitación de imágenes',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Seleccione la habilitación de imágenes',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'floodParams.imagesEnable',
+				placeholder: 'Seleccione la habilitación de imágenes'
 			}
 		},
 		{
@@ -564,6 +609,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Directorio de imágenes',
 			attributes: {
 				type: 'text',
+				name: 'floodParams.imagesDir',
 				placeholder: 'Ingrese el directorio de imágenes'
 			}
 		},
@@ -572,18 +618,19 @@ export const configurationFormFields: TConfiguration = {
 			element: 'select',
 			field: 'floodParams.stateEnable',
 			hint: 'Habilitación de estado',
+			options: [
+				{
+					value: true,
+					text: 'Habilitado'
+				},
+				{
+					value: false,
+					text: 'Deshabilitado'
+				}
+			],
 			attributes: {
-				placeholder: 'Seleccione la habilitación de estado',
-				options: [
-					{
-						value: true,
-						text: 'Habilitado'
-					},
-					{
-						value: false,
-						text: 'Deshabilitado'
-					}
-				]
+				name: 'floodParams.stateEnable',
+				placeholder: 'Seleccione la habilitación de estado'
 			}
 		},
 		{
@@ -593,6 +640,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Directorio de estado',
 			attributes: {
 				type: 'text',
+				name: 'floodParams.stateDir',
 				placeholder: 'Ingrese el directorio de estado'
 			}
 		}
@@ -605,6 +653,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Densidad mínima',
 			attributes: {
 				type: 'number',
+				name: 'densityParams.minDensity',
 				placeholder: 'Ingrese la densidad mínima'
 			}
 		},
@@ -615,6 +664,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Densidad máxima',
 			attributes: {
 				type: 'number',
+				name: 'densityParams.maxDensity',
 				placeholder: 'Ingrese la densidad máxima'
 			}
 		},
@@ -625,6 +675,7 @@ export const configurationFormFields: TConfiguration = {
 			hint: 'Velocidad mínima',
 			attributes: {
 				type: 'number',
+				name: 'densityParams.minVelocity',
 				placeholder: 'Ingrese la velocidad mínima'
 			}
 		}
@@ -632,13 +683,16 @@ export const configurationFormFields: TConfiguration = {
 	agents: {
 		residents: [
 			{
-				name: 'Residents',
+				name: 'Model',
 				element: 'input',
 				field: 'agents.model',
 				hint: 'Modelo',
 				attributes: {
 					type: 'text',
-					placeholder: 'Ingrese el modelo'
+					name: 'agents.model',
+					placeholder: 'Ingrese el modelo',
+					value: 'Residents',
+					readonly: true
 				}
 			},
 			{
@@ -648,6 +702,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Número',
 				attributes: {
 					type: 'number',
+					name: 'agents.number',
 					placeholder: 'Ingrese el número'
 				}
 			},
@@ -658,6 +713,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tau',
 				attributes: {
 					type: 'number',
+					name: 'agents.responseTime.tau',
 					placeholder: 'Ingrese el tau'
 				}
 			},
@@ -668,6 +724,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Sigma',
 				attributes: {
 					type: 'number',
+					name: 'agents.responseTime.sigma',
 					placeholder: 'Ingrese el sigma'
 				}
 			},
@@ -678,6 +735,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tiempo medio de toma de teléfono',
 				attributes: {
 					type: 'number',
+					name: 'agents.phoneUse.meanTimeTakePhone',
 					placeholder: 'Ingrese el tiempo medio de toma de teléfono'
 				}
 			},
@@ -688,6 +746,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad de uso de teléfono constante',
 				attributes: {
 					type: 'number',
+					name: 'agents.phoneUse.probPhoneUseConst',
 					placeholder: 'Ingrese la probabilidad de uso de teléfono constante'
 				}
 			},
@@ -698,6 +757,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad G0',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G0.prob',
 					placeholder: 'Ingrese la probabilidad G0'
 				}
 			},
@@ -708,6 +768,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad mínima G0',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G0.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G0'
 				}
 			},
@@ -718,6 +779,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad máxima G0',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G0.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G0'
 				}
 			},
@@ -728,6 +790,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad G1',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G1.prob',
 					placeholder: 'Ingrese la probabilidad G1'
 				}
 			},
@@ -738,6 +801,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad mínima G1',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G1.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G1'
 				}
 			},
@@ -748,6 +812,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad máxima G1',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G1.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G1'
 				}
 			},
@@ -758,6 +823,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad G2',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G2.prob',
 					placeholder: 'Ingrese la probabilidad G2'
 				}
 			},
@@ -768,6 +834,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad mínima G2',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G2.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G2'
 				}
 			},
@@ -778,6 +845,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad máxima G2',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G2.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G2'
 				}
 			},
@@ -788,6 +856,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad G3',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G3.prob',
 					placeholder: 'Ingrese la probabilidad G3'
 				}
 			},
@@ -798,6 +867,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad mínima G3',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G3.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G3'
 				}
 			},
@@ -808,6 +878,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad máxima G3',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G3.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G3'
 				}
 			},
@@ -818,6 +889,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tiempo de relajación',
 				attributes: {
 					type: 'number',
+					name: 'agents.SFM.timeRelax',
 					placeholder: 'Ingrese el tiempo de relajación'
 				}
 			},
@@ -828,6 +900,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Sigma',
 				attributes: {
 					type: 'number',
+					name: 'agents.SFM.sigma',
 					placeholder: 'Ingrese el sigma'
 				}
 			},
@@ -838,6 +911,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Fuerza repulsiva de agentes',
 				attributes: {
 					type: 'number',
+					name: 'agents.SFM.repulsiveForceAgents',
 					placeholder: 'Ingrese la fuerza repulsiva de agentes'
 				}
 			},
@@ -848,6 +922,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Cos phi',
 				attributes: {
 					type: 'number',
+					name: 'agents.SFM.cosphi',
 					placeholder: 'Ingrese el cos phi'
 				}
 			},
@@ -858,6 +933,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Umbral de emoción',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.emotionThreshold',
 					placeholder: 'Ingrese el umbral de emoción'
 				}
 			},
@@ -868,6 +944,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad de infectado a recuperado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.probInfectedToRecovered',
 					placeholder: 'Ingrese la probabilidad de infectado a recuperado'
 				}
 			},
@@ -878,6 +955,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad de recuperado a susceptible',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.probRecoveredToSusceptible',
 					placeholder: 'Ingrese la probabilidad de recuperado a susceptible'
 				}
 			},
@@ -888,6 +966,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tiempo medio en infectado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.meanTimeInInfected',
 					placeholder: 'Ingrese el tiempo medio en infectado'
 				}
 			},
@@ -898,6 +977,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Desviación estándar de tiempo en infectado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.sdTimeInInfected',
 					placeholder: 'Ingrese la desviación estándar de tiempo en infectado'
 				}
 			},
@@ -908,6 +988,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tiempo medio en recuperado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.meanTimeInRecovered',
 					placeholder: 'Ingrese el tiempo medio en recuperado'
 				}
 			},
@@ -918,19 +999,23 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Desviación estándar de tiempo en recuperado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.sdTimeInRecovered',
 					placeholder: 'Ingrese la desviación estándar de tiempo en recuperado'
 				}
 			}
 		],
 		visitors: [
 			{
-				name: 'Visitors',
+				name: 'Model',
 				element: 'input',
 				field: 'agents.model',
 				hint: 'Modelo',
 				attributes: {
 					type: 'text',
-					placeholder: 'Ingrese el modelo'
+					name: 'agents.model',
+					placeholder: 'Ingrese el modelo',
+					value: 'Visitors',
+					readonly: true
 				}
 			},
 			{
@@ -940,6 +1025,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Número',
 				attributes: {
 					type: 'number',
+					name: 'agents.number',
 					placeholder: 'Ingrese el número'
 				}
 			},
@@ -950,6 +1036,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tau',
 				attributes: {
 					type: 'number',
+					name: 'agents.responseTime.tau',
 					placeholder: 'Ingrese el tau'
 				}
 			},
@@ -960,6 +1047,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Sigma',
 				attributes: {
 					type: 'number',
+					name: 'agents.responseTime.sigma',
 					placeholder: 'Ingrese el sigma'
 				}
 			},
@@ -970,6 +1058,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tiempo medio de toma de teléfono',
 				attributes: {
 					type: 'number',
+					name: 'agents.phoneUse.meanTimeTakePhone',
 					placeholder: 'Ingrese el tiempo medio de toma de teléfono'
 				}
 			},
@@ -980,6 +1069,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad de uso de teléfono constante',
 				attributes: {
 					type: 'number',
+					name: 'agents.phoneUse.probPhoneUseConst',
 					placeholder: 'Ingrese la probabilidad de uso de teléfono constante'
 				}
 			},
@@ -990,6 +1080,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad G0',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G0.prob',
 					placeholder: 'Ingrese la probabilidad G0'
 				}
 			},
@@ -1000,6 +1091,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad mínima G0',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G0.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G0'
 				}
 			},
@@ -1010,6 +1102,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad máxima G0',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G0.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G0'
 				}
 			},
@@ -1020,6 +1113,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad G1',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G1.prob',
 					placeholder: 'Ingrese la probabilidad G1'
 				}
 			},
@@ -1030,6 +1124,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad mínima G1',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G1.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G1'
 				}
 			},
@@ -1040,6 +1135,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad máxima G1',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G1.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G1'
 				}
 			},
@@ -1050,6 +1146,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad G2',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G2.prob',
 					placeholder: 'Ingrese la probabilidad G2'
 				}
 			},
@@ -1060,6 +1157,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad mínima G2',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G2.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G2'
 				}
 			},
@@ -1070,6 +1168,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad máxima G2',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G2.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G2'
 				}
 			},
@@ -1080,6 +1179,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad G3',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G3.prob',
 					placeholder: 'Ingrese la probabilidad G3'
 				}
 			},
@@ -1090,6 +1190,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad mínima G3',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G3.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G3'
 				}
 			},
@@ -1100,6 +1201,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Velocidad máxima G3',
 				attributes: {
 					type: 'number',
+					name: 'agents.ageRange.G3.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G3'
 				}
 			},
@@ -1110,6 +1212,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tiempo de relajación',
 				attributes: {
 					type: 'number',
+					name: 'agents.SFM.timeRelax',
 					placeholder: 'Ingrese el tiempo de relajación'
 				}
 			},
@@ -1120,6 +1223,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Sigma',
 				attributes: {
 					type: 'number',
+					name: 'agents.SFM.sigma',
 					placeholder: 'Ingrese el sigma'
 				}
 			},
@@ -1130,6 +1234,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Fuerza repulsiva de agentes',
 				attributes: {
 					type: 'number',
+					name: 'agents.SFM.repulsiveForceAgents',
 					placeholder: 'Ingrese la fuerza repulsiva de agentes'
 				}
 			},
@@ -1140,6 +1245,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Cos phi',
 				attributes: {
 					type: 'number',
+					name: 'agents.SFM.cosphi',
 					placeholder: 'Ingrese el cos phi'
 				}
 			},
@@ -1150,6 +1256,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Umbral de emoción',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.emotionThreshold',
 					placeholder: 'Ingrese el umbral de emoción'
 				}
 			},
@@ -1160,6 +1267,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad de infectado a recuperado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.probInfectedToRecovered',
 					placeholder: 'Ingrese la probabilidad de infectado a recuperado'
 				}
 			},
@@ -1170,6 +1278,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Probabilidad de recuperado a susceptible',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.probRecoveredToSusceptible',
 					placeholder: 'Ingrese la probabilidad de recuperado a susceptible'
 				}
 			},
@@ -1180,6 +1289,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tiempo medio en infectado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.meanTimeInInfected',
 					placeholder: 'Ingrese el tiempo medio en infectado'
 				}
 			},
@@ -1190,6 +1300,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Desviación estándar de tiempo en infectado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.sdTimeInInfected',
 					placeholder: 'Ingrese la desviación estándar de tiempo en infectado'
 				}
 			},
@@ -1200,6 +1311,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Tiempo medio en recuperado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.meanTimeInRecovered',
 					placeholder: 'Ingrese el tiempo medio en recuperado'
 				}
 			},
@@ -1210,6 +1322,7 @@ export const configurationFormFields: TConfiguration = {
 				hint: 'Desviación estándar de tiempo en recuperado',
 				attributes: {
 					type: 'number',
+					name: 'agents.panicModel.sdTimeInRecovered',
 					placeholder: 'Ingrese la desviación estándar de tiempo en recuperado'
 				}
 			}
