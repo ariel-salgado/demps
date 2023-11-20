@@ -30,6 +30,6 @@
 	}
 
 	input:read-only {
-		@apply bg-slate-100 text-slate-400;
+		@apply bg-slate-100 text-slate-400 ring-slate-400;
 	}
 </style>
