@@ -1,16 +1,22 @@
 <script lang="ts">
-	export let value: string | number | boolean;
-	export let options: Array<{ value: string | number | boolean; text: string }>;
-	export let name: string;
+	export let value: string | number | boolean | null;
+	export let options: Array<{
+		value: string | number | boolean;
+		text: string;
+		selected?: boolean | undefined;
+	}>;
 	export let placeholder: string | undefined;
+
+	const hasDefaultValue = (input: typeof options) =>
+		input.some((option) => option.selected === true);
 </script>
 
-<select bind:value {name} {...$$restProps}>
+<select {...$$restProps} bind:value>
 	{#if placeholder}
-		<option value={undefined} disabled selected>{placeholder}</option>
+		<option value={null} disabled selected={!hasDefaultValue(options)}>{placeholder}</option>
 	{/if}
-	{#each options as { value, text }}
-		<option {value}>{text}</option>
+	{#each options as { value, text, selected }}
+		<option {value} {selected}>{text}</option>
 	{/each}
 </select>
 

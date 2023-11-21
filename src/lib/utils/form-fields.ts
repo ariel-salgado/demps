@@ -15,6 +15,7 @@ type TElement =
 			options: Array<{
 				value: string | number | boolean;
 				text: string;
+				selected?: boolean | undefined;
 			}>;
 	  };
 
@@ -24,7 +25,7 @@ export type TAttributes = {
 	id?: string;
 	placeholder?: string;
 	value?: string;
-	readonly?: boolean;
+	disabled?: boolean;
 };
 
 type TFormElement = TElement & { attributes: TAttributes };
@@ -692,7 +693,7 @@ export const configurationFormFields: TConfiguration = {
 					name: 'agents.model',
 					placeholder: 'Ingrese el modelo',
 					value: 'Residents',
-					readonly: true
+					disabled: true
 				}
 			},
 			{
@@ -1015,7 +1016,7 @@ export const configurationFormFields: TConfiguration = {
 					name: 'agents.model',
 					placeholder: 'Ingrese el modelo',
 					value: 'Visitors',
-					readonly: true
+					disabled: true
 				}
 			},
 			{
