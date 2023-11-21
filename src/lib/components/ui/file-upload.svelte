@@ -1,30 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { GeoJSONStore } from '$lib/stores';
 
 	export let accept: string;
-
-	const uploadFile: SubmitFunction = ({ formData, cancel }) => {
-		const { file } = Object.fromEntries(formData);
-
-		if (file instanceof File) {
-			const reader = new FileReader();
-
-			reader.onload = () => {
-				const data = JSON.parse(reader.result as string);
-
-				GeoJSONStore.set(data);
-			};
-
-			reader.readAsText(file);
-		}
-
-		cancel();
-	};
+	export let onSubmit: SubmitFunction;
 </script>
 
-<form class="file-form" method="post" use:enhance={uploadFile} enctype="multipart/form-data">
+<form class="file-form" method="post" use:enhance={onSubmit} enctype="multipart/form-data">
 	<input class="file-input" type="file" name="file" {accept} />
 	<button class="file-upload" type="submit">
 		<svg
