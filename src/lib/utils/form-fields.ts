@@ -25,7 +25,7 @@ export type TAttributes = {
 	id?: string;
 	placeholder?: string;
 	value?: string;
-	disabled?: boolean;
+	readonly?: boolean;
 };
 
 type TFormElement = TElement & { attributes: TAttributes };
@@ -686,321 +686,321 @@ export const configurationFormFields: TConfiguration = {
 			{
 				name: 'Model',
 				element: 'input',
-				field: 'agents.model',
+				field: 'agents.0.model',
 				hint: 'Modelo',
 				attributes: {
 					type: 'text',
-					name: 'agents.model',
+					name: 'agents.0.model',
 					placeholder: 'Ingrese el modelo',
 					value: 'Residents',
-					disabled: true
+					readonly: true
 				}
 			},
 			{
 				name: 'Number',
 				element: 'input',
-				field: 'agents.number',
+				field: 'agents.0.number',
 				hint: 'Número',
 				attributes: {
 					type: 'number',
-					name: 'agents.number',
+					name: 'agents.0.number',
 					placeholder: 'Ingrese el número'
 				}
 			},
 			{
 				name: 'Tau',
 				element: 'input',
-				field: 'agents.responseTime.tau',
+				field: 'agents.0.responseTime.tau',
 				hint: 'Tau',
 				attributes: {
 					type: 'number',
-					name: 'agents.responseTime.tau',
+					name: 'agents.0.responseTime.tau',
 					placeholder: 'Ingrese el tau'
 				}
 			},
 			{
 				name: 'Sigma',
 				element: 'input',
-				field: 'agents.responseTime.sigma',
+				field: 'agents.0.responseTime.sigma',
 				hint: 'Sigma',
 				attributes: {
 					type: 'number',
-					name: 'agents.responseTime.sigma',
+					name: 'agents.0.responseTime.sigma',
 					placeholder: 'Ingrese el sigma'
 				}
 			},
 			{
 				name: 'Mean Time Take Phone',
 				element: 'input',
-				field: 'agents.phoneUse.meanTimeTakePhone',
+				field: 'agents.0.phoneUse.meanTimeTakePhone',
 				hint: 'Tiempo medio de toma de teléfono',
 				attributes: {
 					type: 'number',
-					name: 'agents.phoneUse.meanTimeTakePhone',
+					name: 'agents.0.phoneUse.meanTimeTakePhone',
 					placeholder: 'Ingrese el tiempo medio de toma de teléfono'
 				}
 			},
 			{
 				name: 'Prob Phone Use Const',
 				element: 'input',
-				field: 'agents.phoneUse.probPhoneUseConst',
+				field: 'agents.0.phoneUse.probPhoneUseConst',
 				hint: 'Probabilidad de uso de teléfono constante',
 				attributes: {
 					type: 'number',
-					name: 'agents.phoneUse.probPhoneUseConst',
+					name: 'agents.0.phoneUse.probPhoneUseConst',
 					placeholder: 'Ingrese la probabilidad de uso de teléfono constante'
 				}
 			},
 			{
 				name: 'G0 Prob',
 				element: 'input',
-				field: 'agents.ageRange.G0.prob',
+				field: 'agents.0.ageRange.G0.prob',
 				hint: 'Probabilidad G0',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G0.prob',
+					name: 'agents.0.ageRange.G0.prob',
 					placeholder: 'Ingrese la probabilidad G0'
 				}
 			},
 			{
 				name: 'G0 Min Speed',
 				element: 'input',
-				field: 'agents.ageRange.G0.minSpeed',
+				field: 'agents.0.ageRange.G0.minSpeed',
 				hint: 'Velocidad mínima G0',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G0.minSpeed',
+					name: 'agents.0.ageRange.G0.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G0'
 				}
 			},
 			{
 				name: 'G0 Max Speed',
 				element: 'input',
-				field: 'agents.ageRange.G0.maxSpeed',
+				field: 'agents.0.ageRange.G0.maxSpeed',
 				hint: 'Velocidad máxima G0',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G0.maxSpeed',
+					name: 'agents.0.ageRange.G0.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G0'
 				}
 			},
 			{
 				name: 'G1 Prob',
 				element: 'input',
-				field: 'agents.ageRange.G1.prob',
+				field: 'agents.0.ageRange.G1.prob',
 				hint: 'Probabilidad G1',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G1.prob',
+					name: 'agents.0.ageRange.G1.prob',
 					placeholder: 'Ingrese la probabilidad G1'
 				}
 			},
 			{
 				name: 'G1 Min Speed',
 				element: 'input',
-				field: 'agents.ageRange.G1.minSpeed',
+				field: 'agents.0.ageRange.G1.minSpeed',
 				hint: 'Velocidad mínima G1',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G1.minSpeed',
+					name: 'agents.0.ageRange.G1.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G1'
 				}
 			},
 			{
 				name: 'G1 Max Speed',
 				element: 'input',
-				field: 'agents.ageRange.G1.maxSpeed',
+				field: 'agents.0.ageRange.G1.maxSpeed',
 				hint: 'Velocidad máxima G1',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G1.maxSpeed',
+					name: 'agents.0.ageRange.G1.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G1'
 				}
 			},
 			{
 				name: 'G2 Prob',
 				element: 'input',
-				field: 'agents.ageRange.G2.prob',
+				field: 'agents.0.ageRange.G2.prob',
 				hint: 'Probabilidad G2',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G2.prob',
+					name: 'agents.0.ageRange.G2.prob',
 					placeholder: 'Ingrese la probabilidad G2'
 				}
 			},
 			{
 				name: 'G2 Min Speed',
 				element: 'input',
-				field: 'agents.ageRange.G2.minSpeed',
+				field: 'agents.0.ageRange.G2.minSpeed',
 				hint: 'Velocidad mínima G2',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G2.minSpeed',
+					name: 'agents.0.ageRange.G2.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G2'
 				}
 			},
 			{
 				name: 'G2 Max Speed',
 				element: 'input',
-				field: 'agents.ageRange.G2.maxSpeed',
+				field: 'agents.0.ageRange.G2.maxSpeed',
 				hint: 'Velocidad máxima G2',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G2.maxSpeed',
+					name: 'agents.0.ageRange.G2.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G2'
 				}
 			},
 			{
 				name: 'G3 Prob',
 				element: 'input',
-				field: 'agents.ageRange.G3.prob',
+				field: 'agents.0.ageRange.G3.prob',
 				hint: 'Probabilidad G3',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G3.prob',
+					name: 'agents.0.ageRange.G3.prob',
 					placeholder: 'Ingrese la probabilidad G3'
 				}
 			},
 			{
 				name: 'G3 Min Speed',
 				element: 'input',
-				field: 'agents.ageRange.G3.minSpeed',
+				field: 'agents.0.ageRange.G3.minSpeed',
 				hint: 'Velocidad mínima G3',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G3.minSpeed',
+					name: 'agents.0.ageRange.G3.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G3'
 				}
 			},
 			{
 				name: 'G3 Max Speed',
 				element: 'input',
-				field: 'agents.ageRange.G3.maxSpeed',
+				field: 'agents.0.ageRange.G3.maxSpeed',
 				hint: 'Velocidad máxima G3',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G3.maxSpeed',
+					name: 'agents.0.ageRange.G3.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G3'
 				}
 			},
 			{
 				name: 'Time Relax',
 				element: 'input',
-				field: 'agents.SFM.timeRelax',
+				field: 'agents.0.SFM.timeRelax',
 				hint: 'Tiempo de relajación',
 				attributes: {
 					type: 'number',
-					name: 'agents.SFM.timeRelax',
+					name: 'agents.0.SFM.timeRelax',
 					placeholder: 'Ingrese el tiempo de relajación'
 				}
 			},
 			{
 				name: 'Sigma',
 				element: 'input',
-				field: 'agents.SFM.sigma',
+				field: 'agents.0.SFM.sigma',
 				hint: 'Sigma',
 				attributes: {
 					type: 'number',
-					name: 'agents.SFM.sigma',
+					name: 'agents.0.SFM.sigma',
 					placeholder: 'Ingrese el sigma'
 				}
 			},
 			{
 				name: 'Repulsive Force Agents',
 				element: 'input',
-				field: 'agents.SFM.repulsiveForceAgents',
+				field: 'agents.0.SFM.repulsiveForceAgents',
 				hint: 'Fuerza repulsiva de agentes',
 				attributes: {
 					type: 'number',
-					name: 'agents.SFM.repulsiveForceAgents',
+					name: 'agents.0.SFM.repulsiveForceAgents',
 					placeholder: 'Ingrese la fuerza repulsiva de agentes'
 				}
 			},
 			{
 				name: 'Cos Phi',
 				element: 'input',
-				field: 'agents.SFM.cosphi',
+				field: 'agents.0.SFM.cosphi',
 				hint: 'Cos phi',
 				attributes: {
 					type: 'number',
-					name: 'agents.SFM.cosphi',
+					name: 'agents.0.SFM.cosphi',
 					placeholder: 'Ingrese el cos phi'
 				}
 			},
 			{
 				name: 'Emotion Threshold',
 				element: 'input',
-				field: 'agents.panicModel.emotionThreshold',
+				field: 'agents.0.panicModel.emotionThreshold',
 				hint: 'Umbral de emoción',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.emotionThreshold',
+					name: 'agents.0.panicModel.emotionThreshold',
 					placeholder: 'Ingrese el umbral de emoción'
 				}
 			},
 			{
 				name: 'Prob Infected To Recovered',
 				element: 'input',
-				field: 'agents.panicModel.probInfectedToRecovered',
+				field: 'agents.0.panicModel.probInfectedToRecovered',
 				hint: 'Probabilidad de infectado a recuperado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.probInfectedToRecovered',
+					name: 'agents.0.panicModel.probInfectedToRecovered',
 					placeholder: 'Ingrese la probabilidad de infectado a recuperado'
 				}
 			},
 			{
 				name: 'Prob Recovered To Susceptible',
 				element: 'input',
-				field: 'agents.panicModel.probRecoveredToSusceptible',
+				field: 'agents.0.panicModel.probRecoveredToSusceptible',
 				hint: 'Probabilidad de recuperado a susceptible',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.probRecoveredToSusceptible',
+					name: 'agents.0.panicModel.probRecoveredToSusceptible',
 					placeholder: 'Ingrese la probabilidad de recuperado a susceptible'
 				}
 			},
 			{
 				name: 'Mean Time In Infected',
 				element: 'input',
-				field: 'agents.panicModel.meanTimeInInfected',
+				field: 'agents.0.panicModel.meanTimeInInfected',
 				hint: 'Tiempo medio en infectado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.meanTimeInInfected',
+					name: 'agents.0.panicModel.meanTimeInInfected',
 					placeholder: 'Ingrese el tiempo medio en infectado'
 				}
 			},
 			{
 				name: 'Sd Time In Infected',
 				element: 'input',
-				field: 'agents.panicModel.sdTimeInInfected',
+				field: 'agents.0.panicModel.sdTimeInInfected',
 				hint: 'Desviación estándar de tiempo en infectado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.sdTimeInInfected',
+					name: 'agents.0.panicModel.sdTimeInInfected',
 					placeholder: 'Ingrese la desviación estándar de tiempo en infectado'
 				}
 			},
 			{
 				name: 'Mean Time In Recovered',
 				element: 'input',
-				field: 'agents.panicModel.meanTimeInRecovered',
+				field: 'agents.0.panicModel.meanTimeInRecovered',
 				hint: 'Tiempo medio en recuperado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.meanTimeInRecovered',
+					name: 'agents.0.panicModel.meanTimeInRecovered',
 					placeholder: 'Ingrese el tiempo medio en recuperado'
 				}
 			},
 			{
 				name: 'Sd Time In Recovered',
 				element: 'input',
-				field: 'agents.panicModel.sdTimeInRecovered',
+				field: 'agents.0.panicModel.sdTimeInRecovered',
 				hint: 'Desviación estándar de tiempo en recuperado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.sdTimeInRecovered',
+					name: 'agents.0.panicModel.sdTimeInRecovered',
 					placeholder: 'Ingrese la desviación estándar de tiempo en recuperado'
 				}
 			}
@@ -1009,321 +1009,321 @@ export const configurationFormFields: TConfiguration = {
 			{
 				name: 'Model',
 				element: 'input',
-				field: 'agents.model',
+				field: 'agents.1.model',
 				hint: 'Modelo',
 				attributes: {
 					type: 'text',
-					name: 'agents.model',
+					name: 'agents.1.model',
 					placeholder: 'Ingrese el modelo',
 					value: 'Visitors',
-					disabled: true
+					readonly: true
 				}
 			},
 			{
 				name: 'Number',
 				element: 'input',
-				field: 'agents.number',
+				field: 'agents.1.number',
 				hint: 'Número',
 				attributes: {
 					type: 'number',
-					name: 'agents.number',
+					name: 'agents.1.number',
 					placeholder: 'Ingrese el número'
 				}
 			},
 			{
 				name: 'Tau',
 				element: 'input',
-				field: 'agents.responseTime.tau',
+				field: 'agents.1.responseTime.tau',
 				hint: 'Tau',
 				attributes: {
 					type: 'number',
-					name: 'agents.responseTime.tau',
+					name: 'agents.1.responseTime.tau',
 					placeholder: 'Ingrese el tau'
 				}
 			},
 			{
 				name: 'Sigma',
 				element: 'input',
-				field: 'agents.responseTime.sigma',
+				field: 'agents.1.responseTime.sigma',
 				hint: 'Sigma',
 				attributes: {
 					type: 'number',
-					name: 'agents.responseTime.sigma',
+					name: 'agents.1.responseTime.sigma',
 					placeholder: 'Ingrese el sigma'
 				}
 			},
 			{
 				name: 'Mean Time Take Phone',
 				element: 'input',
-				field: 'agents.phoneUse.meanTimeTakePhone',
+				field: 'agents.1.phoneUse.meanTimeTakePhone',
 				hint: 'Tiempo medio de toma de teléfono',
 				attributes: {
 					type: 'number',
-					name: 'agents.phoneUse.meanTimeTakePhone',
+					name: 'agents.1.phoneUse.meanTimeTakePhone',
 					placeholder: 'Ingrese el tiempo medio de toma de teléfono'
 				}
 			},
 			{
 				name: 'Prob Phone Use Const',
 				element: 'input',
-				field: 'agents.phoneUse.probPhoneUseConst',
+				field: 'agents.1.phoneUse.probPhoneUseConst',
 				hint: 'Probabilidad de uso de teléfono constante',
 				attributes: {
 					type: 'number',
-					name: 'agents.phoneUse.probPhoneUseConst',
+					name: 'agents.1.phoneUse.probPhoneUseConst',
 					placeholder: 'Ingrese la probabilidad de uso de teléfono constante'
 				}
 			},
 			{
 				name: 'G0 Prob',
 				element: 'input',
-				field: 'agents.ageRange.G0.prob',
+				field: 'agents.1.ageRange.G0.prob',
 				hint: 'Probabilidad G0',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G0.prob',
+					name: 'agents.1.ageRange.G0.prob',
 					placeholder: 'Ingrese la probabilidad G0'
 				}
 			},
 			{
 				name: 'G0 Min Speed',
 				element: 'input',
-				field: 'agents.ageRange.G0.minSpeed',
+				field: 'agents.1.ageRange.G0.minSpeed',
 				hint: 'Velocidad mínima G0',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G0.minSpeed',
+					name: 'agents.1.ageRange.G0.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G0'
 				}
 			},
 			{
 				name: 'G0 Max Speed',
 				element: 'input',
-				field: 'agents.ageRange.G0.maxSpeed',
+				field: 'agents.1.ageRange.G0.maxSpeed',
 				hint: 'Velocidad máxima G0',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G0.maxSpeed',
+					name: 'agents.1.ageRange.G0.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G0'
 				}
 			},
 			{
 				name: 'G1 Prob',
 				element: 'input',
-				field: 'agents.ageRange.G1.prob',
+				field: 'agents.1.ageRange.G1.prob',
 				hint: 'Probabilidad G1',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G1.prob',
+					name: 'agents.1.ageRange.G1.prob',
 					placeholder: 'Ingrese la probabilidad G1'
 				}
 			},
 			{
 				name: 'G1 Min Speed',
 				element: 'input',
-				field: 'agents.ageRange.G1.minSpeed',
+				field: 'agents.1.ageRange.G1.minSpeed',
 				hint: 'Velocidad mínima G1',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G1.minSpeed',
+					name: 'agents.1.ageRange.G1.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G1'
 				}
 			},
 			{
 				name: 'G1 Max Speed',
 				element: 'input',
-				field: 'agents.ageRange.G1.maxSpeed',
+				field: 'agents.1.ageRange.G1.maxSpeed',
 				hint: 'Velocidad máxima G1',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G1.maxSpeed',
+					name: 'agents.1.ageRange.G1.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G1'
 				}
 			},
 			{
 				name: 'G2 Prob',
 				element: 'input',
-				field: 'agents.ageRange.G2.prob',
+				field: 'agents.1.ageRange.G2.prob',
 				hint: 'Probabilidad G2',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G2.prob',
+					name: 'agents.1.ageRange.G2.prob',
 					placeholder: 'Ingrese la probabilidad G2'
 				}
 			},
 			{
 				name: 'G2 Min Speed',
 				element: 'input',
-				field: 'agents.ageRange.G2.minSpeed',
+				field: 'agents.1.ageRange.G2.minSpeed',
 				hint: 'Velocidad mínima G2',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G2.minSpeed',
+					name: 'agents.1.ageRange.G2.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G2'
 				}
 			},
 			{
 				name: 'G2 Max Speed',
 				element: 'input',
-				field: 'agents.ageRange.G2.maxSpeed',
+				field: 'agents.1.ageRange.G2.maxSpeed',
 				hint: 'Velocidad máxima G2',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G2.maxSpeed',
+					name: 'agents.1.ageRange.G2.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G2'
 				}
 			},
 			{
 				name: 'G3 Prob',
 				element: 'input',
-				field: 'agents.ageRange.G3.prob',
+				field: 'agents.1.ageRange.G3.prob',
 				hint: 'Probabilidad G3',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G3.prob',
+					name: 'agents.1.ageRange.G3.prob',
 					placeholder: 'Ingrese la probabilidad G3'
 				}
 			},
 			{
 				name: 'G3 Min Speed',
 				element: 'input',
-				field: 'agents.ageRange.G3.minSpeed',
+				field: 'agents.1.ageRange.G3.minSpeed',
 				hint: 'Velocidad mínima G3',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G3.minSpeed',
+					name: 'agents.1.ageRange.G3.minSpeed',
 					placeholder: 'Ingrese la velocidad mínima G3'
 				}
 			},
 			{
 				name: 'G3 Max Speed',
 				element: 'input',
-				field: 'agents.ageRange.G3.maxSpeed',
+				field: 'agents.1.ageRange.G3.maxSpeed',
 				hint: 'Velocidad máxima G3',
 				attributes: {
 					type: 'number',
-					name: 'agents.ageRange.G3.maxSpeed',
+					name: 'agents.1.ageRange.G3.maxSpeed',
 					placeholder: 'Ingrese la velocidad máxima G3'
 				}
 			},
 			{
 				name: 'Time Relax',
 				element: 'input',
-				field: 'agents.SFM.timeRelax',
+				field: 'agents.1.SFM.timeRelax',
 				hint: 'Tiempo de relajación',
 				attributes: {
 					type: 'number',
-					name: 'agents.SFM.timeRelax',
+					name: 'agents.1.SFM.timeRelax',
 					placeholder: 'Ingrese el tiempo de relajación'
 				}
 			},
 			{
 				name: 'Sigma',
 				element: 'input',
-				field: 'agents.SFM.sigma',
+				field: 'agents.1.SFM.sigma',
 				hint: 'Sigma',
 				attributes: {
 					type: 'number',
-					name: 'agents.SFM.sigma',
+					name: 'agents.1.SFM.sigma',
 					placeholder: 'Ingrese el sigma'
 				}
 			},
 			{
 				name: 'Repulsive Force Agents',
 				element: 'input',
-				field: 'agents.SFM.repulsiveForceAgents',
+				field: 'agents.1.SFM.repulsiveForceAgents',
 				hint: 'Fuerza repulsiva de agentes',
 				attributes: {
 					type: 'number',
-					name: 'agents.SFM.repulsiveForceAgents',
+					name: 'agents.1.SFM.repulsiveForceAgents',
 					placeholder: 'Ingrese la fuerza repulsiva de agentes'
 				}
 			},
 			{
 				name: 'Cos Phi',
 				element: 'input',
-				field: 'agents.SFM.cosphi',
+				field: 'agents.1.SFM.cosphi',
 				hint: 'Cos phi',
 				attributes: {
 					type: 'number',
-					name: 'agents.SFM.cosphi',
+					name: 'agents.1.SFM.cosphi',
 					placeholder: 'Ingrese el cos phi'
 				}
 			},
 			{
 				name: 'Emotion Threshold',
 				element: 'input',
-				field: 'agents.panicModel.emotionThreshold',
+				field: 'agents.1.panicModel.emotionThreshold',
 				hint: 'Umbral de emoción',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.emotionThreshold',
+					name: 'agents.1.panicModel.emotionThreshold',
 					placeholder: 'Ingrese el umbral de emoción'
 				}
 			},
 			{
 				name: 'Prob Infected To Recovered',
 				element: 'input',
-				field: 'agents.panicModel.probInfectedToRecovered',
+				field: 'agents.1.panicModel.probInfectedToRecovered',
 				hint: 'Probabilidad de infectado a recuperado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.probInfectedToRecovered',
+					name: 'agents.1.panicModel.probInfectedToRecovered',
 					placeholder: 'Ingrese la probabilidad de infectado a recuperado'
 				}
 			},
 			{
 				name: 'Prob Recovered To Susceptible',
 				element: 'input',
-				field: 'agents.panicModel.probRecoveredToSusceptible',
+				field: 'agents.1.panicModel.probRecoveredToSusceptible',
 				hint: 'Probabilidad de recuperado a susceptible',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.probRecoveredToSusceptible',
+					name: 'agents.1.panicModel.probRecoveredToSusceptible',
 					placeholder: 'Ingrese la probabilidad de recuperado a susceptible'
 				}
 			},
 			{
 				name: 'Mean Time In Infected',
 				element: 'input',
-				field: 'agents.panicModel.meanTimeInInfected',
+				field: 'agents.1.panicModel.meanTimeInInfected',
 				hint: 'Tiempo medio en infectado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.meanTimeInInfected',
+					name: 'agents.1.panicModel.meanTimeInInfected',
 					placeholder: 'Ingrese el tiempo medio en infectado'
 				}
 			},
 			{
 				name: 'Sd Time In Infected',
 				element: 'input',
-				field: 'agents.panicModel.sdTimeInInfected',
+				field: 'agents.1.panicModel.sdTimeInInfected',
 				hint: 'Desviación estándar de tiempo en infectado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.sdTimeInInfected',
+					name: 'agents.1.panicModel.sdTimeInInfected',
 					placeholder: 'Ingrese la desviación estándar de tiempo en infectado'
 				}
 			},
 			{
 				name: 'Mean Time In Recovered',
 				element: 'input',
-				field: 'agents.panicModel.meanTimeInRecovered',
+				field: 'agents.1.panicModel.meanTimeInRecovered',
 				hint: 'Tiempo medio en recuperado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.meanTimeInRecovered',
+					name: 'agents.1.panicModel.meanTimeInRecovered',
 					placeholder: 'Ingrese el tiempo medio en recuperado'
 				}
 			},
 			{
 				name: 'Sd Time In Recovered',
 				element: 'input',
-				field: 'agents.panicModel.sdTimeInRecovered',
+				field: 'agents.1.panicModel.sdTimeInRecovered',
 				hint: 'Desviación estándar de tiempo en recuperado',
 				attributes: {
 					type: 'number',
-					name: 'agents.panicModel.sdTimeInRecovered',
+					name: 'agents.1.panicModel.sdTimeInRecovered',
 					placeholder: 'Ingrese la desviación estándar de tiempo en recuperado'
 				}
 			}

@@ -9,9 +9,11 @@
 
 	const hasDefaultValue = (input: typeof options) =>
 		input.some((option) => option.selected === true);
+
+	const readonly = $$restProps.readonly ? true : false;
 </script>
 
-<select {...$$restProps} bind:value>
+<select class:readonly {...$$restProps} bind:value>
 	{#if placeholder}
 		<option value={null} disabled selected={!hasDefaultValue(options)}>{placeholder}</option>
 	{/if}
@@ -31,5 +33,9 @@
 
 	select option {
 		@apply text-black;
+	}
+
+	.readonly {
+		@apply bg-slate-100 text-slate-400 ring-0 cursor-not-allowed pointer-events-none;
 	}
 </style>
