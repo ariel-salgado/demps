@@ -30,4 +30,8 @@
 	aside > div {
 		@apply h-full flex flex-col justify-between;
 	}
+
+	ul ~ div {
+		@apply flex flex-col gap-y-4;
+	}
 </style>
