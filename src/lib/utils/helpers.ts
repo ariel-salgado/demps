@@ -15,7 +15,7 @@ export const toKebabCase = (input: string | object): string => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
-export const parseObjectByDots = (inputObject: Record<string, string>) => {
+export const unflatten = (inputObject: Record<string, string>) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const outputObject: Record<string, any> = {};
 
@@ -50,6 +50,35 @@ export const parseObjectByDots = (inputObject: Record<string, string>) => {
 	}
 
 	return outputObject;
+};
+
+export const flatten = (obj: object, prefix = '') => {
+	let result = {};
+
+	for (const key in obj) {
+		// eslint-disable-next-line no-prototype-builtins
+		if (obj.hasOwnProperty(key)) {
+			const value = obj[key as keyof typeof obj];
+
+			if (value && typeof value === 'object' && !Array.isArray(value)) {
+				result = {
+					...result,
+					...flatten(value, prefix + key + '.')
+				};
+			} else if (Array.isArray(value)) {
+				for (let i = 0; i < (value as []).length; i++) {
+					result = {
+						...result,
+						...flatten({ [i]: value[i] }, prefix + key + '.')
+					};
+				}
+			} else {
+				result[(prefix + key) as keyof typeof result] = value;
+			}
+		}
+	}
+
+	return result;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

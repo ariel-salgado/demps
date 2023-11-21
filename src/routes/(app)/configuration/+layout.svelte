@@ -1,8 +1,29 @@
 <script lang="ts">
 	import { SEO } from '$lib/components';
-	import { capitalize, toKebabCase } from '$lib/utils/helpers';
+	import { FileUpload } from '$lib/components/ui';
+	import { capitalize, flatten, toKebabCase } from '$lib/utils/helpers';
 	import { SideMenu, Item, SubItem } from '$lib/components/ui/menu';
 	import { configurationFormFields as formFields } from '$lib/utils/form-fields';
+	import { configFormStore } from '$lib/stores';
+
+	let files: FileList | null = null;
+
+	const uploadFile = () => {
+		if (!!files && files.length > 0) {
+			const reader = new FileReader();
+
+			reader.onload = () => {
+				let data = JSON.parse(reader.result as string);
+				data = flatten(data);
+				configFormStore.set(data);
+			};
+
+			const file = files[0] as File;
+			const blob = new Blob([file], { type: file.type });
+
+			reader.readAsText(blob);
+		}
+	};
 
 	const extractKeys = (obj: object) => {
 		const keys: Array<string | object> = Object.keys(obj);
@@ -54,6 +75,9 @@
 		</svelte:fragment>
 		<svelte:fragment slot="actions">
 			<button type="submit" form="configuration-form">Download configuration</button>
+			<FileUpload bind:files accept=".json, .config" onUpload={uploadFile}
+				>Upload Configuration</FileUpload
+			>
 		</svelte:fragment>
 	</SideMenu>
 	<div class="slot">

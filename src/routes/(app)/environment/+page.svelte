@@ -1,33 +1,25 @@
 <script lang="ts">
-	import type { ActionData } from './$types';
-	import type { SubmitFunction } from '@sveltejs/kit';
+	import { GeoJSONStore } from '$lib/stores';
+	import { FileUpload } from '$lib/components/ui';
 	import { Leaflet } from '$lib/components/leaflet';
 	import { Codemirror, Widgets, Clipboard, Download } from '$lib/components/codemirror';
-	import { FileUpload } from '$lib/components/ui';
-	import { GeoJSONStore } from '$lib/stores';
 
-	export let form: ActionData;
+	let files: FileList | null = null;
 
-	$: if (form?.data) {
-		GeoJSONStore.set(form?.data);
-	}
-
-	const uploadFile: SubmitFunction = ({ formData, cancel }) => {
-		const { file } = Object.fromEntries(formData);
-
-		if (file instanceof File) {
+	const uploadFile = () => {
+		if (!!files && files.length > 0) {
 			const reader = new FileReader();
 
 			reader.onload = () => {
 				const data = JSON.parse(reader.result as string);
-
 				GeoJSONStore.set(data);
 			};
 
-			reader.readAsText(file);
-		}
+			const file = files[0] as File;
+			const blob = new Blob([file], { type: file.type });
 
-		cancel();
+			reader.readAsText(blob);
+		}
 	};
 
 	// Viña del Mar, Chile
@@ -46,7 +38,12 @@
 				<Download slot="download" />
 			</Widgets>
 
-			<FileUpload slot="file-upload" accept=".geojson" onSubmit={uploadFile} />
+			<div
+				class="p-4 outline outline-1 outline-slate-300 rounded-t-md bg-primary-50"
+				slot="file-upload"
+			>
+				<FileUpload bind:files accept=".geojson" onUpload={uploadFile}>Upload GeoJSON</FileUpload>
+			</div>
 		</Codemirror>
 	</div>
 </div>

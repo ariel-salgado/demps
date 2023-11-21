@@ -12,13 +12,12 @@
 	} from '$lib/components/ui/form';
 	import { configurationFormFields as formFields } from '$lib/utils/form-fields';
 	import { capitalize, stringify, toKebabCase } from '$lib/utils/helpers';
-
-	let data = {};
+	import { configFormStore } from '$lib/stores';
 
 	const handleSubmit: SubmitFunction = () => {
 		return async ({ result }) => {
 			// @ts-expect-error - Bad type definition
-			const parsedData = JSON.stringify(result.data, null, 2);
+			const parsedData = stringify(result.data);
 
 			const blob = new Blob([parsedData], { type: 'application/json' });
 			const url = URL.createObjectURL(blob);
@@ -46,13 +45,17 @@
 			{#if item.element === 'input'}
 				<FormGroup>
 					<Label for={item.field}>{item.name}</Label>
-					<Input {...item.attributes} bind:value={data[item.field]} />
+					<Input {...item.attributes} bind:value={$configFormStore[item.field]} />
 					<Hint error={false}>{item.hint}</Hint>
 				</FormGroup>
 			{:else if item.element === 'select'}
 				<FormGroup>
 					<Label for={item.field}>{item.name}</Label>
-					<Select {...item.attributes} options={item.options} bind:value={data[item.field]} />
+					<Select
+						{...item.attributes}
+						options={item.options}
+						bind:value={$configFormStore[item.field]}
+					/>
 					<Hint error={false}>{item.hint}</Hint>
 				</FormGroup>
 			{:else if typeof value[key] === 'object'}
@@ -61,7 +64,7 @@
 					{#if nestedItem.element === 'input'}
 						<FormGroup>
 							<Label for={nestedItem.field}>{nestedItem.name}</Label>
-							<Input {...nestedItem.attributes} bind:value={data[nestedItem.field]} />
+							<Input {...nestedItem.attributes} bind:value={$configFormStore[nestedItem.field]} />
 							<Hint error={false}>{nestedItem.hint}</Hint>
 						</FormGroup>
 					{:else if nestedItem.element === 'select'}
@@ -70,7 +73,7 @@
 							<Select
 								{...nestedItem.attributes}
 								options={nestedItem.options}
-								bind:value={data[nestedItem.field]}
+								bind:value={$configFormStore[nestedItem.field]}
 							/>
 							<Hint error={false}>{nestedItem.hint}</Hint>
 						</FormGroup>
