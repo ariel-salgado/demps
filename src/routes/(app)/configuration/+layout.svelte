@@ -31,25 +31,30 @@
 
 <div class="wrapper">
 	<SideMenu title="Configuration">
-		{#each asideItems as item, index}
-			<Item
-				title={capitalize(item)}
-				href={`#${toKebabCase(item)}`}
-				on:click={() => setSelectedItem(`${index}`)}
-				selected={String(selected).split('-')[0] === `${index}`}
-			>
-				{#if typeof item === 'object'}
-					{#each Object.values(item)[0] as subItem, subIndex}
-						<SubItem
-							title={capitalize(subItem)}
-							href={`#${toKebabCase(subItem)}`}
-							on:click={() => setSelectedItem(`${index}-${subIndex}`)}
-							selected={selected === `${index}-${subIndex}`}
-						/>
-					{/each}
-				{/if}
-			</Item>
-		{/each}
+		<svelte:fragment slot="list">
+			{#each asideItems as item, index}
+				<Item
+					title={capitalize(item)}
+					href={`#${toKebabCase(item)}`}
+					on:click={() => setSelectedItem(`${index}`)}
+					selected={String(selected).split('-')[0] === `${index}`}
+				>
+					{#if typeof item === 'object'}
+						{#each Object.values(item)[0] as subItem, subIndex}
+							<SubItem
+								title={capitalize(subItem)}
+								href={`#${toKebabCase(subItem)}`}
+								on:click={() => setSelectedItem(`${index}-${subIndex}`)}
+								selected={selected === `${index}-${subIndex}`}
+							/>
+						{/each}
+					{/if}
+				</Item>
+			{/each}
+		</svelte:fragment>
+		<svelte:fragment slot="actions">
+			<button type="submit" form="configuration-form">Download configuration</button>
+		</svelte:fragment>
 	</SideMenu>
 	<div class="slot">
 		<slot />
@@ -63,5 +68,9 @@
 
 	.slot {
 		@apply w-full;
+	}
+
+	button {
+		@apply w-full h-10 bg-primary-600 px-6 py-2 text-white rounded-md hover:bg-primary-800 focus-visible:bg-primary-800 transition-colors duration-300;
 	}
 </style>

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import {
 		FormTitle,
 		FormSubtitle,
@@ -9,25 +11,48 @@
 		Hint
 	} from '$lib/components/ui/form';
 	import { configurationFormFields as formFields } from '$lib/utils/form-fields';
-	import { capitalize, toKebabCase } from '$lib/utils/helpers';
+	import { capitalize, stringify, toKebabCase } from '$lib/utils/helpers';
 
-	let formData = {};
+	let data = {};
+
+	const handleSubmit: SubmitFunction = () => {
+		return async ({ result }) => {
+			// @ts-expect-error - Bad type definition
+			const parsedData = JSON.stringify(result.data, null, 2);
+
+			const blob = new Blob([parsedData], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'config.json';
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		};
+	};
 </script>
 
-<form>
+<form
+	id="configuration-form"
+	method="POST"
+	action="?/download"
+	data-sveltekit-keepfocus
+	use:enhance={handleSubmit}
+>
 	{#each Object.entries(formFields) as [title, value]}
 		<FormTitle class="col-span-2" id={toKebabCase(title)}>{capitalize(title)}</FormTitle>
 		{#each Object.entries(value) as [key, item]}
 			{#if item.element === 'input'}
 				<FormGroup>
 					<Label for={item.field}>{item.name}</Label>
-					<Input {...item.attributes} bind:value={formData[item.field]} />
+					<Input {...item.attributes} bind:value={data[item.field]} />
 					<Hint error={false}>{item.hint}</Hint>
 				</FormGroup>
 			{:else if item.element === 'select'}
 				<FormGroup>
 					<Label for={item.field}>{item.name}</Label>
-					<Select {...item.attributes} options={item.options} bind:value={formData[item.field]} />
+					<Select {...item.attributes} options={item.options} bind:value={data[item.field]} />
 					<Hint error={false}>{item.hint}</Hint>
 				</FormGroup>
 			{:else if typeof value[key] === 'object'}
@@ -36,7 +61,7 @@
 					{#if nestedItem.element === 'input'}
 						<FormGroup>
 							<Label for={nestedItem.field}>{nestedItem.name}</Label>
-							<Input {...nestedItem.attributes} bind:value={formData[nestedItem.field]} />
+							<Input {...nestedItem.attributes} bind:value={data[nestedItem.field]} />
 							<Hint error={false}>{nestedItem.hint}</Hint>
 						</FormGroup>
 					{:else if nestedItem.element === 'select'}
@@ -45,7 +70,7 @@
 							<Select
 								{...nestedItem.attributes}
 								options={nestedItem.options}
-								bind:value={formData[nestedItem.field]}
+								bind:value={data[nestedItem.field]}
 							/>
 							<Hint error={false}>{nestedItem.hint}</Hint>
 						</FormGroup>

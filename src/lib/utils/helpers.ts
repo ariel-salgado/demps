@@ -5,39 +5,46 @@ export const capitalize = (input: string | object): string => {
 	return '';
 };
 
-export const spaceCamelCase = (str: string) => {
-	const resultado = str.replace(/([a-z])([A-Z])/g, '$1 $2');
-
-	return capitalize(resultado);
-};
-
 export const toKebabCase = (input: string | object): string => {
 	if (typeof input === 'string') return input.toLowerCase().replace(/\s+/g, '-');
 	if (typeof input === 'object' && Object.keys(input).length > 0)
 		return toKebabCase(Object.keys(input)[0] as string);
+	return '';
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
-export const parseObjectByDots = (inputObject: object) => {
-	const outputObject = {};
+export const parseObjectByDots = (inputObject: Record<string, string>) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const outputObject: Record<string, any> = {};
 
 	for (const key in inputObject) {
 		const keys = key.split('.');
 		let currentObj = outputObject;
 
 		for (let i = 0; i < keys.length; i++) {
-			const k = keys[i];
+			const k = keys[i] as string;
 
 			if (i === keys.length - 1) {
-				// @ts-expect-error Object is any
 				currentObj[k] = inputObject[key];
 			} else {
-				// @ts-expect-error Object is any
-				currentObj[k] = currentObj[k] || {};
-				// @ts-expect-error Object is any
-				currentObj = currentObj[k];
+				const nextKey = keys[i + 1] as string;
+				const isArrayKey =
+					/^\d+$/.test(nextKey) || (nextKey.startsWith('[') && nextKey.endsWith(']'));
+
+				if (isArrayKey) {
+					// Handle numeric keys
+					const numericKey = parseInt(nextKey.replace(/[[\]]/g, ''), 10);
+					currentObj[k] = currentObj[k] || [];
+					currentObj[k][numericKey] = currentObj[k][numericKey] || {};
+					currentObj = currentObj[k][numericKey];
+					i++; // Skip the numeric key in the loop
+				} else {
+					currentObj[k] = currentObj[k] || {};
+
+					currentObj = currentObj[k];
+				}
 			}
 		}
 	}
