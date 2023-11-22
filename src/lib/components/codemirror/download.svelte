@@ -2,7 +2,7 @@
 	import { get } from 'svelte/store';
 	import { GeoJSONStore } from '$lib/stores';
 
-	let URLdata: string;
+	let URLdata: string | null = $state(null);
 
 	const downloadGeoJSON = () => {
 		const data = get(GeoJSONStore);
@@ -16,14 +16,19 @@
 	};
 </script>
 
-<a href={URLdata} download={'data.geojson'} on:click={downloadGeoJSON}>
+<a
+	class="block p-1 rounded-md bg-primary-50 hover:bg-primary-100 focus-within:bg-primary-100 outline outline-1 outline-slate-300 transition-colors duration-300"
+	href={URLdata}
+	download={'data.geojson'}
+	on:click={downloadGeoJSON}
+>
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		fill="none"
 		viewBox="0 0 24 24"
 		stroke-width="1.5"
 		stroke="currentColor"
-		class="download-icon"
+		class="w-5 h-5 stroke-primary-800"
 	>
 		<path
 			stroke-linecap="round"
@@ -32,13 +37,3 @@
 		/>
 	</svg>
 </a>
-
-<style lang="postcss">
-	a {
-		@apply block p-1 rounded-md bg-primary-50 hover:bg-primary-100 focus-within:bg-primary-100 outline outline-1 outline-slate-300 transition-colors duration-300;
-	}
-
-	.download-icon {
-		@apply w-5 h-5 stroke-primary-800;
-	}
-</style>

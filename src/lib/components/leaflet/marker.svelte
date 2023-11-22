@@ -1,16 +1,29 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { key, type MapContext } from '.';
+	import type { Action } from 'svelte/action';
+	import { key, type MapContext } from '$lib/components/leaflet';
 
-	export let lat: number;
-	export let lon: number;
-	export let label: string;
+	interface Props {
+		center: L.LatLngExpression;
+	}
 
-	const { getLeaflet, getMap } = getContext<MapContext>(key);
+	let { center } = $props<Props>();
 
-	const leaflet = getLeaflet();
-	const map = getMap();
+	const { getMap, getLeaflet } = getContext<MapContext>(key);
 
-	const marker = leaflet.marker([lat, lon]).addTo(map);
-	marker.bindPopup(label);
+	let map = getMap();
+	let L = getLeaflet();
+
+	const initMarker: Action = () => {
+		const marker = L.marker(center);
+		map.addLayer(marker);
+
+		return {
+			destroy: () => {
+				marker.remove();
+			}
+		};
+	};
 </script>
+
+<div use:initMarker />

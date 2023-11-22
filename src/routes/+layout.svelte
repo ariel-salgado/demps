@@ -20,16 +20,10 @@
 
 <SEO title="DEMPS" description="DEMPS" />
 
-<div>
+<div class="w-full min-h-full grid grid-rows-[auto_1fr]">
 	<Header />
 
 	<main>
 		<slot />
 	</main>
 </div>
-
-<style lang="postcss">
-	div {
-		@apply w-full min-h-full grid grid-rows-[auto_1fr];
-	}
-</style>

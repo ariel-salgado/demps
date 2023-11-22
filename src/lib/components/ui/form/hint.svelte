@@ -1,16 +1,16 @@
 <script lang="ts">
-	export let error: boolean = false;
+	interface Props {
+		error: boolean;
+	}
+
+	let { error = false } = $props<Props>();
 </script>
 
-<small class:error>
+<small class="text-slate-600 italic p-1" class:error>
 	<slot />
 </small>
 
 <style lang="postcss">
-	small {
-		@apply text-slate-600 italic p-1;
-	}
-
 	.error {
 		@apply text-red-500;
 	}

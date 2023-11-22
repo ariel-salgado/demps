@@ -6,46 +6,33 @@
 	];
 </script>
 
-<header>
-	<span class="logo">
+<header
+	class="sticky top-0 w-full h-20 flex justify-around items-center bg-primary-50 shadow-sm z-30"
+>
+	<span
+		class="text-3xl font-medium hover:text-primary-600 focus-within:text-primary-600 hover:underline focus-within:underline underline-offset-2 transition-colors duration-300"
+	>
 		<a href="/">DEMPS</a>
 	</span>
 	<nav>
-		<ul>
+		<ul class="flex items-center gap-x-6">
 			{#each navItems as { name, href }}
-				<li>
-					<a {href}>{name}</a>
+				<li
+					class="hover:text-primary-600 focus-within:text-primary-600 transition-colors duration-300"
+				>
+					<a class="w-full block hover:underline focus-within:underline underline-offset-2" {href}
+						>{name}</a
+					>
 				</li>
 			{/each}
-			<li>
-				<button>Run</button>
+			<li
+				class="hover:text-primary-600 focus-within:text-primary-600 transition-colors duration-300"
+			>
+				<button
+					class="h-10 bg-primary-600 px-6 py-2 text-white rounded-md hover:bg-primary-800 focus-visible:bg-primary-800 transition-colors duration-300"
+					>Run</button
+				>
 			</li>
 		</ul>
 	</nav>
 </header>
-
-<style lang="postcss">
-	header {
-		@apply sticky top-0 w-full h-20 flex justify-around items-center bg-primary-50 shadow-sm z-30;
-	}
-
-	.logo {
-		@apply text-3xl font-medium hover:text-primary-600 focus-within:text-primary-600 hover:underline focus-within:underline underline-offset-2 transition-colors duration-300;
-	}
-
-	ul {
-		@apply flex items-center gap-x-6;
-	}
-
-	li {
-		@apply hover:text-primary-600 focus-within:text-primary-600 transition-colors duration-300;
-	}
-
-	li > a {
-		@apply w-full block hover:underline focus-within:underline underline-offset-2;
-	}
-
-	button {
-		@apply h-10 bg-primary-600 px-6 py-2 text-white rounded-md hover:bg-primary-800 focus-visible:bg-primary-800 transition-colors duration-300;
-	}
-</style>

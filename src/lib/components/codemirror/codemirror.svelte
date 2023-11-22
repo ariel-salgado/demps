@@ -1,15 +1,18 @@
 <script lang="ts">
-	import type { Action } from 'svelte/action';
 	import { setContext } from 'svelte';
+	import type { Action } from 'svelte/action';
 	import { EditorView } from '@codemirror/view';
-	import { EditorState } from '@codemirror/state';
-	import { extensions } from '$lib/components/codemirror';
-	import { key } from '$lib/components/codemirror';
 	import { stringify } from '$lib/utils/helpers';
+	import { EditorState } from '@codemirror/state';
+	import { key } from '$lib/components/codemirror';
+	import { extensions } from '$lib/components/codemirror';
 
-	export let source: GeoJSON.FeatureCollection;
+	interface Props {
+		source: GeoJSON.FeatureCollection;
+	}
 
-	let editor: EditorView | undefined;
+	let { source } = $props<Props>();
+	let editor: EditorView | undefined = $state(undefined);
 
 	setContext(key, {
 		getEditor: () => editor
@@ -47,8 +50,8 @@
 	};
 </script>
 
-<div class="map-container">
-	<div class="map" use:initEditor={source}>
+<div class="h-full grid grid-rows-[1fr_auto]">
+	<div class="relative overflow-y-scroll text-sm" use:initEditor={source}>
 		{#if editor}
 			<slot name="widgets" />
 		{/if}
@@ -57,12 +60,3 @@
 		<slot name="file-upload" />
 	{/if}
 </div>
-
-<style lang="postcss">
-	.map-container {
-		@apply h-full grid grid-rows-[1fr_auto];
-	}
-	.map-container > .map {
-		@apply relative overflow-y-scroll text-sm;
-	}
-</style>

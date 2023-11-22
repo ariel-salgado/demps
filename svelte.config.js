@@ -8,6 +8,9 @@ const config = {
 		adapter: adapter({
 			precompress: true
 		})
+	},
+	compilerOptions: {
+		runes: true
 	}
 };
 

@@ -1,6 +1,12 @@
 <script lang="ts">
-	export let type: 'text' | 'number';
-	export let value: string | number | undefined;
+	import type { HTMLInputAttributes } from 'svelte/elements';
+
+	interface Props extends HTMLInputAttributes {
+		type?: 'text' | 'number';
+		value?: string | number;
+	}
+
+	let { type, value, ...rest } = $props<Props>();
 
 	const typeAction = (element: HTMLInputElement) => {
 		if (value) element.value = value.toString();
@@ -22,13 +28,14 @@
 	};
 </script>
 
-<input {...$$restProps} bind:value use:typeAction />
+<input
+	class="block w-full h-10 border border-slate-300 rounded-md px-3 py-2 shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-transparent"
+	{...rest}
+	bind:value
+	use:typeAction
+/>
 
 <style lang="postcss">
-	input {
-		@apply block w-full h-10 border border-slate-300 rounded-md px-3 py-2 shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-transparent;
-	}
-
 	input:read-only {
 		@apply bg-slate-100 text-slate-400 ring-0 cursor-not-allowed;
 	}

@@ -28,7 +28,7 @@ export type TAttributes = {
 	readonly?: boolean;
 };
 
-type TFormElement = TElement & { attributes: TAttributes };
+export type TFormElement = TElement & { attributes: TAttributes };
 
 type TConfiguration = Record<string, Array<TFormElement> | Record<string, Array<TFormElement>>>;
 

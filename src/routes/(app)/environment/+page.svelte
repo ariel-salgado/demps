@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { GeoJSONStore } from '$lib/stores';
 	import { FileUpload } from '$lib/components/ui';
-	import { Leaflet } from '$lib/components/leaflet';
 	import { Codemirror, Widgets, Clipboard, Download } from '$lib/components/codemirror';
+	import { Leaflet, LeafletDraw, LeafletGeosearch, Marker } from '$lib/components/leaflet';
 
-	let files: FileList | null = null;
+	let files: FileList | null = $state(null);
 
 	const uploadFile = () => {
 		if (!!files && files.length > 0) {
@@ -23,13 +23,17 @@
 	};
 
 	// Viña del Mar, Chile
-	const initialView: L.LatLngExpression = [-33.015348, -71.550499];
+	const center: L.LatLngExpression = [-33.015348, -71.550499];
 	const zoom: number = 15;
 </script>
 
 <div class="grid grid-cols-3">
 	<div class="col-span-2">
-		<Leaflet view={initialView} {zoom} />
+		<Leaflet {center} {zoom}>
+			<LeafletDraw />
+			<LeafletGeosearch />
+			<Marker {center} />
+		</Leaflet>
 	</div>
 	<div class="h-[calc(100vh-5rem)] col-span-1">
 		<Codemirror source={$GeoJSONStore}>

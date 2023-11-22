@@ -1,103 +1,53 @@
 <script lang="ts">
-	import { onMount, setContext } from 'svelte';
-	import { key } from './key';
-
-	import type L from 'leaflet';
-	import type D from 'leaflet-draw';
-	import type S from 'leaflet-geosearch';
-
+	import * as L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
-	import 'leaflet-draw/dist/leaflet.draw.css';
-	import 'leaflet-geosearch/dist/geosearch.css';
+	import { setContext } from 'svelte';
+	import type { Action } from 'svelte/action';
+	import { key } from '$lib/components/leaflet';
 
-	export let view: L.LatLngExpression;
-	export let zoom: number;
+	interface Props {
+		center: L.LatLngExpression;
+		zoom: number;
+	}
 
-	let leaflet: typeof L;
-	let leaflet_draw: typeof D;
-	let leaflet_path_drag: any;
-	let leaflet_geosearch: typeof S;
+	let { center, zoom } = $props<Props>();
 
-	let map: L.Map;
-	let draw: L.Control.Draw;
-	let features: L.FeatureGroup;
-	let mapContainer: HTMLDivElement;
+	let map: L.Map | undefined = $state(undefined);
 
 	setContext(key, {
-		getLeaflet: () => leaflet,
-		getMap: () => map
+		getMap: () => map,
+		getLeaflet: () => L
 	});
 
-	onMount(async () => {
-		leaflet = await import('leaflet');
-		leaflet_draw = await import('leaflet-draw');
-		// @ts-expect-error - no types for leaflet-path-drag
-		leaflet_path_drag = await import('leaflet-path-drag');
-		leaflet_geosearch = await import('leaflet-geosearch');
+	const rasterLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution:
+			'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+	});
 
-		map = leaflet.map(mapContainer).setView(view, zoom);
-		leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-		features = new leaflet.FeatureGroup().addTo(map);
-		draw = new leaflet.Control.Draw({
-			draw: {
-				marker: false,
-				polyline: false,
-				rectangle: false,
-				circlemarker: false
-			},
-			edit: {
-				featureGroup: features
-			}
-		}).addTo(map);
+	const mapOptions: L.MapOptions = {
+		center: center,
+		layers: [rasterLayer],
+		zoom: zoom
+	};
 
-		// @ts-expect-error - no types for leaflet-geosearch
-		const search = new leaflet_geosearch.GeoSearchControl({
-			provider: new leaflet_geosearch.OpenStreetMapProvider(),
-			style: 'bar',
-			searchLabel: 'Buscar una dirección'
-		}).addTo(map);
+	const initMap: Action<HTMLDivElement> = (mapContainer: HTMLDivElement) => {
+		map = L.map(mapContainer, mapOptions);
 
-		map.on('draw:created', (e: L.LeafletEvent) => {
-			const layer = e.layer;
-
-			if (layer instanceof leaflet.Polygon) {
-				// @ts-expect-error - bad types for leaflet
-				const coordinates = [...layer._latlngs][0];
-				const polygon = new leaflet.Polygon([coordinates], {
-					// @ts-expect-error - no types for leaflet-path-drag
-					draggable: true
-				});
-
-				features.addLayer(polygon);
-			}
-			if (layer instanceof leaflet.Circle) {
-				// @ts-expect-error - bad types for leaflet
-				const coordinates = layer._latlng;
-				// @ts-expect-error - bad types for leaflet
-				const radius = layer._mRadius;
-				const circle = new leaflet.Circle(coordinates, radius, {
-					// @ts-expect-error - no types for leaflet-path-drag
-					draggable: true
-				});
-
-				features.addLayer(circle);
-			}
+		map.whenReady(() => {
+			map?.invalidateSize();
 		});
-	});
+
+		return {
+			destroy: () => {
+				map?.remove();
+				map = undefined;
+			}
+		};
+	};
 </script>
 
-<div class="w-full h-full" bind:this={mapContainer}>
-	{#if leaflet && mapContainer}
+<div class="w-full h-full" use:initMap>
+	{#if map}
 		<slot />
 	{/if}
 </div>
-
-<style lang="postcss">
-	:global(.leaflet-marker-icon) {
-		@apply rounded-full;
-	}
-
-	:global(.leaflet-geosearch-bar button) {
-		@apply text-lg;
-	}
-</style>

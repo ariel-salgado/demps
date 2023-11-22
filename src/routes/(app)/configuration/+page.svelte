@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { configFormStore } from '$lib/stores';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import { capitalize, stringify, toKebabCase } from '$lib/utils/helpers';
+	import { configurationFormFields as formFields, type TFormElement } from '$lib/utils/form-fields';
 	import {
 		FormTitle,
 		FormSubtitle,
@@ -10,9 +13,6 @@
 		Label,
 		Hint
 	} from '$lib/components/ui/form';
-	import { configurationFormFields as formFields } from '$lib/utils/form-fields';
-	import { capitalize, stringify, toKebabCase } from '$lib/utils/helpers';
-	import { configFormStore } from '$lib/stores';
 
 	const handleSubmit: SubmitFunction = () => {
 		return async ({ result }) => {
@@ -32,7 +32,28 @@
 	};
 </script>
 
+{#snippet formElement(item: TFormElement)}
+	{#if item.element === 'input'}
+	<FormGroup>
+		<Label for={item.field}>{item.name}</Label>
+		<Input {...item.attributes} bind:value={$configFormStore[item.field]} />
+		<Hint error={false}>{item.hint}</Hint>
+	</FormGroup>
+	{:else if item.element === 'select'}
+	<FormGroup>
+		<Label for={item.field}>{item.name}</Label>
+		<Select
+			{...item.attributes}
+			options={item.options}
+			bind:value={$configFormStore[item.field]}
+		/>
+		<Hint error={false}>{item.hint}</Hint>
+	</FormGroup>
+	{/if}
+{/snippet}
+
 <form
+	class="w-full grid grid-cols-2 gap-y-2 px-14 pt-4 pb-20"
 	id="configuration-form"
 	method="POST"
 	action="?/download"
@@ -42,50 +63,13 @@
 	{#each Object.entries(formFields) as [title, value]}
 		<FormTitle class="col-span-2" id={toKebabCase(title)}>{capitalize(title)}</FormTitle>
 		{#each Object.entries(value) as [key, item]}
-			{#if item.element === 'input'}
-				<FormGroup>
-					<Label for={item.field}>{item.name}</Label>
-					<Input {...item.attributes} bind:value={$configFormStore[item.field]} />
-					<Hint error={false}>{item.hint}</Hint>
-				</FormGroup>
-			{:else if item.element === 'select'}
-				<FormGroup>
-					<Label for={item.field}>{item.name}</Label>
-					<Select
-						{...item.attributes}
-						options={item.options}
-						bind:value={$configFormStore[item.field]}
-					/>
-					<Hint error={false}>{item.hint}</Hint>
-				</FormGroup>
-			{:else if typeof value[key] === 'object'}
+			{@render formElement(item)}
+			{#if typeof value[key as keyof typeof value] === 'object' && item.element !== 'select' && item.element !== 'input'}
 				<FormSubtitle class="col-span-2" id={toKebabCase(key)}>{capitalize(key)}</FormSubtitle>
-				{#each Object.values(value[key]) as nestedItem}
-					{#if nestedItem.element === 'input'}
-						<FormGroup>
-							<Label for={nestedItem.field}>{nestedItem.name}</Label>
-							<Input {...nestedItem.attributes} bind:value={$configFormStore[nestedItem.field]} />
-							<Hint error={false}>{nestedItem.hint}</Hint>
-						</FormGroup>
-					{:else if nestedItem.element === 'select'}
-						<FormGroup>
-							<Label for={nestedItem.field}>{nestedItem.name}</Label>
-							<Select
-								{...nestedItem.attributes}
-								options={nestedItem.options}
-								bind:value={$configFormStore[nestedItem.field]}
-							/>
-							<Hint error={false}>{nestedItem.hint}</Hint>
-						</FormGroup>
-					{/if}
+				{#each Object.values(value[key as keyof typeof value]) as nestedItem}
+					{@render formElement(nestedItem)}
 				{/each}
 			{/if}
 		{/each}
 	{/each}
 </form>
-
-<style lang="postcss">
-	form {
-		@apply w-full grid grid-cols-2 gap-y-2 px-14 pt-4 pb-20;
-	}
-</style>

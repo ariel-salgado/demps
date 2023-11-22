@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { EditorContext } from '$lib/components/codemirror';
 	import { key } from '$lib/components/codemirror';
+	import type { EditorContext } from '$lib/components/codemirror';
 
-	let copied: boolean = false;
+	let copied: boolean = $state(false);
 
 	const { getEditor } = getContext<EditorContext>(key);
 	const editor = getEditor();
@@ -20,7 +20,10 @@
 	};
 </script>
 
-<button class="clipboard" on:click={copyToClipboard}>
+<button
+	class="p-1 rounded-md bg-primary-50 hover:bg-primary-100 focus-within:bg-primary-100 outline outline-1 outline-slate-300 transition-colors duration-300"
+	on:click={copyToClipboard}
+>
 	{#if !copied}
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +31,7 @@
 			viewBox="0 0 24 24"
 			stroke-width="1.5"
 			stroke="currentColor"
-			class="clipboard-icon"
+			class="w-5 h-5 stroke-primary-800"
 		>
 			<path
 				stroke-linecap="round"
@@ -43,7 +46,7 @@
 			viewBox="0 0 24 24"
 			stroke-width="1.5"
 			stroke="currentColor"
-			class="clipboard-icon"
+			class="w-5 h-5 stroke-primary-800"
 		>
 			<path
 				stroke-linecap="round"
@@ -53,13 +56,3 @@
 		</svg>
 	{/if}
 </button>
-
-<style lang="postcss">
-	.clipboard {
-		@apply p-1 rounded-md bg-primary-50 hover:bg-primary-100 focus-within:bg-primary-100 outline outline-1 outline-slate-300 transition-colors duration-300;
-	}
-
-	.clipboard .clipboard-icon {
-		@apply w-5 h-5 stroke-primary-800;
-	}
-</style>
