@@ -53,7 +53,7 @@
 {/snippet}
 
 <form
-	class="w-full grid grid-cols-2 gap-y-2 px-14 pt-4 pb-20"
+	class="w-full grid grid-cols-2 gap-y-2 px-14 pt-12 pb-20"
 	id="configuration-form"
 	method="POST"
 	action="?/download"
