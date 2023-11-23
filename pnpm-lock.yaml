@@ -39,8 +39,8 @@ devDependencies:
     specifier: ^1.9.8
     version: 1.9.8
   '@types/leaflet-draw':
-    specifier: ^1.0.10
-    version: 1.0.10
+    specifier: ^1.0.11
+    version: 1.0.11
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.12.0
     version: 6.12.0(@typescript-eslint/parser@6.12.0)(eslint@8.54.0)(typescript@5.3.2)
@@ -93,8 +93,8 @@ devDependencies:
     specifier: 5.0.0-next.9
     version: 5.0.0-next.9
   svelte-check:
-    specifier: ^3.6.0
-    version: 3.6.0(postcss-load-config@4.0.2)(postcss@8.4.31)(svelte@5.0.0-next.9)
+    specifier: ^3.6.1
+    version: 3.6.1(postcss-load-config@4.0.2)(postcss@8.4.31)(svelte@5.0.0-next.9)
   tailwindcss:
     specifier: ^3.3.5
     version: 3.3.5
@@ -724,7 +724,7 @@ packages:
       svelte: ^3.54.0 || ^4.0.0-next.0 || ^5.0.0-next.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.5.2(svelte@5.0.0-next.9)(vite@5.0.2)
+      '@sveltejs/vite-plugin-svelte': 2.5.3(svelte@5.0.0-next.9)(vite@5.0.2)
       '@types/cookie': 0.5.4
       cookie: 0.5.0
       devalue: 4.3.2
@@ -743,7 +743,7 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte-inspector@1.0.4(@sveltejs/vite-plugin-svelte@2.5.2)(svelte@5.0.0-next.9)(vite@5.0.2):
+  /@sveltejs/vite-plugin-svelte-inspector@1.0.4(@sveltejs/vite-plugin-svelte@2.5.3)(svelte@5.0.0-next.9)(vite@5.0.2):
     resolution: {integrity: sha512-zjiuZ3yydBtwpF3bj0kQNV0YXe+iKE545QGZVTaylW3eAzFr+pJ/cwK8lZEaRp4JtaJXhD5DyWAV4AxLh6DgaQ==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
@@ -751,7 +751,7 @@ packages:
       svelte: ^3.54.0 || ^4.0.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.5.2(svelte@5.0.0-next.9)(vite@5.0.2)
+      '@sveltejs/vite-plugin-svelte': 2.5.3(svelte@5.0.0-next.9)(vite@5.0.2)
       debug: 4.3.4
       svelte: 5.0.0-next.9
       vite: 5.0.2
@@ -759,14 +759,14 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte@2.5.2(svelte@5.0.0-next.9)(vite@5.0.2):
-    resolution: {integrity: sha512-Dfy0Rbl+IctOVfJvWGxrX/3m6vxPLH8o0x+8FA5QEyMUQMo4kGOVIojjryU7YomBAexOTAuYf1RT7809yDziaA==}
+  /@sveltejs/vite-plugin-svelte@2.5.3(svelte@5.0.0-next.9)(vite@5.0.2):
+    resolution: {integrity: sha512-erhNtXxE5/6xGZz/M9eXsmI7Pxa6MS7jyTy06zN3Ck++ldrppOnOlJwHHTsMC7DHDQdgUp4NAc4cDNQ9eGdB/w==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
       svelte: ^3.54.0 || ^4.0.0 || ^5.0.0-next.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 1.0.4(@sveltejs/vite-plugin-svelte@2.5.2)(svelte@5.0.0-next.9)(vite@5.0.2)
+      '@sveltejs/vite-plugin-svelte-inspector': 1.0.4(@sveltejs/vite-plugin-svelte@2.5.3)(svelte@5.0.0-next.9)(vite@5.0.2)
       debug: 4.3.4
       deepmerge: 4.3.1
       kleur: 4.1.5
@@ -800,8 +800,8 @@ packages:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: true
 
-  /@types/leaflet-draw@1.0.10:
-    resolution: {integrity: sha512-1tV0QW5qAcTCmuZZwH19qngHayLxTE9vyDGicfMoASnrFf0oo3+lFOnn/ZRKSskyHKB7T8s6DTk7Henaq4ueyg==}
+  /@types/leaflet-draw@1.0.11:
+    resolution: {integrity: sha512-dyedtNm3aSmnpi6FM6VSl28cQuvP+MD7pgpXyO3Q1ZOCvrJKmzaDq0P3YZTnnBs61fQCKSnNYmbvCkDgFT9FHQ==}
     dependencies:
       '@types/leaflet': 1.9.8
     dev: true
@@ -1041,7 +1041,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.22.1
-      caniuse-lite: 1.0.30001563
+      caniuse-lite: 1.0.30001564
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -1093,8 +1093,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001563
-      electron-to-chromium: 1.4.590
+      caniuse-lite: 1.0.30001564
+      electron-to-chromium: 1.4.592
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
     dev: true
@@ -1122,13 +1122,13 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.22.1
-      caniuse-lite: 1.0.30001563
+      caniuse-lite: 1.0.30001564
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
-  /caniuse-lite@1.0.30001563:
-    resolution: {integrity: sha512-na2WUmOxnwIZtwnFI2CZ/3er0wdNzU7hN+cPYz/z2ajHThnkWjNBOpEPP4n+4r2WPM847JaMotaJE3bnfzjyKw==}
+  /caniuse-lite@1.0.30001564:
+    resolution: {integrity: sha512-DqAOf+rhof+6GVx1y+xzbFPeOumfQnhYzVnZD6LAXijR77yPtm9mfOcqOnT3mpnJiZVT+kwLAFnRlZcIz+c6bg==}
     dev: true
 
   /chalk@4.1.2:
@@ -1414,8 +1414,8 @@ packages:
       domhandler: 5.0.3
     dev: true
 
-  /electron-to-chromium@1.4.590:
-    resolution: {integrity: sha512-hohItzsQcG7/FBsviCYMtQwUSWvVF7NVqPOnJCErWsAshsP/CR2LAXdmq276RbESNdhxiAq5/vRo1g2pxGXVww==}
+  /electron-to-chromium@1.4.592:
+    resolution: {integrity: sha512-D3NOkROIlF+d5ixnz7pAf3Lu/AuWpd6AYgI9O67GQXMXTcCP1gJQRotOq35eQy5Sb4hez33XH1YdTtILA7Udww==}
     dev: true
 
   /entities@4.5.0:
@@ -1594,8 +1594,8 @@ packages:
       estraverse: 5.3.0
     dev: true
 
-  /esrap@1.1.1:
-    resolution: {integrity: sha512-PIgHGLP8VAG4Iao4CbOc+/5tgn+TpzGhyAuVCR5qgcFgPOUk9Ds61bH7hD2lbjDuu86lagofx3lVrRFWcIF+Gg==}
+  /esrap@1.2.0:
+    resolution: {integrity: sha512-ZWd00MnkN45Hcj+nIV5FPiZk6Nx7RDUL8G0KGp1cg1xSKXOEac0IhMQdsrGswXB1O0fMzH+MXq288Lt0Abpg/Q==}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
       '@types/estree': 1.0.5
@@ -2835,8 +2835,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check@3.6.0(postcss-load-config@4.0.2)(postcss@8.4.31)(svelte@5.0.0-next.9):
-    resolution: {integrity: sha512-8VfqhfuRJ1sKW+o8isH2kPi0RhjXH1nNsIbCFGyoUHG+ZxVxHYRKcb+S8eaL/1tyj3VGvWYx3Y5+oCUsJgnzcw==}
+  /svelte-check@3.6.1(postcss-load-config@4.0.2)(postcss@8.4.31)(svelte@5.0.0-next.9):
+    resolution: {integrity: sha512-v+mmXKp+hZ+mZ/n9MQpAe+0q/GhRKXmhQOkWYAdRozXRkPiuLOdhsjp9KtNBpP0TRqvvrB0cwWL5HUjCLpI46g==}
     hasBin: true
     peerDependencies:
       svelte: ^3.55.0 || ^4.0.0-next.0 || ^4.0.0 || ^5.0.0-next.0
@@ -2948,7 +2948,7 @@ packages:
       aria-query: 5.3.0
       axobject-query: 4.0.0
       esm-env: 1.0.0
-      esrap: 1.1.1
+      esrap: 1.2.0
       is-reference: 3.0.2
       locate-character: 3.0.0
       magic-string: 0.30.5
