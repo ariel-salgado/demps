@@ -6,6 +6,7 @@
 	import 'leaflet-draw';
 	import 'leaflet-path-drag';
 	import 'leaflet-draw/dist/leaflet.draw.css';
+	import { stringify } from '$lib/utils/helpers';
 
 	const { getMap, getLeaflet } = getContext<MapContext>(key);
 
@@ -74,7 +75,7 @@
 	});
 
 	GeoJSONStore.subscribe((value) => {
-		if (value !== geojsonLayer.toGeoJSON()) {
+		if (JSON.stringify(value) !== JSON.stringify(geojsonLayer.toGeoJSON())) {
 			geojsonLayer.clearLayers();
 			geojsonLayer.addData(value);
 		}
