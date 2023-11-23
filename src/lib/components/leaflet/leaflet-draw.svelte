@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
+	import { GeoJSONStore } from '$lib/stores';
 	import { key, type MapContext } from '$lib/components/leaflet';
 
 	import 'leaflet-draw';
@@ -24,8 +25,26 @@
 		}
 	});
 
-	map.addLayer(features);
+	// Kills the app
+	/* let geojsonLayer = L.geoJSON($GeoJSONStore, {
+		onEachFeature: function (_, layer) {
+			if (layer instanceof L.Polygon) {
+				const coordinates = [...layer._latlngs][0];
+				const polygon = new L.Polygon([coordinates], {
+					// @ts-expect-error - no types for leaflet-path-drag
+					draggable: true
+				});
+
+				features.addLayer(polygon);
+			}
+		}
+	}); */
+
+	let geojsonLayer = L.geoJSON($GeoJSONStore);
+
 	map.addControl(draw);
+	map.addLayer(features);
+	map.addLayer(geojsonLayer);
 
 	map.on('draw:created', (e: L.LeafletEvent) => {
 		const layer = e.layer;
@@ -51,6 +70,13 @@
 			});
 
 			features.addLayer(circle);
+		}
+	});
+
+	GeoJSONStore.subscribe((value) => {
+		if (value !== geojsonLayer.toGeoJSON()) {
+			geojsonLayer.clearLayers();
+			geojsonLayer.addData(value);
 		}
 	});
 </script>
