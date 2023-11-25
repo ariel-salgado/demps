@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
-	import { GeoJSONStore } from '$lib/stores';
+	import { EnvStore } from '$lib/stores';
+	import { stringify } from '$lib/utils/helpers';
 
 	let URLdata: string | null = $state(null);
 
 	const downloadGeoJSON = () => {
-		const data = get(GeoJSONStore);
+		const data = get(EnvStore).data;
 
 		if (data.features.length > 0) {
-			const convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
+			const convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(stringify(data));
 			URLdata = 'data:' + convertedData;
 		} else {
 			alert('El mapa no tiene datos para exportar');

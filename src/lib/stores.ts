@@ -4,11 +4,14 @@ export const configFormStore = persisted('configForm', {} as Record<string, stri
 	storage: 'local'
 });
 
-export const GeoJSONStore = persisted(
-	'geojson',
+export const EnvStore = persisted(
+	'editorState',
 	{
-		type: 'FeatureCollection',
-		features: []
-	} as GeoJSON.FeatureCollection,
+		data: {
+			type: 'FeatureCollection',
+			features: []
+		} as GeoJSON.FeatureCollection,
+		trigger: null as 'map' | 'editor' | 'fileUploader' | null
+	},
 	{ storage: 'local' }
 );
