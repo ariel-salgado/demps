@@ -13,7 +13,17 @@ export const toKebabCase = (input: string | object): string => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const stringify = (obj: any) => JSON.stringify(obj, null, 2);
+export const stringify = (obj: any, space: boolean = true) => {
+	if (typeof obj === 'string') return obj;
+	if (typeof obj === 'object') {
+		try {
+			return JSON.stringify(obj, null, space ? 2 : undefined);
+		} catch (_) {
+			console.error('Error stringifying object', obj);
+			return obj;
+		}
+	}
+};
 
 export const unflatten = (inputObject: Record<string, string>) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -96,4 +106,24 @@ export const getNestedKeys = (obj: any): string[] => {
 	}
 
 	return keys;
+};
+
+export const isValidGeoJSON = (geojson: string | object) => {
+	if (typeof geojson === 'string') {
+		try {
+			geojson = JSON.parse(geojson) as object;
+		} catch (_) {
+			return false;
+		}
+	}
+
+	if (
+		typeof geojson === 'object' &&
+		geojson !== null &&
+		(geojson as GeoJSON.FeatureCollection).type === 'FeatureCollection'
+	) {
+		return true;
+	} else {
+		return false;
+	}
 };
