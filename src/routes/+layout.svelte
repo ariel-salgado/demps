@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { SEO } from '$lib/components';
 	import { Header } from '$lib/components/ui';
 	import { onNavigate } from '$app/navigation';
 
@@ -17,8 +16,6 @@
 		});
 	});
 </script>
-
-<SEO title="DEMPS" description="DEMPS" />
 
 <div class="w-full min-h-full grid grid-rows-[auto_1fr]">
 	<Header />
