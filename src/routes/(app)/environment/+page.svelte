@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { GeoJSONStore } from '$lib/stores';
+	import { SEO } from '$lib/components';
+	import { EnvStore } from '$lib/stores';
+
+	import simplify from '@turf/simplify';
+	import { isValidGeoJSON } from '$lib/utils/helpers';
+
 	import { FileUpload } from '$lib/components/ui';
 	import { Codemirror, Widgets, Clipboard, Download } from '$lib/components/codemirror';
 	import { Leaflet, LeafletDraw, LeafletGeosearch, Marker } from '$lib/components/leaflet';
@@ -11,8 +16,16 @@
 			const reader = new FileReader();
 
 			reader.onload = () => {
-				const data = JSON.parse(reader.result as string);
-				GeoJSONStore.set(data);
+				const raw = reader.result as string;
+
+				if (!isValidGeoJSON(raw)) {
+					alert('Invalid GeoJSON');
+					return;
+				}
+
+				const data = JSON.parse(raw);
+				const simplified = simplify(data, { tolerance: 0.0001, highQuality: true, mutate: true });
+				EnvStore.set({ data: simplified, trigger: 'fileUploader' });
 			};
 
 			const file = files[0] as File;
@@ -27,6 +40,8 @@
 	const zoom: number = 15;
 </script>
 
+<SEO title="DEMPS | Environment" description="DEMPS Environment Configuration" />
+
 <div class="grid grid-cols-3">
 	<div class="col-span-2">
 		<Leaflet {center} {zoom}>
@@ -36,7 +51,7 @@
 		</Leaflet>
 	</div>
 	<div class="h-[calc(100vh-5rem)] col-span-1">
-		<Codemirror source={$GeoJSONStore}>
+		<Codemirror>
 			<Widgets slot="widgets">
 				<Clipboard slot="clipboard" />
 				<Download slot="download" />
