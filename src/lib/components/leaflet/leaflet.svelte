@@ -18,6 +18,7 @@
 
 	let map: L.Map | undefined = $state(undefined);
 	let features: L.FeatureGroup = new L.FeatureGroup();
+	let featuresOverlay: Record<string, L.Layer> = $state({});
 
 	setContext(key, {
 		getMap: () => map,
@@ -71,12 +72,16 @@
 						fillOpacity: attributes['fill-opacity']
 					});
 
+					featuresOverlay[feature.properties.nameID || feature.id || crypto.randomUUID] = polygon;
 					features.addLayer(polygon);
 				}
 			}
 		});
 
+		const layersControl = L.control.layers(undefined, featuresOverlay);
+
 		map?.addLayer(features);
+		map?.addControl(layersControl);
 
 		map.whenReady(() => {
 			map?.invalidateSize();
