@@ -19,6 +19,7 @@
 	let map: L.Map | undefined = $state(undefined);
 	let features: L.FeatureGroup = new L.FeatureGroup();
 	let featuresOverlay: Record<string, L.Layer> = $state({});
+	let layersControl: ReturnType<typeof L.control.layers> | undefined = $state(undefined);
 
 	setContext(key, {
 		getMap: () => map,
@@ -40,10 +41,10 @@
 		layers: [rasterLayer]
 	};
 
-	const initMap: Action<HTMLDivElement> = (mapContainer: HTMLDivElement) => {
-		map = L.map(mapContainer, mapOptions);
+	const loadFeatures = () => {
+		features = new L.FeatureGroup();
+		featuresOverlay = {};
 
-		// Add features to map
 		L.geoJSON(get(EnvStore).data, {
 			onEachFeature: function (feature, layer) {
 				// Default attributes
@@ -77,11 +78,20 @@
 				}
 			}
 		});
+	};
 
-		const layersControl = L.control.layers(undefined, featuresOverlay);
+	const initMap: Action<HTMLDivElement> = (mapContainer: HTMLDivElement) => {
+		map = L.map(mapContainer, mapOptions);
+
+		// Add features to map
+		loadFeatures();
+
+		if (Object.keys(featuresOverlay).length > 0) {
+			layersControl = L.control.layers(undefined, featuresOverlay);
+			map?.addControl(layersControl);
+		}
 
 		map?.addLayer(features);
-		map?.addControl(layersControl);
 
 		map.whenReady(() => {
 			map?.invalidateSize();
@@ -94,6 +104,28 @@
 			}
 		};
 	};
+
+	EnvStore.subscribe((update) => {
+		if (map && update.trigger !== 'map') {
+			// First remove both layers
+			features.clearLayers();
+			features.remove();
+
+			try {
+				layersControl?.remove();
+			} catch (_) {}
+
+			// Then load the new ones
+			loadFeatures();
+
+			// Finally add them to the map
+			if (Object.keys(featuresOverlay).length > 0) {
+				layersControl = L.control.layers(undefined, featuresOverlay);
+				map?.addControl(layersControl);
+			}
+			map.addLayer(features);
+		}
+	});
 </script>
 
 <div class="w-full h-full" use:initMap>
