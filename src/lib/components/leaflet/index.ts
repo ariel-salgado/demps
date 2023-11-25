@@ -8,6 +8,7 @@ import LeafletGeosearch from './leaflet-geosearch.svelte';
 export type MapContext = {
 	getMap: () => L.Map;
 	getLeaflet: () => typeof L;
+	getFeatures: () => L.FeatureGroup;
 };
 
 export { Leaflet, LeafletDraw, LeafletGeosearch, Marker, key };
