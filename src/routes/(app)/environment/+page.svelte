@@ -7,7 +7,7 @@
 
 	import { FileUpload } from '$lib/components/ui';
 	import { Codemirror, Widgets, Clipboard, Download } from '$lib/components/codemirror';
-	import { Leaflet, LeafletDraw, LeafletGeosearch, Marker } from '$lib/components/leaflet';
+	import { Leaflet, LeafletGeoman, LeafletGeosearch, Marker } from '$lib/components/leaflet';
 
 	let files: FileList | null = $state(null);
 
@@ -45,8 +45,8 @@
 <div class="grid grid-cols-3">
 	<div class="col-span-2">
 		<Leaflet {center} {zoom}>
-			<LeafletDraw />
 			<LeafletGeosearch />
+			<LeafletGeoman />
 			<Marker {center} />
 		</Leaflet>
 	</div>

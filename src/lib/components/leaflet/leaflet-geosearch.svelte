@@ -12,7 +12,7 @@
 	// @ts-expect-error - no types for leaflet-geosearch
 	const search = new GeoSearchControl({
 		provider: new OpenStreetMapProvider(),
-		style: 'bar',
+		style: 'button',
 		showMarker: false,
 		searchLabel: 'Buscar una dirección'
 	});

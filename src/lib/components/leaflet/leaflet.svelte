@@ -17,14 +17,13 @@
 	let { center, zoom } = $props<Props>();
 
 	let map: L.Map | undefined = $state(undefined);
-	let features: L.FeatureGroup = new L.FeatureGroup();
+	let features: L.FeatureGroup = $state(new L.FeatureGroup());
 	let featuresOverlay: Record<string, L.Layer> = $state({});
 	let layersControl: ReturnType<typeof L.control.layers> | undefined = $state(undefined);
 
 	setContext(key, {
 		getMap: () => map,
-		getLeaflet: () => L,
-		getFeatures: () => features
+		getLeaflet: () => L
 	});
 
 	const rasterLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -34,21 +33,14 @@
 		updateWhenZooming: false
 	});
 
-	const mapOptions: L.MapOptions = {
-		zoom: zoom,
-		center: center,
-		preferCanvas: true,
-		layers: [rasterLayer]
-	};
-
 	const loadFeatures = () => {
-		features = new L.FeatureGroup();
 		featuresOverlay = {};
+		features = new L.FeatureGroup();
 
 		L.geoJSON(get(EnvStore).data, {
 			onEachFeature: function (feature, layer) {
 				// Default attributes
-				let attributes = {
+				const defaultAttributes = {
 					stroke: '#3388ff',
 					'stroke-width': 3,
 					'stroke-opacity': 1,
@@ -56,16 +48,17 @@
 					'fill-opacity': 0.2
 				};
 
-				// Override default attributes with feature attributes
-				if (Object.keys(feature.properties).length > 0) {
-					attributes = feature.properties;
-				}
+				const featureProperties = feature?.properties || {};
+
+				const attributes = {
+					...defaultAttributes,
+					...featureProperties
+				};
 
 				if (layer instanceof L.Polygon) {
-					// @ts-expect-error - bad types for leaflet
-					const coordinates = [...layer._latlngs][0];
-					const polygon = new L.Polygon([coordinates], {
-						smoothFactor: 1.0,
+					const coordinates = layer.getLatLngs();
+					const polygon = new L.Polygon(coordinates, {
+						smoothFactor: 1.5,
 						color: attributes.stroke,
 						weight: attributes['stroke-width'],
 						opacity: attributes['stroke-opacity'],
@@ -73,25 +66,31 @@
 						fillOpacity: attributes['fill-opacity']
 					});
 
-					featuresOverlay[feature.properties.nameID || feature.id || crypto.randomUUID] = polygon;
+					featuresOverlay[feature.properties.nameID || feature.id || crypto.randomUUID()] = polygon;
 					features.addLayer(polygon);
 				}
 			}
 		});
 	};
 
+	const mapOptions: L.MapOptions = {
+		zoom: zoom,
+		center: center,
+		preferCanvas: true,
+		layers: [rasterLayer]
+	};
+
 	const initMap: Action<HTMLDivElement> = (mapContainer: HTMLDivElement) => {
 		map = L.map(mapContainer, mapOptions);
 
-		// Add features to map
 		loadFeatures();
+
+		map?.addLayer(features);
 
 		if (Object.keys(featuresOverlay).length > 0) {
 			layersControl = L.control.layers(undefined, featuresOverlay);
 			map?.addControl(layersControl);
 		}
-
-		map?.addLayer(features);
 
 		map.whenReady(() => {
 			map?.invalidateSize();
@@ -106,14 +105,15 @@
 	};
 
 	EnvStore.subscribe((update) => {
-		if (map && update.trigger !== 'map') {
-			// First remove both layers
-			features.clearLayers();
+		if (map && update.trigger === 'map') {
+			/* features.clearLayers();
 			features.remove();
 
 			try {
 				layersControl?.remove();
-			} catch (_) {}
+			} catch (error) {
+				console.log(error);
+			}
 
 			// Then load the new ones
 			loadFeatures();
@@ -123,7 +123,8 @@
 				layersControl = L.control.layers(undefined, featuresOverlay);
 				map?.addControl(layersControl);
 			}
-			map.addLayer(features);
+			map.addLayer(features); */
+			console.log('Map updated');
 		}
 	});
 </script>
