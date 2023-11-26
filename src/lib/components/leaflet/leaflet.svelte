@@ -66,7 +66,9 @@
 						fillOpacity: attributes['fill-opacity']
 					});
 
-					featuresOverlay[feature.properties.nameID || feature.id || crypto.randomUUID()] = polygon;
+					featuresOverlay[
+						feature.properties.nameID || feature.properties.id || feature.id || crypto.randomUUID()
+					] = polygon;
 					features.addLayer(polygon);
 				}
 			}
@@ -106,24 +108,6 @@
 
 	EnvStore.subscribe((update) => {
 		if (map && update.trigger === 'map') {
-			/* features.clearLayers();
-			features.remove();
-
-			try {
-				layersControl?.remove();
-			} catch (error) {
-				console.log(error);
-			}
-
-			// Then load the new ones
-			loadFeatures();
-
-			// Finally add them to the map
-			if (Object.keys(featuresOverlay).length > 0) {
-				layersControl = L.control.layers(undefined, featuresOverlay);
-				map?.addControl(layersControl);
-			}
-			map.addLayer(features); */
 			console.log('Map updated');
 		}
 	});
