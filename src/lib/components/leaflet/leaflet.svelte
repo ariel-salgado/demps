@@ -103,7 +103,9 @@
 
 	EnvStore.subscribe((update) => {
 		if (map) {
-			if (update.trigger === 'fileUploader') {
+			if (update.trigger === 'fileUploader' || update.trigger === 'map') {
+				console.log('Updating map');
+
 				// Cleaning up old layers
 				map.removeLayer(source as L.Layer);
 				map.removeControl(overlay as L.Control);
