@@ -17,9 +17,8 @@
 	let { center, zoom } = $props<Props>();
 
 	let map: L.Map | undefined = $state(undefined);
-	let features: L.FeatureGroup = $state(new L.FeatureGroup());
-	let featuresOverlay: Record<string, L.Layer> = $state({});
-	let layersControl: ReturnType<typeof L.control.layers> | undefined = $state(undefined);
+	let source: L.GeoJSON<any, GeoJSON.Geometry> = $state(new L.GeoJSON());
+	let overlay = $state(L.control.layers());
 
 	setContext(key, {
 		getMap: () => map,
@@ -33,12 +32,16 @@
 		updateWhenZooming: false
 	});
 
-	const loadFeatures = () => {
-		featuresOverlay = {};
-		features = new L.FeatureGroup();
+	const mapOptions: L.MapOptions = {
+		zoom: zoom,
+		center: center,
+		preferCanvas: true,
+		layers: [rasterLayer]
+	};
 
-		L.geoJSON(get(EnvStore).data, {
-			onEachFeature: function (feature, layer) {
+	const getFeatures = () => {
+		return L.geoJSON(get(EnvStore).data, {
+			style: function (feature) {
 				// Default attributes
 				const defaultAttributes = {
 					stroke: '#3388ff',
@@ -55,44 +58,36 @@
 					...featureProperties
 				};
 
-				if (layer instanceof L.Polygon) {
-					const coordinates = layer.getLatLngs();
-					const polygon = new L.Polygon(coordinates, {
-						smoothFactor: 1.5,
-						color: attributes.stroke,
-						weight: attributes['stroke-width'],
-						opacity: attributes['stroke-opacity'],
-						fillColor: attributes.fill,
-						fillOpacity: attributes['fill-opacity']
-					});
-
-					featuresOverlay[
-						feature.properties.nameID || feature.properties.id || feature.id || crypto.randomUUID()
-					] = polygon;
-					features.addLayer(polygon);
-				}
+				return {
+					smoothFactor: 1.5,
+					color: attributes.stroke,
+					weight: attributes['stroke-width'],
+					opacity: attributes['stroke-opacity'],
+					fillColor: attributes.fill,
+					fillOpacity: attributes['fill-opacity']
+				};
 			}
 		});
 	};
 
-	const mapOptions: L.MapOptions = {
-		zoom: zoom,
-		center: center,
-		preferCanvas: true,
-		layers: [rasterLayer]
+	const getOverlay = () => {
+		const features: Record<string, L.Layer> = {};
+
+		source.getLayers().forEach((layer) => {
+			// @ts-expect-error - Bad types
+			features[layer.feature.id] = layer;
+		});
+
+		return L.control.layers(undefined, features);
 	};
 
 	const initMap: Action<HTMLDivElement> = (mapContainer: HTMLDivElement) => {
 		map = L.map(mapContainer, mapOptions);
+		source = getFeatures();
+		overlay = getOverlay();
 
-		loadFeatures();
-
-		map?.addLayer(features);
-
-		if (Object.keys(featuresOverlay).length > 0) {
-			layersControl = L.control.layers(undefined, featuresOverlay);
-			map?.addControl(layersControl);
-		}
+		map.addLayer(source);
+		map.addControl(overlay);
 
 		map.whenReady(() => {
 			map?.invalidateSize();
@@ -107,8 +102,20 @@
 	};
 
 	EnvStore.subscribe((update) => {
-		if (map && update.trigger === 'map') {
-			console.log('Map updated');
+		if (map) {
+			if (update.trigger === 'fileUploader') {
+				// Cleaning up old layers
+				map.removeLayer(source as L.Layer);
+				map.removeControl(overlay as L.Control);
+
+				// Getting the new ones
+				source = getFeatures();
+				overlay = getOverlay();
+
+				// Adding the new features
+				map.addLayer(source);
+				map.addControl(overlay);
+			}
 		}
 	});
 </script>

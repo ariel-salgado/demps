@@ -44,16 +44,18 @@
 		};
 	};
 
-	// Updates the editor only if the changes are not triggered by the editor itself
 	EnvStore.subscribe((update) => {
-		if (editor && update.trigger !== 'editor') {
-			editor.dispatch({
-				changes: {
-					from: 0,
-					to: editor.state.doc.length,
-					insert: stringify(update.data)
-				}
-			});
+		if (editor) {
+			// Updates the editor only if the changes are not triggered by the editor itself
+			if (update.trigger !== 'editor') {
+				editor.dispatch({
+					changes: {
+						from: 0,
+						to: editor.state.doc.length,
+						insert: stringify(update.data)
+					}
+				});
+			}
 		}
 	});
 </script>

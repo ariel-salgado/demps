@@ -7,9 +7,17 @@
 
 	import { FileUpload } from '$lib/components/ui';
 	import { Codemirror, Widgets, Clipboard, Download } from '$lib/components/codemirror';
-	import { Leaflet, LeafletGeoman, LeafletGeosearch, Marker } from '$lib/components/leaflet';
+	import { Leaflet, LeafletGeoman, LeafletGeosearch } from '$lib/components/leaflet';
 
 	let files: FileList | null = $state(null);
+
+	const preprocessGeoJSON = (geojson: any) => {
+		(geojson as GeoJSON.FeatureCollection).features.forEach((feature: GeoJSON.Feature) => {
+			feature.id = feature.id || crypto.randomUUID();
+		});
+		const simplified = simplify(geojson, { tolerance: 0.0001, highQuality: true, mutate: true });
+		return simplified;
+	};
 
 	const uploadFile = () => {
 		if (!!files && files.length > 0) {
@@ -24,8 +32,8 @@
 				}
 
 				const data = JSON.parse(raw);
-				const simplified = simplify(data, { tolerance: 0.0001, highQuality: true, mutate: true });
-				EnvStore.set({ data: simplified, trigger: 'fileUploader' });
+				const geojson = preprocessGeoJSON(data);
+				EnvStore.set({ data: geojson, trigger: 'fileUploader' });
 			};
 
 			const file = files[0] as File;
@@ -47,7 +55,6 @@
 		<Leaflet {center} {zoom}>
 			<LeafletGeosearch />
 			<LeafletGeoman />
-			<Marker {center} />
 		</Leaflet>
 	</div>
 	<div class="h-[calc(100vh-5rem)] col-span-1">
