@@ -26,13 +26,7 @@
 
 	map.pm.setLang('es');
 
-	/* map.on('pm:create', (e: L.LeafletEvent) => {
-		L.PM.Utils.findLayers(map).forEach((layer) => {
-			console.log(layer);
-		});
-	}); */
-
-	/* const layerToPolygon = (layer: L.Layer) => {
+	const layerToPolygon = (layer: L.Layer) => {
 		if (layer instanceof L.Polygon) {
 			const coordinates = layer.getLatLngs();
 			return new L.Polygon(coordinates);
@@ -41,33 +35,20 @@
 		if (layer instanceof L.Circle) {
 			const radius = layer.getRadius();
 			const coordinates = layer.getLatLng();
-			return L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 32);
+			return L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 36);
 		}
 
 		return new L.Polygon([]);
 	};
 
-	const addProperties = (feature: L.Polygon, properties: Record<string, string | number>) => {
-		const jsonFeature = feature.toGeoJSON();
-
-		jsonFeature.properties = {
-			...jsonFeature.properties,
-			...properties
-		};
-
-		return jsonFeature;
-	};
-
 	map.on('pm:create', (e: L.LeafletEvent) => {
-		const layer = e.layer;
-
-		let drawnFeature: L.Polygon = layerToPolygon(layer);
+		map.removeLayer(e.layer);
+		const created = layerToPolygon(e.layer);
+		const feature = created.toGeoJSON();
+		feature.id = e.layer._leaflet_id;
 
 		EnvStore.update((current) => {
-			current.data.features = [
-				...current.data.features,
-				addProperties(drawnFeature, { id: layer._leaflet_id })
-			];
+			current.data.features = [...current.data.features, feature];
 			current.trigger = 'map';
 
 			return {
@@ -75,28 +56,6 @@
 			};
 		});
 	});
-
-	map.on('pm:remove', (e: L.LeafletEvent) => {
-		const layer = e.layer;
-		const deletedFeature = layerToPolygon(layer).toGeoJSON();
-
-		console.log(deletedFeature);
-
-		EnvStore.update((current) => {
-			current.data.features = current.data.features.filter((feature) => {
-				return (
-					// @ts-expect-error - GeoJSON types doesn't have coordinates property
-					stringify(feature.geometry.coordinates, false) !==
-					stringify(deletedFeature.geometry.coordinates, false)
-				);
-			});
-			current.trigger = 'map';
-
-			return {
-				...current
-			};
-		});
-	}); */
 
 	map.on('pm:remove', (e: L.LeafletEvent) => {
 		const feature = e.layer.feature;
