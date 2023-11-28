@@ -120,7 +120,9 @@ export const isValidGeoJSON = (geojson: string | object) => {
 	if (
 		typeof geojson === 'object' &&
 		geojson !== null &&
-		(geojson as GeoJSON.FeatureCollection).type === 'FeatureCollection'
+		geojson !== undefined &&
+		(geojson as GeoJSON.FeatureCollection).type === 'FeatureCollection' &&
+		'features' in geojson
 	) {
 		return true;
 	} else {
