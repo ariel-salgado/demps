@@ -156,9 +156,9 @@
 	map.on('pm:create', ({ layer }) => {
 		featureGroup.removeLayer(layer);
 
-		const polygon = layerToPolygon(layer).toGeoJSON();
+		let polygon = layerToPolygon(layer).toGeoJSON();
 		const createdID = crypto.randomUUID();
-		polygon.id = createdID;
+		polygon = { id: createdID, ...polygon };
 
 		const created = L.geoJSON(polygon);
 
