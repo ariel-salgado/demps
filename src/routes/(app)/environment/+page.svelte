@@ -12,8 +12,11 @@
 	let files: FileList | null = $state(null);
 
 	const preprocessGeoJSON = (geojson: any) => {
-		(geojson as GeoJSON.FeatureCollection).features.forEach((feature: GeoJSON.Feature) => {
-			feature.id = feature.id || crypto.randomUUID();
+		(geojson as GeoJSON.FeatureCollection).features = (
+			geojson as GeoJSON.FeatureCollection
+		).features.map((feature: GeoJSON.Feature) => {
+			feature = { id: feature.id || crypto.randomUUID(), ...feature };
+			return feature;
 		});
 		const simplified = simplify(geojson, { tolerance: 0.0001, highQuality: true, mutate: true });
 		return simplified;
