@@ -35,6 +35,17 @@
 
 	map.pm.setLang('es');
 
+	const getLayerId = (layer: L.Layer) => {
+		// @ts-expect-error - Bad typings
+		if (layer.feature) {
+			// @ts-expect-error - Bad typings
+			return layer.feature.properties.nameID || layer.feature.id;
+		}
+
+		// @ts-expect-error - Bad typings
+		return layer.pm.getLayers()[0].feature.properties.id || layer.pm.getLayers()[0].feature.id;
+	};
+
 	const addEvents = (layer: L.Layer) => {
 		layer.on('pm:edit', ({ layer }) => {
 			// @ts-expect-error - Bad typings
@@ -132,8 +143,7 @@
 				addEvents(layer);
 
 				featureGroup.addLayer(layer);
-				// @ts-expect-error - Bad typings
-				overlay.addOverlay(layer, layer.feature.id);
+				overlay.addOverlay(layer, getLayerId(layer));
 			}
 		});
 	};
@@ -169,19 +179,11 @@
 
 		deletedIDs.forEach((id: string) => {
 			featureGroup.eachLayer((layer) => {
-				// @ts-expect-error - Bad typings
-				if (layer.feature) {
-					// @ts-expect-error - Bad typings
-					if (layer.feature.id === id) {
-						overlay.removeLayer(layer);
-						featureGroup.removeLayer(layer);
-					}
-				} else {
-					// @ts-expect-error - Bad typings
-					if (layer.pm.getLayers()[0].feature.id === id) {
-						overlay.removeLayer(layer);
-						featureGroup.removeLayer(layer);
-					}
+				const deletedID = getLayerId(layer);
+
+				if (deletedID === id) {
+					overlay.removeLayer(layer);
+					featureGroup.removeLayer(layer);
 				}
 			});
 		});
@@ -199,7 +201,7 @@
 		addEvents(created);
 
 		featureGroup.addLayer(created);
-		overlay.addOverlay(created, createdID);
+		overlay.addOverlay(created, getLayerId(created));
 
 		EnvStore.update((current) => {
 			// @ts-expect-error - Bad typings
