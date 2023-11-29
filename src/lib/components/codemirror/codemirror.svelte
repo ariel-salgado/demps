@@ -27,8 +27,8 @@
 					EditorView.updateListener.of((update) => {
 						if (update.docChanged) {
 							const value = update.state.doc.toString();
-							if (isValidGeoJSON(value)) {
-								EnvStore.set({ data: JSON.parse(value), trigger: 'editor' });
+							if (isValidGeoJSON(value) && get(EnvStore).trigger !== 'editor:subscribe') {
+								EnvStore.set({ data: JSON.parse(value), trigger: 'editor:doc' });
 							}
 						}
 					})
@@ -47,7 +47,7 @@
 	EnvStore.subscribe((update) => {
 		if (editor) {
 			// Updates the editor only if the changes are not triggered by the editor itself
-			if (update.trigger !== 'editor') {
+			if (update.trigger === 'map' || update.trigger === 'fileUploader') {
 				editor.dispatch({
 					changes: {
 						from: 0,
@@ -56,6 +56,11 @@
 					}
 				});
 			}
+
+			return {
+				...update.data,
+				trigger: 'editor:subscribe'
+			};
 		}
 	});
 </script>

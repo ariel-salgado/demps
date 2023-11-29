@@ -153,6 +153,40 @@
 		return new L.Polygon([]);
 	};
 
+	const syncMapOnDelete = () => {
+		// @ts-expect-error - Bad typings
+		const currentIDs = featureGroup.toGeoJSON().features.map((feature) => {
+			return feature.id;
+		});
+
+		const storedIDs = get(EnvStore).data.features.map((feature) => {
+			return feature.id;
+		});
+
+		const deletedIDs = currentIDs.filter((id: string) => {
+			return !storedIDs.includes(id);
+		});
+
+		deletedIDs.forEach((id: string) => {
+			featureGroup.eachLayer((layer) => {
+				// @ts-expect-error - Bad typings
+				if (layer.feature) {
+					// @ts-expect-error - Bad typings
+					if (layer.feature.id === id) {
+						overlay.removeLayer(layer);
+						featureGroup.removeLayer(layer);
+					}
+				} else {
+					// @ts-expect-error - Bad typings
+					if (layer.pm.getLayers()[0].feature.id === id) {
+						overlay.removeLayer(layer);
+						featureGroup.removeLayer(layer);
+					}
+				}
+			});
+		});
+	};
+
 	map.on('pm:create', ({ layer }) => {
 		featureGroup.removeLayer(layer);
 
@@ -203,6 +237,10 @@
 		if (map) {
 			if (trigger === 'fileUploader') {
 				loadFeatures();
+			}
+
+			if (trigger === 'editor:doc') {
+				syncMapOnDelete();
 			}
 		}
 	});

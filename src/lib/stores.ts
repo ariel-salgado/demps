@@ -11,7 +11,7 @@ export const EnvStore = persisted(
 			type: 'FeatureCollection',
 			features: []
 		} as GeoJSON.FeatureCollection,
-		trigger: null as 'map' | 'editor' | 'fileUploader' | null
+		trigger: null as 'map' | 'editor:doc' | 'editor:subscribe' | 'fileUploader' | null
 	},
 	{ storage: 'local' }
 );
