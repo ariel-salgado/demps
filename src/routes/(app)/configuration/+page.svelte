@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import { get } from 'svelte/store';
 
 	import { SEO } from '$lib/components';
 	import { configFormStore } from '$lib/stores';
@@ -20,6 +21,42 @@
 	
 	let files: FileList | null = $state(null);
 	let selected: string | null = $state(null);
+
+	$effect(() => {
+		if (Object.keys(get(configFormStore)).length < 1) setDefaultValues(formFields);
+	});
+
+	const setDefaultValues = (fields: object) => {
+		const defaultValues: Array<{ field: string, value: string | number}> = [];
+
+		Object.values(fields).forEach((field: object | []) => {
+			Object.values(field).forEach((obj) => {
+				if('attributes' in obj) {
+					if(obj.attributes.value) {
+						defaultValues.push({ field: obj.field, value: obj.attributes.value })
+					}
+				} else {
+					// @ts-ignore
+					Object.values(obj).forEach((nestedObj: object) => {
+						if('attributes' in nestedObj) {
+							// @ts-ignore
+							if(nestedObj.attributes.value) {
+								// @ts-ignore
+								defaultValues.push({ field: nestedObj.field, value: nestedObj.attributes.value })
+							}
+						}
+					})
+				}
+			})
+		});
+
+		defaultValues.map((item) => {
+			configFormStore.update((store) => {
+				store[item.field] = item.value;
+				return store;
+			});
+		});
+	}
 	
 	const setSelectedItem = (index: string) => {
 		selected = index;
@@ -74,8 +111,8 @@
 		return keys;
 	};
 
+	const sections = extractKeys(formFields);
 
-	const asideItems = extractKeys(formFields);
 </script>
 
 <SEO title="DEMPS | Configuration" description="DEMPS Configuration" />
@@ -85,7 +122,7 @@
 	<FormGroup>
 		<Label for={item.field}>{item.name}</Label>
 		<Input {...item.attributes} bind:value={$configFormStore[item.field]} />
-		<Hint error={false}>{item.hint}</Hint>
+		<Hint>{item.hint}</Hint>
 	</FormGroup>
 	{:else if item.element === 'select'}
 	<FormGroup>
@@ -95,7 +132,7 @@
 			options={item.options}
 			bind:value={$configFormStore[item.field]}
 		/>
-		<Hint error={false}>{item.hint}</Hint>
+		<Hint>{item.hint}</Hint>
 	</FormGroup>
 	{/if}
 {/snippet}
@@ -107,18 +144,18 @@
 		
 		<!-- List of nav items -->
 		<svelte:fragment slot="list">
-			{#each asideItems as item, index}
+			{#each sections as section, index}
 				<Item
-					title={capitalize(item)}
-					href={`#${toKebabCase(item)}`}
+					title={capitalize(section)}
+					href={`#${toKebabCase(section)}`}
 					on:click={() => setSelectedItem(`${index}`)}
 					selected={String(selected).split('-')[0] === `${index}`}
 				>
-					{#if typeof item === 'object'}
-						{#each Object.values(item)[0] as subItem, subIndex}
+					{#if typeof section === 'object'}
+						{#each Object.values(section)[0] as subSection, subIndex}
 							<SubItem
-								title={capitalize(subItem)}
-								href={`#${toKebabCase(subItem)}`}
+								title={capitalize(subSection)}
+								href={`#${toKebabCase(subSection)}`}
 								on:click={() => setSelectedItem(`${index}-${subIndex}`)}
 								selected={selected === `${index}-${subIndex}`}
 							/>
@@ -171,11 +208,11 @@
 		use:enhance={handleSubmit}
 	>
 		{#each Object.entries(formFields) as [title, value]}
-			<FormTitle class="col-span-2" id={toKebabCase(title)}>{capitalize(title)}</FormTitle>
+			<FormTitle class="col-span-2 px-2 py-4" id={toKebabCase(title)}>{capitalize(title)}</FormTitle>
 			{#each Object.entries(value) as [key, item]}
 				{@render formElement(item)}
 				{#if typeof value[key as keyof typeof value] === 'object' && item.element !== 'select' && item.element !== 'input'}
-					<FormSubtitle class="col-span-2" id={toKebabCase(key)}>{capitalize(key)}</FormSubtitle>
+					<FormSubtitle class="col-span-2 px-4 py-3" id={toKebabCase(key)}>{capitalize(key)}</FormSubtitle>
 					{#each Object.values(value[key as keyof typeof value]) as nestedItem}
 						{@render formElement(nestedItem)}
 					{/each}

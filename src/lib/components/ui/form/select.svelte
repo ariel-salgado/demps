@@ -26,7 +26,7 @@
 	bind:value
 >
 	{#if placeholder}
-		<option class="text-black" value={null} disabled selected={!hasDefaultValue(options)}
+		<option class="text-black" value={undefined} disabled selected={!hasDefaultValue(options)}
 			>{placeholder}</option
 		>
 	{/if}
