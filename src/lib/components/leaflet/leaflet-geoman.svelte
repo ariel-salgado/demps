@@ -147,7 +147,7 @@
 		if (layer instanceof L.Circle) {
 			const radius = layer.getRadius();
 			const coordinates = layer.getLatLng();
-			return L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 36);
+			return L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 18);
 		}
 
 		return new L.Polygon([]);
