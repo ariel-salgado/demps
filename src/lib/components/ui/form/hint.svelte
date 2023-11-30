@@ -1,12 +1,14 @@
 <script lang="ts">
-	interface Props {
-		error: boolean;
+	import type { HTMLAttributes } from 'svelte/elements';
+
+	interface Props extends HTMLAttributes<HTMLElement> {
+		error?: boolean;
 	}
 
-	let { error = false } = $props<Props>();
+	let { error = false, ...rest } = $props<Props>();
 </script>
 
-<small class="text-slate-600 italic p-1" class:error>
+<small class="text-slate-600 italic p-1" class:error {...rest}>
 	<slot />
 </small>
 

@@ -1,13 +1,16 @@
 <script lang="ts">
-	interface Props {
+	import type { HTMLAttributes } from 'svelte/elements';
+
+	interface Props extends HTMLAttributes<HTMLElement> {
 		title: string;
 	}
 
-	let { title } = $props<Props>();
+	let { title, ...rest } = $props<Props>();
 </script>
 
 <aside
 	class="sticky top-20 min-w-[20rem] h-[calc(100vh-5rem)] flex flex-col gap-y-6 px-8 py-6 shadow-md bg-primary-50"
+	{...rest}
 >
 	<span>
 		<h2 class="text-2xl font-medium px-4 py-2">
