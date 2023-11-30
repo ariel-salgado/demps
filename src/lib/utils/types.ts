@@ -2,7 +2,44 @@ export type DeepNullable<T> = {
 	[K in keyof T]: DeepNullable<T[K]> | null;
 };
 
-export type TConfiguration = {
+export type FormInput =
+	| {
+			name: string;
+			element: 'input';
+			field: string;
+			hint?: string;
+			error?: string;
+	  }
+	| {
+			name: string;
+			element: 'select';
+			field: string;
+			hint?: string;
+			error?: string;
+			options: Array<{
+				value: string | number | boolean;
+				text: string;
+				selected?: boolean | undefined;
+			}>;
+	  };
+
+export type InputAttribute = {
+	type?: 'text' | 'number';
+	name: string;
+	id?: string;
+	placeholder?: string;
+	value?: string;
+	readonly?: boolean;
+};
+
+export type InputFormField = FormInput & { attributes: InputAttribute };
+
+export type ConfigurationFormField = Record<
+	string,
+	Array<InputFormField> | Record<string, Array<InputFormField>>
+>;
+
+export type Configuration = {
 	duration: number;
 	calibration: number;
 	quadSize: number;

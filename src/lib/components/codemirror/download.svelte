@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
-	import { EnvStore } from '$lib/stores';
+	import { EnvStore } from '$lib/utils/stores';
 	import { stringify } from '$lib/utils/helpers';
 
 	let URLdata: string | null = $state(null);

@@ -1,38 +1,6 @@
-type TElement =
-	| {
-			name: string;
-			element: 'input';
-			field: string;
-			hint?: string;
-			error?: string;
-	  }
-	| {
-			name: string;
-			element: 'select';
-			field: string;
-			hint?: string;
-			error?: string;
-			options: Array<{
-				value: string | number | boolean;
-				text: string;
-				selected?: boolean | undefined;
-			}>;
-	  };
+import type { ConfigurationFormField } from '$lib/utils/types';
 
-export type TAttributes = {
-	type?: 'text' | 'number';
-	name: string;
-	id?: string;
-	placeholder?: string;
-	value?: string;
-	readonly?: boolean;
-};
-
-export type TFormElement = TElement & { attributes: TAttributes };
-
-type TConfiguration = Record<string, Array<TFormElement> | Record<string, Array<TFormElement>>>;
-
-export const configurationFormFields: TConfiguration = {
+export const configurationFormFields: ConfigurationFormField = {
 	general: [
 		{
 			name: 'Duration',

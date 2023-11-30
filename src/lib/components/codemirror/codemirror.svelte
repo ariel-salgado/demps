@@ -8,7 +8,7 @@
 	import { key } from '$lib/components/codemirror';
 	import { extensions } from '$lib/components/codemirror';
 
-	import { EnvStore } from '$lib/stores';
+	import { EnvStore } from '$lib/utils/stores';
 	import { isValidGeoJSON, stringify } from '$lib/utils/helpers';
 
 	let editor: EditorView | undefined = $state(undefined);

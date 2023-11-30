@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { SEO } from '$lib/components';
-	import { EnvStore } from '$lib/stores';
+	import { EnvStore } from '$lib/utils/stores';
 
 	import simplify from '@turf/simplify';
 	import { isValidGeoJSON } from '$lib/utils/helpers';

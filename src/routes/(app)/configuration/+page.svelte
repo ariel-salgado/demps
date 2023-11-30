@@ -4,7 +4,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 
 	import { SEO } from '$lib/components';
-	import { configFormStore } from '$lib/stores';
+	import { configFormStore } from '$lib/utils/stores';
 	import { FileUpload } from '$lib/components/ui';
 	import { SideMenu, Item, SubItem } from '$lib/components/ui/menu';
 	import { capitalize, extractKeys, flatten, stringify, toKebabCase } from '$lib/utils/helpers';

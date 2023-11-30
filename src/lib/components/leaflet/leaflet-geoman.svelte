@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import { getContext } from 'svelte';
-	import { EnvStore } from '$lib/stores';
+	import { EnvStore } from '$lib/utils/stores';
 	import { key, type MapContext } from '$lib/components/leaflet';
 
 	import '@geoman-io/leaflet-geoman-free';
