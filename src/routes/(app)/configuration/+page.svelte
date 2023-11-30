@@ -4,11 +4,12 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 
 	import { SEO } from '$lib/components';
-	import { configFormStore } from '$lib/utils/stores';
 	import { FileUpload } from '$lib/components/ui';
+	import { configFormStore } from '$lib/utils/stores';
+	import type { InputFormField } from '$lib/utils/types';
 	import { SideMenu, Item, SubItem } from '$lib/components/ui/menu';
 	import { capitalize, extractKeys, flatten, stringify, toKebabCase } from '$lib/utils/helpers';
-	import { configurationFormFields as formFields, type TFormElement } from '$lib/utils/form-fields';
+	import { configurationFormFields as formFields } from '$lib/utils/form-fields';
 	import {
 		FormTitle,
 		FormSubtitle,
@@ -93,11 +94,14 @@
 
 <SEO title="DEMPS | Configuration" description="DEMPS Configuration" />
 
-{#snippet formElement(item: TFormElement)}
+{#snippet formElement(item: InputFormField)}
 	{#if item.element === 'input'}
 	<FormGroup>
 		<Label for={item.field}>{item.name}</Label>
-		<Input {...item.attributes} bind:value={$configFormStore[item.field]} />
+		<Input 
+			{...item.attributes} 
+			bind:value={$configFormStore[item.field as keyof typeof $configFormStore]}
+		/>
 		<Hint>{item.hint}</Hint>
 	</FormGroup>
 	{:else if item.element === 'select'}
@@ -106,7 +110,7 @@
 		<Select
 			{...item.attributes}
 			options={item.options}
-			bind:value={$configFormStore[item.field]}
+			bind:value={$configFormStore[item.field as keyof typeof $configFormStore]}
 		/>
 		<Hint>{item.hint}</Hint>
 	</FormGroup>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { configFormStore } from '$lib/utils/stores';
 	import type { HTMLInputAttributes, HTMLSelectAttributes } from 'svelte/elements';
 
 	interface Props extends HTMLSelectAttributes {
@@ -24,6 +25,9 @@
 	class:readonly
 	{...rest}
 	bind:value
+	on:change={() => {
+		$configFormStore[rest.name as keyof typeof $configFormStore] = value as string;
+	}}
 >
 	{#if placeholder}
 		<option class="text-black" value={undefined} disabled selected={!hasDefaultValue(options)}

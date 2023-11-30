@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { configFormStore } from '$lib/utils/stores';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	interface Props extends HTMLInputAttributes {
 		type?: 'text' | 'number';
 	}
 
-	let { type, ...rest } = $props<Props>();
+	let { type, value, ...rest } = $props<Props>();
 
 	const typeAction = (element: HTMLInputElement) => {
 		if (type === 'number') {
@@ -35,7 +36,11 @@
 <input
 	class="block w-full h-10 border border-slate-300 rounded-md px-3 py-2 shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-transparent"
 	{...rest}
+	bind:value
 	use:typeAction
+	on:input={() => {
+		$configFormStore[rest.name as keyof typeof $configFormStore] = value;
+	}}
 />
 
 <style lang="postcss">
