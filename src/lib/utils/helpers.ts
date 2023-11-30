@@ -108,24 +108,23 @@ export const getNestedKeys = (obj: any): string[] => {
 	return keys;
 };
 
-export const isValidGeoJSON = (geojson: string | object) => {
-	if (typeof geojson === 'string') {
-		try {
-			geojson = JSON.parse(geojson) as object;
-		} catch (_) {
-			return false;
-		}
-	}
+export const isValidGeoJSON = (data: string | object): boolean => {
+	try {
+		const geojson = typeof data === 'string' ? JSON.parse(data) : data;
 
-	if (
-		typeof geojson === 'object' &&
-		geojson !== null &&
-		geojson !== undefined &&
-		(geojson as GeoJSON.FeatureCollection).type === 'FeatureCollection' &&
-		'features' in geojson
-	) {
-		return true;
-	} else {
+		return (
+			geojson && geojson.type && geojson.features !== undefined && Array.isArray(geojson.features)
+		);
+	} catch (_) {
 		return false;
 	}
+};
+
+export const extractKeys = (obj: object) => {
+	return Object.entries(obj).map(([key, value]) => {
+		if (typeof value === 'object' && !Array.isArray(value)) {
+			return { [key]: Object.keys(value) };
+		}
+		return key;
+	});
 };

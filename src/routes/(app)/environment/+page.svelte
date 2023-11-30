@@ -11,14 +11,17 @@
 
 	let files: FileList | null = $state(null);
 
-	const preprocessGeoJSON = (geojson: any) => {
-		(geojson as GeoJSON.FeatureCollection).features = (
-			geojson as GeoJSON.FeatureCollection
-		).features.map((feature: GeoJSON.Feature) => {
-			feature = { id: feature.id || crypto.randomUUID(), ...feature };
-			return feature;
+	const preprocessGeoJSON = (geojson: GeoJSON.FeatureCollection) => {
+		geojson.features = geojson.features.map(({ id, ...feature }: GeoJSON.Feature) => ({
+			id: id || crypto.randomUUID(),
+			...feature
+		}));
+
+		const simplified = simplify(geojson as any, {
+			tolerance: 0.0001,
+			highQuality: true,
+			mutate: true
 		});
-		const simplified = simplify(geojson, { tolerance: 0.0001, highQuality: true, mutate: true });
 		return simplified;
 	};
 
@@ -34,8 +37,7 @@
 					return;
 				}
 
-				const data = JSON.parse(raw);
-				const geojson = preprocessGeoJSON(data);
+				const geojson = preprocessGeoJSON(JSON.parse(raw));
 				EnvStore.set({ data: geojson, trigger: 'fileUploader' });
 			};
 

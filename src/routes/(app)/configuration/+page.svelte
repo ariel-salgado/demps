@@ -1,13 +1,13 @@
 <script lang="ts">
+	import { get } from 'svelte/store';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { get } from 'svelte/store';
 
 	import { SEO } from '$lib/components';
 	import { configFormStore } from '$lib/stores';
 	import { FileUpload } from '$lib/components/ui';
 	import { SideMenu, Item, SubItem } from '$lib/components/ui/menu';
-	import { capitalize, flatten, stringify, toKebabCase } from '$lib/utils/helpers';
+	import { capitalize, extractKeys, flatten, stringify, toKebabCase } from '$lib/utils/helpers';
 	import { configurationFormFields as formFields, type TFormElement } from '$lib/utils/form-fields';
 	import {
 		FormTitle,
@@ -23,94 +23,70 @@
 	let selected: string | null = $state(null);
 
 	$effect(() => {
-		if (Object.keys(get(configFormStore)).length < 1) setDefaultValues(formFields);
+		if (Object.keys(get(configFormStore)).length === 0) setDefaultValues(formFields);
 	});
 
 	const setDefaultValues = (fields: object) => {
-		const defaultValues: Array<{ field: string, value: string | number}> = [];
+		const defaultValues: Array<{ field: string, value: string | number }> = [];
 
-		Object.values(fields).forEach((field: object | []) => {
-			Object.values(field).forEach((obj) => {
-				if('attributes' in obj) {
-					if(obj.attributes.value) {
-						defaultValues.push({ field: obj.field, value: obj.attributes.value })
-					}
+		const traverseFields = (obj: any) => {
+			if (obj && typeof obj === 'object') {
+				if ('attributes' in obj && obj.attributes.value) {
+					defaultValues.push({ field: obj.field, value: obj.attributes.value });
 				} else {
-					// @ts-ignore
-					Object.values(obj).forEach((nestedObj: object) => {
-						if('attributes' in nestedObj) {
-							// @ts-ignore
-							if(nestedObj.attributes.value) {
-								// @ts-ignore
-								defaultValues.push({ field: nestedObj.field, value: nestedObj.attributes.value })
-							}
-						}
-					})
+					Object.values(obj).forEach(traverseFields);
 				}
-			})
-		});
+			}
+		};
 
-		defaultValues.map((item) => {
+		traverseFields(fields);
+
+		defaultValues.forEach(({ field, value }) => {
 			configFormStore.update((store) => {
-				store[item.field] = item.value;
+				store[field] = value;
 				return store;
 			});
 		});
-	}
-	
-	const setSelectedItem = (index: string) => {
-		selected = index;
 	};
 	
 	const handleSubmit: SubmitFunction = () => {
 		return async ({ result }) => {
 			// @ts-expect-error - Bad type definition
 			const parsedData = stringify(result.data);
-
+			
 			const blob = new Blob([parsedData], { type: 'application/json' });
 			const url = URL.createObjectURL(blob);
+			
 			const a = document.createElement('a');
 			a.href = url;
 			a.download = 'config.json';
+			
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
+			
 			URL.revokeObjectURL(url);
 		};
 	};
-
+	
 	const uploadFile = () => {
 		if (!!files && files.length > 0) {
 			const reader = new FileReader();
-
+			
 			reader.onload = () => {
-				let data = JSON.parse(reader.result as string);
-				data = flatten(data);
+				const data = flatten(JSON.parse(reader.result as string));
 				configFormStore.set(data);
 			};
 
 			const file = files[0] as File;
 			const blob = new Blob([file], { type: file.type });
-
+			
 			reader.readAsText(blob);
 		}
 	};
-
-	const extractKeys = (obj: object) => {
-		const keys: Array<string | object> = Object.keys(obj);
-
-		for (const key in obj) {
-			if (
-				typeof obj[key as keyof typeof obj] === 'object' &&
-				!Array.isArray(obj[key as keyof typeof obj])
-			) {
-				keys[keys.indexOf(key)] = { [key]: Object.keys(obj[key as keyof typeof obj]) };
-			}
-		}
-
-		return keys;
-	};
-
+	
+	const setSelectedItem = (index: string) => selected = index;
+	
 	const sections = extractKeys(formFields);
 
 </script>
@@ -149,10 +125,10 @@
 					title={capitalize(section)}
 					href={`#${toKebabCase(section)}`}
 					on:click={() => setSelectedItem(`${index}`)}
-					selected={String(selected).split('-')[0] === `${index}`}
+					selected={String(selected).split('-').at(0) === `${index}`}
 				>
 					{#if typeof section === 'object'}
-						{#each Object.values(section)[0] as subSection, subIndex}
+						{#each Object.values(section)[0] as ArrayLike<string> as subSection, subIndex}
 							<SubItem
 								title={capitalize(subSection)}
 								href={`#${toKebabCase(subSection)}`}
@@ -211,7 +187,7 @@
 			<FormTitle class="col-span-2 px-2 py-4" id={toKebabCase(title)}>{capitalize(title)}</FormTitle>
 			{#each Object.entries(value) as [key, item]}
 				{@render formElement(item)}
-				{#if typeof value[key as keyof typeof value] === 'object' && item.element !== 'select' && item.element !== 'input'}
+				{#if typeof value[key as keyof typeof value] === 'object' && !('element' in item)}
 					<FormSubtitle class="col-span-2 px-4 py-3" id={toKebabCase(key)}>{capitalize(key)}</FormSubtitle>
 					{#each Object.values(value[key as keyof typeof value]) as nestedItem}
 						{@render formElement(nestedItem)}

@@ -165,17 +165,10 @@
 
 	const syncMapOnDelete = () => {
 		// @ts-expect-error - Bad typings
-		const currentIDs = featureGroup.toGeoJSON().features.map((feature) => {
-			return feature.id;
-		});
+		const currentIDs = featureGroup.toGeoJSON().features.map((feature) => feature.id);
+		const storedIDs = get(EnvStore).data.features.map((feature) => feature.id);
 
-		const storedIDs = get(EnvStore).data.features.map((feature) => {
-			return feature.id;
-		});
-
-		const deletedIDs = currentIDs.filter((id: string) => {
-			return !storedIDs.includes(id);
-		});
+		const deletedIDs = currentIDs.filter((id: string) => !storedIDs.includes(id));
 
 		deletedIDs.forEach((id: string) => {
 			featureGroup.eachLayer((layer) => {
