@@ -46,6 +46,10 @@
 		return layer.pm.getLayers()[0].feature.properties.id || layer.pm.getLayers()[0].feature.id;
 	};
 
+	const getFeatureId = (feature: any) => {
+		return feature.properties.nameID || feature.id;
+	};
+
 	const addEvents = (layer: L.Layer) => {
 		layer.on('pm:edit', ({ layer }) => {
 			// @ts-expect-error - Bad typings
@@ -165,8 +169,8 @@
 
 	const syncMapOnDelete = () => {
 		// @ts-expect-error - Bad typings
-		const currentIDs = featureGroup.toGeoJSON().features.map((feature) => feature.id);
-		const storedIDs = get(EnvStore).data.features.map((feature) => feature.id);
+		const currentIDs = featureGroup.toGeoJSON().features.map((feature) => getFeatureId(feature));
+		const storedIDs = get(EnvStore).data.features.map((feature) => getFeatureId(feature));
 
 		const deletedIDs = currentIDs.filter((id: string) => !storedIDs.includes(id));
 
