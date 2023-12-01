@@ -34,17 +34,17 @@
 </script>
 
 <input
-	class="block w-full h-10 border border-slate-300 rounded-md px-3 py-2 shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-transparent"
+	class="block h-10 w-full rounded-md border border-slate-300 px-3 py-2 shadow focus-within:border-transparent focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600"
 	{...rest}
 	bind:value
 	use:typeAction
-	on:input={() => {
+	on:input="{() => {
 		$configFormStore[rest.name as keyof typeof $configFormStore] = value;
-	}}
+	}}"
 />
 
 <style lang="postcss">
 	input:read-only {
-		@apply bg-slate-100 text-slate-400 ring-0 cursor-not-allowed;
+		@apply cursor-not-allowed bg-slate-100 text-slate-400 ring-0;
 	}
 </style>

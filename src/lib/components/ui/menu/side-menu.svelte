@@ -9,16 +9,16 @@
 </script>
 
 <aside
-	class="sticky top-20 min-w-[20rem] h-[calc(100vh-5rem)] flex flex-col gap-y-6 px-8 py-6 shadow-md bg-primary-50"
+	class="sticky top-20 flex h-[calc(100vh-5rem)] min-w-[20rem] flex-col gap-y-6 bg-primary-50 px-8 py-6 shadow-md"
 	{...rest}
 >
 	<span>
-		<h2 class="text-2xl font-medium px-4 py-2">
+		<h2 class="px-4 py-2 text-2xl font-medium">
 			{title}
 		</h2>
 		<hr />
 	</span>
-	<div class="h-full flex flex-col justify-between">
+	<div class="flex h-full flex-col justify-between">
 		<ul>
 			<slot name="list" />
 		</ul>

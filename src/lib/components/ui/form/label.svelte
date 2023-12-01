@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HTMLAttributes, HTMLLabelAttributes } from 'svelte/elements';
+	import type { HTMLLabelAttributes } from 'svelte/elements';
 
 	let { ...rest } = $props<HTMLLabelAttributes>();
 </script>
@@ -10,6 +10,6 @@
 
 <style lang="postcss">
 	label {
-		@apply text-lg leading-relaxed p-1;
+		@apply p-1 text-lg leading-relaxed;
 	}
 </style>

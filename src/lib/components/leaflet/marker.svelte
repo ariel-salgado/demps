@@ -26,4 +26,4 @@
 	};
 </script>
 
-<div use:initMarker />
+<div use:initMarker></div>

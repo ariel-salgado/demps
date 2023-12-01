@@ -1,5 +1,5 @@
 <div
-	class="w-full flex flex-col px-5 py-3 rounded-lg hover:bg-primary-50 focus-within:bg-primary-50 hover:shadow focus-within:shadow transition-colors duration-300"
+	class="flex w-full flex-col rounded-lg px-5 py-3 transition-colors duration-300 focus-within:bg-primary-50 focus-within:shadow hover:bg-primary-50 hover:shadow"
 >
 	<slot />
 </div>

@@ -65,7 +65,7 @@
 	});
 </script>
 
-<div class="h-full grid grid-rows-[1fr_auto]">
+<div class="grid h-full grid-rows-[1fr_auto]">
 	<div class="relative overflow-y-scroll text-sm" use:initEditor>
 		{#if editor}
 			<slot name="widgets" />

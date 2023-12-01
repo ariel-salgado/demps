@@ -17,6 +17,7 @@
 			...feature
 		}));
 
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const simplified = simplify(geojson as any, {
 			tolerance: 0.0001,
 			highQuality: true,
@@ -62,7 +63,7 @@
 			<LeafletGeoman />
 		</Leaflet>
 	</div>
-	<div class="h-[calc(100vh-5rem)] col-span-1">
+	<div class="col-span-1 h-[calc(100vh-5rem)]">
 		<Codemirror>
 			<Widgets slot="widgets">
 				<Clipboard slot="clipboard" />
@@ -70,10 +71,10 @@
 			</Widgets>
 
 			<div
-				class="p-4 outline outline-1 outline-slate-300 rounded-t-md bg-primary-50"
+				class="rounded-t-md bg-primary-50 p-4 outline outline-1 outline-slate-300"
 				slot="file-upload"
 			>
-				<FileUpload bind:files accept=".geojson" onUpload={uploadFile}>Upload GeoJSON</FileUpload>
+				<FileUpload bind:files accept=".geojson" onUpload="{uploadFile}">Upload GeoJSON</FileUpload>
 			</div>
 		</Codemirror>
 	</div>

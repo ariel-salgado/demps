@@ -52,7 +52,7 @@
 	};
 </script>
 
-<div class="w-full h-full" use:initMap {...rest}>
+<div class="h-full w-full" use:initMap {...rest}>
 	{#if map}
 		<slot />
 	{/if}

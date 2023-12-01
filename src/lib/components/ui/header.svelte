@@ -7,10 +7,10 @@
 </script>
 
 <header
-	class="sticky top-0 w-full h-20 flex justify-around items-center bg-primary-50 shadow-sm z-30"
+	class="sticky top-0 z-30 flex h-20 w-full items-center justify-around bg-primary-50 shadow-sm"
 >
 	<span
-		class="text-3xl font-medium hover:text-primary-600 focus-within:text-primary-600 hover:underline focus-within:underline underline-offset-2 transition-colors duration-300"
+		class="text-3xl font-medium underline-offset-2 transition-colors duration-300 focus-within:text-primary-600 focus-within:underline hover:text-primary-600 hover:underline"
 	>
 		<a href="/">DEMPS</a>
 	</span>
@@ -18,18 +18,18 @@
 		<ul class="flex items-center gap-x-6">
 			{#each navItems as { name, href }}
 				<li
-					class="hover:text-primary-600 focus-within:text-primary-600 transition-colors duration-300"
+					class="transition-colors duration-300 focus-within:text-primary-600 hover:text-primary-600"
 				>
-					<a class="w-full block hover:underline focus-within:underline underline-offset-2" {href}
+					<a class="block w-full underline-offset-2 focus-within:underline hover:underline" {href}
 						>{name}</a
 					>
 				</li>
 			{/each}
 			<li
-				class="hover:text-primary-600 focus-within:text-primary-600 transition-colors duration-300"
+				class="transition-colors duration-300 focus-within:text-primary-600 hover:text-primary-600"
 			>
 				<button
-					class="h-10 bg-primary-600 px-6 py-2 text-white rounded-md hover:bg-primary-800 focus-visible:bg-primary-800 transition-colors duration-300"
+					class="h-10 rounded-md bg-primary-600 px-6 py-2 text-white transition-colors duration-300 hover:bg-primary-800 focus-visible:bg-primary-800"
 					>Run</button
 				>
 			</li>

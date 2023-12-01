@@ -46,6 +46,7 @@
 		return layer.pm.getLayers()[0].feature.properties.id || layer.pm.getLayers()[0].feature.id;
 	};
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const getFeatureId = (feature: any) => {
 		return feature.properties.nameID || feature.id;
 	};
@@ -232,7 +233,7 @@
 
 	loadFeatures();
 
-	EnvStore.subscribe(({ data, trigger }) => {
+	EnvStore.subscribe(({ trigger }) => {
 		if (map) {
 			if (trigger === 'fileUploader') {
 				loadFeatures();

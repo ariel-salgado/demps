@@ -8,7 +8,7 @@
 	let { error = false, ...rest } = $props<Props>();
 </script>
 
-<small class="text-slate-600 italic p-1" class:error {...rest}>
+<small class="p-1 italic text-slate-600" class:error {...rest}>
 	<slot />
 </small>
 

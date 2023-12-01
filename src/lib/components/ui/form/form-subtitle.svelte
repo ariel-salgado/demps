@@ -5,7 +5,7 @@
 </script>
 
 <div class="px-4 py-3" {...rest}>
-	<h3 class="text-2xl font-medium p-1">
+	<h3 class="p-1 text-2xl font-medium">
 		<slot />
 	</h3>
 	<hr />

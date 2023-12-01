@@ -17,7 +17,7 @@
 	});
 </script>
 
-<div class="w-full min-h-full grid grid-rows-[auto_1fr]">
+<div class="grid min-h-full w-full grid-rows-[auto_1fr]">
 	<Header />
 
 	<main>
