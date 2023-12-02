@@ -177,7 +177,7 @@
 
 	<!-- Configuration form -->
 	<form
-		class="grid w-full grid-cols-2 gap-y-2 px-14 pb-20 pt-12"
+		class="grid w-full grid-cols-2 gap-y-2 px-14 pb-20 pt-4"
 		id="configuration-form"
 		method="POST"
 		action="?/download"
