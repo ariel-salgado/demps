@@ -7,7 +7,7 @@
 </script>
 
 <header
-	class="sticky top-0 z-30 flex h-20 w-full items-center justify-around bg-primary-50 shadow-sm"
+	class="sticky top-0 z-30 flex h-20 w-full items-center justify-evenly bg-primary-50 shadow-sm"
 >
 	<span
 		class="text-3xl font-medium underline-offset-2 transition-colors duration-300 focus-within:text-primary-600 focus-within:underline hover:text-primary-600 hover:underline"
@@ -25,14 +25,12 @@
 					>
 				</li>
 			{/each}
-			<li
-				class="transition-colors duration-300 focus-within:text-primary-600 hover:text-primary-600"
-			>
-				<button
-					class="h-10 rounded-md bg-primary-600 px-6 py-2 text-white transition-colors duration-300 hover:bg-primary-800 focus-visible:bg-primary-800"
-					>Run</button
-				>
-			</li>
 		</ul>
 	</nav>
+	<div>
+		<button
+			class="h-10 rounded-md bg-primary-600 px-6 py-2 text-white transition-colors duration-300 hover:bg-primary-800 focus-visible:bg-primary-800"
+			>Run</button
+		>
+	</div>
 </header>
