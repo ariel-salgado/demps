@@ -13,6 +13,14 @@
 		"prepare": "husky install"
 	},
 	"devDependencies": {
+		"@codemirror/autocomplete": "^6.11.1",
+		"@codemirror/commands": "^6.3.2",
+		"@codemirror/lang-json": "^6.0.1",
+		"@codemirror/language": "^6.9.3",
+		"@codemirror/lint": "^6.4.2",
+		"@codemirror/search": "^6.5.5",
+		"@codemirror/state": "^6.3.3",
+		"@codemirror/view": "^6.22.3",
 		"@sveltejs/adapter-auto": "^3.0.1",
 		"@sveltejs/kit": "^2.0.4",
 		"@sveltejs/vite-plugin-svelte": "^3.0.1",
