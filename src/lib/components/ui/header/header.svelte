@@ -34,7 +34,7 @@
 	<div class="inline-flex gap-x-8 p-2">
 		<Button>
 			<span>Run</span>
-			<PlayIcon class="h-5 w-5 stroke-2" />
+			<PlayIcon class="mt-0.5 h-5 w-5" />
 		</Button>
 	</div>
 </header>
