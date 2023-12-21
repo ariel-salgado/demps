@@ -1,0 +1,67 @@
+import type { Writable } from 'svelte/store';
+import type { FeatureCollection, Feature } from 'geojson';
+
+import { browser } from '$app/environment';
+import { get, writable } from 'svelte/store';
+
+const createGeoJSONStore = (initialState?: FeatureCollection) => {
+	const data = initialState ?? {
+		type: 'FeatureCollection',
+		features: []
+	};
+
+	const store = writable<FeatureCollection>(data);
+
+	const addFeature = (feature: Feature) => {
+		store.update((current) => {
+			current.features.push(feature);
+			return {
+				...current
+			};
+		});
+	};
+
+	const removeFeature = (id: string | number) => {
+		store.update((current) => {
+			current.features = current.features.filter((feature) => String(feature.id) !== String(id));
+			return {
+				...current
+			};
+		});
+	};
+
+	const fns = {
+		addFeature,
+		removeFeature
+	};
+
+	return {
+		...store,
+		...fns
+	} satisfies Writable<FeatureCollection> & typeof fns;
+};
+
+const persistedStore = <T>(key: string, initialStore: Extract<T, Writable<any>>): T => {
+	const storedValue = browser ? localStorage.getItem(key) : null;
+	const data = storedValue ? JSON.parse(storedValue) : get(initialStore);
+
+	const setLocalStorage = (key: string, value: any) => {
+		if (!browser) return;
+		localStorage.setItem(key, JSON.stringify(value));
+	};
+
+	const unsubscribe = initialStore.subscribe((value: any) => {
+		setLocalStorage(key, value);
+	});
+
+	initialStore.set(data);
+
+	return {
+		...initialStore,
+		unsubscribe
+	} satisfies T;
+};
+
+export type GeoJSONStore = ReturnType<typeof createGeoJSONStore>;
+
+export const envStore = persistedStore<GeoJSONStore>('env', createGeoJSONStore());
