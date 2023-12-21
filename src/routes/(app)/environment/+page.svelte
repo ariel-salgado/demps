@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { envStore } from '$lib/stores';
 	import { Button } from '$lib/components/ui/button';
 	import { Editor, Widgets, Clipboard, Download } from '$lib/components/codemirror';
 </script>
 
-<Editor>
+<Editor data={envStore}>
 	{#snippet widgets()}
 		<Widgets>
 			<Clipboard />
