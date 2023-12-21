@@ -82,11 +82,11 @@
 <svelte:window bind:innerHeight />
 
 <div
-	class={cn('flex h-full w-full flex-col overflow-y-auto', className)}
-	style="max-height: {innerHeight! - topPosition!}px"
+	class={cn('flex h-full w-full flex-col', className)}
+	style="max-height: {innerHeight! - topPosition! - 1}px"
 	{...props}
 >
-	<div class="h-full w-full" use:initEditor={$data}>
+	<div class="h-full w-full overflow-y-auto" use:initEditor={$data}>
 		{#if editor && widgets}
 			{@render widgets()}
 		{/if}
