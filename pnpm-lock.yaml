@@ -38,6 +38,9 @@ devDependencies:
   '@sveltejs/vite-plugin-svelte':
     specifier: ^3.0.1
     version: 3.0.1(svelte@5.0.0-next.26)(vite@5.0.10)
+  '@types/geojson':
+    specifier: ^7946.0.13
+    version: 7946.0.13
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.15.0
     version: 6.15.0(@typescript-eslint/parser@6.15.0)(eslint@8.56.0)(typescript@5.3.3)
@@ -729,6 +732,10 @@ packages:
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+    dev: true
+
+  /@types/geojson@7946.0.13:
+    resolution: {integrity: sha512-bmrNrgKMOhM3WsafmbGmC+6dsF2Z308vLFsQ3a/bT8X8Sv5clVYpPars/UPq+sAaJP+5OoLAYgwbkS5QEJdLUQ==}
     dev: true
 
   /@types/json-schema@7.0.15:
