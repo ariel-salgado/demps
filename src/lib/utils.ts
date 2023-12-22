@@ -47,11 +47,11 @@ export const isValidGeoJSON = (data: string | object): boolean => {
 };
 
 export const preprocessGeoJSON = (geojson: FeatureCollection, tolerance?: number) => {
-	const simplified = simplify(geojson, {
-		tolerance: tolerance || 0.0001,
+	const simplified = tolerance !== 0 ? simplify(geojson, {
+		tolerance: tolerance,
 		highQuality: true,
 		mutate: true
-	});
+	}) : geojson;
 
 	const truncated = truncate(simplified, {
 		precision: 6,
