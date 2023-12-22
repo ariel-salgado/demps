@@ -41,7 +41,7 @@ const createGeoJSONStore = (initialState?: FeatureCollection) => {
 	} satisfies Writable<FeatureCollection> & typeof fns;
 };
 
-const persistedStore = <T>(key: string, initialStore: Extract<T, Writable<any>>): T => {
+const persistedStore = <T extends Writable<any>>(key: string, initialStore: T): T => {
 	const storedValue = browser ? localStorage.getItem(key) : null;
 	const data = storedValue ? JSON.parse(storedValue) : get(initialStore);
 
@@ -59,9 +59,11 @@ const persistedStore = <T>(key: string, initialStore: Extract<T, Writable<any>>)
 	return {
 		...initialStore,
 		unsubscribe
-	} satisfies T;
+	};
 };
 
 export type GeoJSONStore = ReturnType<typeof createGeoJSONStore>;
 
 export const envStore = persistedStore<GeoJSONStore>('env', createGeoJSONStore());
+
+export const tolerance = persistedStore<Writable<number>>('tolerance', writable(0));
