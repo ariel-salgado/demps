@@ -1,11 +1,10 @@
 <script lang="ts">
-	import type { FeatureCollection, Feature } from 'geojson';
-
 	import { envStore } from '$lib/stores';
+	import { tolerance } from '$lib/stores';
 	import { UploadIcon } from '$lib/components/icons';
 	import { Fileupload } from '$lib/components/ui/forms';
 	import { isValidGeoJSON, preprocessGeoJSON } from '$lib/utils';
-	import { Editor, Widgets, Clipboard, Download } from '$lib/components/codemirror';
+	import { Editor, Widgets, Clipboard, Download, Enhance } from '$lib/components/codemirror';
 
 	let files: FileList | null = $state(null);
 
@@ -21,7 +20,7 @@
 					return;
 				}
 
-				const geojson = preprocessGeoJSON(JSON.parse(uploadedData));
+				const geojson = preprocessGeoJSON(JSON.parse(uploadedData), $tolerance);
 				envStore.set(geojson);
 			};
 
@@ -36,6 +35,7 @@
 <Editor data={envStore}>
 	{#snippet widgets()}
 		<Widgets>
+			<Enhance bind:tolerance={$tolerance} />
 			<Clipboard />
 			<Download />
 		</Widgets>
