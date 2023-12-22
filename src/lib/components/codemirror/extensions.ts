@@ -51,7 +51,6 @@ const baseTheme: Extension = EditorView.baseTheme({
 	'.cm-lineNumbers': {
 		color: '#aaa',
 		minWidth: '1.6rem',
-		paddingLeft: '0.2rem'
 	},
 	'.cm-gutterElement > span[title="Fold line"]': {
 		color: '#aaa'

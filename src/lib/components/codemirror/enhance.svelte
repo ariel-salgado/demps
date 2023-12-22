@@ -69,9 +69,9 @@
 				<div
 					class="absolute right-6 rounded-md bg-white shadow outline outline-1 outline-slate-300"
 				>
-					<div class="px-6 py-4">
+					<div class="p-6">
 						<div class="grid items-center gap-x-2 gap-y-1">
-							<Label class="text-base" for="smoothing">Suavizado</Label>
+							<Label class="text-base" for="smoothing">Nivel de ajuste</Label>
 							<Select id="smoothing" bind:value={tolerance} options={enhancementOptions} />
 						</div>
 					</div>

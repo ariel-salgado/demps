@@ -82,7 +82,7 @@
 <svelte:window bind:innerHeight />
 
 <div
-	class={cn('flex h-full w-full flex-col', className)}
+	class={cn('flex h-full w-full flex-col border border-x-slate-300', className)}
 	style="max-height: {innerHeight! - topPosition! - 1}px"
 	{...props}
 >
@@ -93,7 +93,7 @@
 	</div>
 
 	{#if editor}
-		<div class="rounded-t-md border-x border-t border-x-slate-300 border-t-slate-300 p-6">
+		<div class="rounded-t-md border-t border-t-slate-300 p-6">
 			{#if editor && actions}
 				{@render actions()}
 			{/if}
