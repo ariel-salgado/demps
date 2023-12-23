@@ -1,20 +1,21 @@
 <script lang="ts">
-	import { Map } from '$lib/components/leaflet';
-	import { Draw } from '$lib/components/leaflet';
-	import { envStore } from '$lib/stores';
+	import type { Writable } from 'svelte/store';
+
+	import { writable } from 'svelte/store';
 	import { UploadIcon } from '$lib/components/icons';
+	import { Map, Draw } from '$lib/components/leaflet';
 	import { Fileupload } from '$lib/components/ui/forms';
+	import { envStore, persistedStore } from '$lib/stores';
 	import { isValidGeoJSON, preprocessGeoJSON } from '$lib/utils';
 	import { Editor, Widgets, Clipboard, Download, Enhance } from '$lib/components/codemirror';
-	import { writable } from 'svelte/store';
 
 	let files: FileList | null = $state(null);
+
+	const tolerance = persistedStore<Writable<number>>('tolerance', writable(0));
 
 	// Defaults to Viña del Mar, CHile
 	const center: [number, number] = [-33.015348, -71.550499];
 	const zoom: number = 15;
-
-	const tolerance = writable(0);
 
 	const handleUpload = () => {
 		if (!!files && files.length > 0) {

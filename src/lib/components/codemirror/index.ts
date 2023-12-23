@@ -1,6 +1,6 @@
 import type { EditorView } from '@codemirror/view';
 
-import { key } from './context'
+import { key } from './context';
 import Editor from './editor.svelte';
 import Widgets from './widgets.svelte';
 import Clipboard from './clipboard.svelte';
@@ -11,11 +11,4 @@ export type EditorContext = {
 	getEditor: () => EditorView;
 };
 
-export {
-    key,
-    Editor,
-    Widgets,
-    Clipboard,
-    Download,
-    Enhance
-}
+export { key, Editor, Widgets, Clipboard, Download, Enhance };
