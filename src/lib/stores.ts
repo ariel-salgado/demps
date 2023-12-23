@@ -23,7 +23,9 @@ export const createGeoJSONStore = (initialState?: FeatureCollection) => {
 
 	const removeFeature = (id: string | number) => {
 		store.update((current) => {
-			current.features = current.features.filter((feature) => String(feature.id) !== String(id));
+			const index = current.features.findIndex((feature) => String(feature.id) === String(id));
+			if (index !== -1) current.features.splice(index, 1);
+
 			return {
 				...current
 			};
