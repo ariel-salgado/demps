@@ -7,8 +7,7 @@ import { twMerge } from 'tailwind-merge';
 // @ts-expect-error - TS can't find the module
 import simplify from '@turf/simplify';
 // @ts-expect-error - TS can't find the module
-import truncate from '@turf/truncate'
-
+import truncate from '@turf/truncate';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -47,11 +46,14 @@ export const isValidGeoJSON = (data: string | object): boolean => {
 };
 
 export const preprocessGeoJSON = (geojson: FeatureCollection, tolerance?: number) => {
-	const simplified = tolerance !== 0 ? simplify(geojson, {
-		tolerance: tolerance,
-		highQuality: true,
-		mutate: true
-	}) : geojson;
+	const simplified =
+		tolerance !== 0
+			? simplify(geojson, {
+					tolerance: tolerance,
+					highQuality: true,
+					mutate: true
+				})
+			: geojson;
 
 	const truncated = truncate(simplified, {
 		precision: 6,
@@ -65,4 +67,12 @@ export const preprocessGeoJSON = (geojson: FeatureCollection, tolerance?: number
 	}));
 
 	return truncated as FeatureCollection;
+};
+
+export const areEqualGeoJSON = (
+	geojson1: FeatureCollection,
+	geojson2: FeatureCollection
+): boolean => {
+	if (JSON.stringify(geojson1) === JSON.stringify(geojson2)) return true;
+	return false;
 };
