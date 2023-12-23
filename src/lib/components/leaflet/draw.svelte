@@ -27,4 +27,8 @@
 	});
 
 	map.pm.setLang('es');
+
+	map.on('pm:remove', ({ layer }) => {
+		featureGroup.removeLayer(layer);
+	});
 </script>

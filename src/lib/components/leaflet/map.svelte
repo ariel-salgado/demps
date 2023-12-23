@@ -73,6 +73,12 @@
 			}
 		});
 
+		featureGroup.on('layerremove', (e: L.LayerEvent) => {
+			// @ts-expect-error - Leaflet typings are messed up
+			const removedFeatureID = e.layer.feature.id;
+			data.removeFeature(removedFeatureID);
+		});
+
 		featureGroup.addTo(map!);
 	};
 
