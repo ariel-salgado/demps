@@ -28,6 +28,10 @@
 
 	map.pm.setLang('es');
 
+	map.on('pm:create', ({ layer }) => {
+		featureGroup.addLayer(layer);
+	});
+
 	map.on('pm:remove', ({ layer }) => {
 		featureGroup.removeLayer(layer);
 	});

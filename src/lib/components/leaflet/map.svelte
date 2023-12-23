@@ -6,8 +6,8 @@
 
 	import { cn } from '$lib/utils';
 	import { setContext } from 'svelte';
-	import { areEqualGeoJSON } from '$lib/utils';
 	import { key } from '$lib/components/leaflet';
+	import { areEqualGeoJSON, coordsToFeature } from '$lib/utils';
 
 	import * as L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
@@ -71,6 +71,13 @@
 			onEachFeature: (_, layer) => {
 				featureGroup.addLayer(layer);
 			}
+		});
+
+		featureGroup.on('layeradd', (e: L.LayerEvent) => {
+			// @ts-expect-error - Leaflet typings are messed up
+			const featureCoords = L.GeoJSON.latLngsToCoords(e.layer._latlngs[0]);
+			const addedFeature = coordsToFeature(featureCoords);
+			data.addFeature(addedFeature);
 		});
 
 		featureGroup.on('layerremove', (e: L.LayerEvent) => {
