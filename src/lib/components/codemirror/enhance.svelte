@@ -1,11 +1,8 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { EditorContext } from '$lib/components/codemirror';
 
 	import { cn } from '$lib/utils';
-	import { getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { key } from '$lib/components/codemirror';
 	import { SparkleIcon } from '$lib/components/icons';
 	import { Label, Select } from '$lib/components/ui/forms';
 
@@ -15,12 +12,17 @@
 
 	let { tolerance, class: className, ...props } = $props<Props>();
 
-	const { getEditor } = getContext<EditorContext>(key);
-	const editor = getEditor();
-
 	let showOptions: boolean = $state(false);
 	let enhancementButton: HTMLDivElement | undefined = $state();
 	let enhancementPanel: HTMLDivElement | undefined = $state();
+
+	$effect(() => {
+		if (showOptions) {
+			window.addEventListener('click', handleClick);
+		} else {
+			window.removeEventListener('click', handleClick);
+		}
+	});
 
 	const toggleOptions = () => {
 		showOptions = !showOptions;
@@ -44,8 +46,6 @@
 		{ value: 0.0002, text: 'Alto' }
 	];
 </script>
-
-<svelte:window on:click={handleClick} />
 
 <div
 	class={cn(
