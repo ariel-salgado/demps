@@ -25,6 +25,7 @@
 		"@sveltejs/adapter-auto": "^3.0.1",
 		"@sveltejs/kit": "^2.0.6",
 		"@sveltejs/vite-plugin-svelte": "^3.0.1",
+		"@turf/helpers": "^6.5.0",
 		"@turf/simplify": "^6.5.0",
 		"@turf/truncate": "^6.5.0",
 		"@types/geojson": "^7946.0.13",

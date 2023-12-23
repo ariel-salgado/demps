@@ -41,6 +41,9 @@ devDependencies:
   '@sveltejs/vite-plugin-svelte':
     specifier: ^3.0.1
     version: 3.0.1(svelte@5.0.0-next.26)(vite@5.0.10)
+  '@turf/helpers':
+    specifier: ^6.5.0
+    version: 6.5.0
   '@turf/simplify':
     specifier: ^6.5.0
     version: 6.5.0
