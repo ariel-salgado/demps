@@ -21,7 +21,7 @@ export const createGeoJSONStore = (initialState?: FeatureCollection) => {
 		});
 	};
 
-	const removeFeature = (id: string | number) => {
+	const removeFeatureByID = (id: string | number) => {
 		store.update((current) => {
 			const index = current.features.findIndex((feature) => String(feature.id) === String(id));
 			if (index !== -1) current.features.splice(index, 1);
@@ -32,9 +32,25 @@ export const createGeoJSONStore = (initialState?: FeatureCollection) => {
 		});
 	};
 
+	const removeFeatureByCoords = (coords: number[][]) => {
+		store.update((current) => {
+			const index = current.features.findIndex((feature) => {
+				// @ts-expect-error - GeoJSON types are not fully especified
+				const featureCoords = feature.geometry.coordinates[0];
+				return featureCoords.toString() === coords.toString();
+			});
+			if (index !== -1) current.features.splice(index, 1);
+
+			return {
+				...current
+			};
+		});
+	};
+
 	const fns = {
 		addFeature,
-		removeFeature
+		removeFeatureByID,
+		removeFeatureByCoords
 	};
 
 	return {
