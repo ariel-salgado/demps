@@ -4,7 +4,7 @@ import type { FeatureCollection, Feature } from 'geojson';
 import { browser } from '$app/environment';
 import { get, writable } from 'svelte/store';
 
-const createGeoJSONStore = (initialState?: FeatureCollection) => {
+export const createGeoJSONStore = (initialState?: FeatureCollection) => {
 	const data = initialState ?? {
 		type: 'FeatureCollection',
 		features: []
@@ -41,16 +41,16 @@ const createGeoJSONStore = (initialState?: FeatureCollection) => {
 	} satisfies Writable<FeatureCollection> & typeof fns;
 };
 
-const persistedStore = <T extends Writable<any>>(key: string, initialStore: T): T => {
+export const persistedStore = <T extends Writable<unknown>>(key: string, initialStore: T): T => {
 	const storedValue = browser ? localStorage.getItem(key) : null;
 	const data = storedValue ? JSON.parse(storedValue) : get(initialStore);
 
-	const setLocalStorage = (key: string, value: any) => {
+	const setLocalStorage = (key: string, value: unknown) => {
 		if (!browser) return;
 		localStorage.setItem(key, JSON.stringify(value));
 	};
 
-	const unsubscribe = initialStore.subscribe((value: any) => {
+	const unsubscribe = initialStore.subscribe((value: unknown) => {
 		setLocalStorage(key, value);
 	});
 
@@ -65,5 +65,3 @@ const persistedStore = <T extends Writable<any>>(key: string, initialStore: T): 
 export type GeoJSONStore = ReturnType<typeof createGeoJSONStore>;
 
 export const envStore = persistedStore<GeoJSONStore>('env', createGeoJSONStore());
-
-export const tolerance = persistedStore<Writable<number>>('tolerance', writable(0));
