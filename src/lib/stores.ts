@@ -47,10 +47,25 @@ export const createGeoJSONStore = (initialState?: FeatureCollection) => {
 		});
 	};
 
+	const updateFeatureCoords = (id: string | number, coords: number[][]) => {
+		store.update((current) => {
+			const index = current.features.findIndex((feature) => String(feature.id) === String(id));
+			if (index !== -1) {
+				// @ts-expect-error - GeoJSON types are not fully especified
+				current.features[index].geometry.coordinates = coords;
+			}
+
+			return {
+				...current
+			};
+		});
+	};
+
 	const fns = {
 		addFeature,
 		removeFeatureByID,
-		removeFeatureByCoords
+		removeFeatureByCoords,
+		updateFeatureCoords
 	};
 
 	return {
