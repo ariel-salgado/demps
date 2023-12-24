@@ -22,12 +22,14 @@
 
 	let map: L.Map | undefined = $state();
 	let featureGroup: L.FeatureGroup = $state(new L.FeatureGroup());
+	let overlayLayer: L.Control.Layers = $state(new L.Control.Layers());
 
 	setContext(key, {
 		getMap: () => map,
+		getData: () => data,
 		getLeaflet: () => L,
 		getFeatureGroup: () => featureGroup,
-		getData: () => data
+		getOverlayLayer: () => overlayLayer
 	});
 
 	const rasterLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -71,8 +73,17 @@
 			},
 			onEachFeature: (_, layer) => {
 				featureGroup.addLayer(layer);
+				// @ts-expect-error - Leaflet types are a mess
+				overlayLayer.addOverlay(layer, layer.feature.id);
 			}
 		});
+	};
+
+	const resetLayers = (featureGroup: L.FeatureGroup, overlayLayer: L.Control.Layers) => {
+		featureGroup.eachLayer((layer) => {
+			overlayLayer.removeLayer(layer);
+		});
+		featureGroup.clearLayers();
 	};
 
 	const initMap: Action<HTMLDivElement, FeatureCollection> = (
@@ -82,6 +93,7 @@
 		map = L.map(mapContainer, mapOptions);
 
 		featureGroup.addTo(map);
+		overlayLayer.addTo(map);
 
 		loadFeatures(features);
 
@@ -92,7 +104,7 @@
 		return {
 			update: (update: FeatureCollection) => {
 				if (!areEqualGeoJSON(features, update)) {
-					featureGroup.clearLayers();
+					resetLayers(featureGroup, overlayLayer);
 					loadFeatures(update);
 				}
 			},

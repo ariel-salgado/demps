@@ -9,12 +9,14 @@
 	import '@geoman-io/leaflet-geoman-free';
 	import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
 
-	const { getMap, getLeaflet, getFeatureGroup, getData } = getContext<MapContext>(key);
+	const { getMap, getData, getLeaflet, getFeatureGroup, getOverlayLayer } =
+		getContext<MapContext>(key);
 
-	let L = getLeaflet();
 	let map = getMap();
-	let featureGroup = getFeatureGroup();
 	let data = getData();
+	let L = getLeaflet();
+	let featureGroup = getFeatureGroup();
+	let overlayLayer = getOverlayLayer();
 
 	map.pm.setGlobalOptions({
 		layerGroup: featureGroup
@@ -48,8 +50,13 @@
 
 	map.on('pm:create', ({ layer }) => {
 		featureGroup.removeLayer(layer);
+
 		const addedFeature = layerToFeature(layer);
-		featureGroup.addLayer(L.geoJSON(addedFeature));
+		const addedFeatureGeoJSON = L.geoJSON(addedFeature);
+
+		featureGroup.addLayer(addedFeatureGeoJSON);
+		overlayLayer.addOverlay(addedFeatureGeoJSON, addedFeature.id as string);
+
 		data.addFeature(addedFeature);
 	});
 
@@ -58,9 +65,11 @@
 
 		// @ts-expect-error - Leaflet types are a mess
 		const removedFeatureID = layer.feature.id as string;
+		overlayLayer.removeLayer(layer);
 		data.removeFeatureByID(removedFeatureID);
 	});
 
+	// It handles edit, drag and rotate events
 	featureGroup.on('pm:edit', ({ layer }) => {
 		// @ts-expect-error - Geoman types are missing
 		const editedFeature = layer.toGeoJSON(6) as Feature;
