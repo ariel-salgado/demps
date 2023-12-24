@@ -73,8 +73,6 @@
 				featureGroup.addLayer(layer);
 			}
 		});
-
-		featureGroup.addTo(map!);
 	};
 
 	const initMap: Action<HTMLDivElement, FeatureCollection> = (
@@ -82,6 +80,8 @@
 		features: FeatureCollection
 	) => {
 		map = L.map(mapContainer, mapOptions);
+
+		featureGroup.addTo(map);
 
 		loadFeatures(features);
 
@@ -92,8 +92,7 @@
 		return {
 			update: (update: FeatureCollection) => {
 				if (!areEqualGeoJSON(features, update)) {
-					featureGroup.removeFrom(map!);
-					featureGroup = new L.FeatureGroup();
+					featureGroup.clearLayers();
 					loadFeatures(update);
 				}
 			},
