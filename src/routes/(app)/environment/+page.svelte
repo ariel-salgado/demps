@@ -11,7 +11,7 @@
 
 	let files: FileList | null = $state(null);
 
-	const tolerance = persistedStore<Writable<number>>('tolerance', writable(0));
+	const tolerance = persistedStore<Writable<number>>('tolerance', writable(0.00015));
 
 	// Defaults to Viña del Mar, CHile
 	const center: [number, number] = [-33.015348, -71.550499];
