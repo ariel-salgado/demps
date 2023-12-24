@@ -57,7 +57,18 @@
 		featureGroup.removeLayer(layer);
 
 		// @ts-expect-error - Leaflet types are a mess
-		const removedFeatureID = layer.feature.id as number;
+		const removedFeatureID = layer.feature.id as string;
 		data.removeFeatureByID(removedFeatureID);
+	});
+
+	featureGroup.on('pm:edit', ({ layer }) => {
+		// @ts-expect-error - Geoman types are missing
+		const editedFeature = layer.toGeoJSON(6) as Feature;
+		const id = editedFeature.id as string;
+
+		// @ts-expect-error - Geoman types are missing
+		const coordinates = editedFeature.geometry.coordinates;
+
+		data.updateFeatureCoords(id, coordinates);
 	});
 </script>
