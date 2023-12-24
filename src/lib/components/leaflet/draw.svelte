@@ -1,8 +1,9 @@
 <script lang="ts">
+	import type { Feature } from 'geojson';
+	import type { Layer, Polygon } from 'leaflet';
 	import type { MapContext } from '$lib/components/leaflet';
 
 	import { getContext } from 'svelte';
-	import { coordsToFeature } from '$lib/utils';
 	import { key } from '$lib/components/leaflet';
 
 	import '@geoman-io/leaflet-geoman-free';
@@ -30,30 +31,33 @@
 
 	map.pm.setLang('es');
 
-	featureGroup.on('layeradd', ({ layer }) => {
-		// @ts-expect-error - Leaflet typings are messed up
-		const featureCoords = L.GeoJSON.latLngsToCoords(layer._latlngs[0]);
-		const addedFeature = coordsToFeature(featureCoords);
-		data.addFeature(addedFeature);
-	});
+	const layerToFeature = (layer: Layer): Feature => {
+		let feature: Feature;
 
-	featureGroup.on('layerremove', ({ layer }) => {
-		if ('feature' in layer) {
-			// @ts-expect-error - Leaflet typings are messed up
-			const removedFeatureID = layer.feature.id as number;
-			data.removeFeatureByID(removedFeatureID);
+		if (layer instanceof L.Circle) {
+			const radius = layer.getRadius();
+			const coordinates = layer.getLatLng();
+			feature = L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 18).toGeoJSON(6);
 		} else {
-			// @ts-expect-error - Leaflet typings are messed up
-			const featureCoords = L.GeoJSON.latLngsToCoords(layer._latlngs[0]);
-			data.removeFeatureByCoords(featureCoords);
+			const coordinates = (layer as Polygon).getLatLngs();
+			feature = new L.Polygon(coordinates).toGeoJSON(6);
 		}
-	});
+
+		return { id: crypto.randomUUID(), ...feature, properties: {} };
+	};
 
 	map.on('pm:create', ({ layer }) => {
-		featureGroup.addLayer(layer);
+		featureGroup.removeLayer(layer);
+		const addedFeature = layerToFeature(layer);
+		featureGroup.addLayer(L.geoJSON(addedFeature));
+		data.addFeature(addedFeature);
 	});
 
 	map.on('pm:remove', ({ layer }) => {
 		featureGroup.removeLayer(layer);
+
+		// @ts-expect-error - Leaflet types are a mess
+		const removedFeatureID = layer.feature.id as number;
+		data.removeFeatureByID(removedFeatureID);
 	});
 </script>
