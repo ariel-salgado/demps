@@ -106,7 +106,7 @@
 	};
 </script>
 
-<div class={cn('h-full w-full outline-none', className)} use:initMap={$data} {...props}>
+<div class={cn('h-full w-full outline-none', className)} {...props} use:initMap={$data}>
 	{#if map && children}
 		{@render children()}
 	{/if}
