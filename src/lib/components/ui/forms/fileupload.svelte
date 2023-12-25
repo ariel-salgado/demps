@@ -14,7 +14,7 @@
 	let { accept, files, onUpload, children, ...props } = $props<Props>();
 </script>
 
-<Button class="p-0" {...props} aria-label="Upload file">
+<Button class="p-0" {...props}>
 	<label
 		class="flex h-full w-full cursor-pointer justify-center gap-x-2 px-4 py-2"
 		for="fileUpload"

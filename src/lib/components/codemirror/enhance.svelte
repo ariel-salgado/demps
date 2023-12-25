@@ -55,7 +55,7 @@
 	{...props}
 	bind:this={enhancementButton}
 >
-	<button class="p-1" type="button" on:click={toggleOptions}>
+	<button class="p-1" type="button" on:click={toggleOptions} aria-label="Enhance uploaded data">
 		<SparkleIcon />
 	</button>
 
