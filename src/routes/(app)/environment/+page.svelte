@@ -3,9 +3,9 @@
 
 	import { writable } from 'svelte/store';
 	import { UploadIcon } from '$lib/components/icons';
-	import { Map, Draw } from '$lib/components/leaflet';
 	import { Fileupload } from '$lib/components/ui/forms';
 	import { envStore, persistedStore } from '$lib/stores';
+	import { Map, Draw, Search } from '$lib/components/leaflet';
 	import { isValidGeoJSON, preprocessGeoJSON } from '$lib/utils';
 	import { Editor, Widgets, Clipboard, Download, Enhance } from '$lib/components/codemirror';
 
@@ -43,6 +43,7 @@
 
 <section class="grid h-full grid-flow-col grid-cols-5">
 	<Map class="col-span-3" data={envStore} {center} {zoom}>
+		<Search />
 		<Draw />
 	</Map>
 	<Editor class="col-span-2" data={envStore}>
