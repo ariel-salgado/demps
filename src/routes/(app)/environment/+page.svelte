@@ -2,6 +2,7 @@
 	import type { Writable } from 'svelte/store';
 
 	import { writable } from 'svelte/store';
+	import { Seo } from '$lib/components/seo';
 	import { UploadIcon } from '$lib/components/icons';
 	import { Fileupload } from '$lib/components/ui/forms';
 	import { envStore, persistedStore } from '$lib/stores';
@@ -41,6 +42,8 @@
 	};
 </script>
 
+<Seo title="DEMPS | Environment" description="Environment" />
+
 <section class="grid h-full grid-flow-col grid-cols-5">
 	<Map class="col-span-3" data={envStore} {center} {zoom}>
 		<Search />
@@ -55,7 +58,13 @@
 			</Widgets>
 		{/snippet}
 		{#snippet actions()}
-			<Fileupload accept=".geojson" bind:files onUpload={handleUpload}>
+			<Fileupload
+				accept=".geojson"
+				bind:files
+				onUpload={handleUpload}
+				role="button"
+				aria-label="Upload GeoJSON"
+			>
 				<span>Upload GeoJSON</span>
 				<UploadIcon class="mt-0.5 h-5 w-5" />
 			</Fileupload>
