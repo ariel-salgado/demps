@@ -74,7 +74,7 @@
 			onEachFeature: (_, layer) => {
 				featureGroup.addLayer(layer);
 				// @ts-expect-error - Leaflet types are a mess
-				overlayLayer.addOverlay(layer, layer.feature.id);
+				overlayLayer.addOverlay(layer, layer.feature.properties.nameID || layer.feature.id);
 			}
 		});
 	};

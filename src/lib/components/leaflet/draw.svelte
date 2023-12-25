@@ -55,7 +55,10 @@
 		const addedFeatureGeoJSON = L.geoJSON(addedFeature);
 
 		featureGroup.addLayer(addedFeatureGeoJSON);
-		overlayLayer.addOverlay(addedFeatureGeoJSON, addedFeature.id as string);
+		overlayLayer.addOverlay(
+			addedFeatureGeoJSON,
+			(addedFeature.properties?.nameID || addedFeature.id) as string
+		);
 
 		data.addFeature(addedFeature);
 	});
