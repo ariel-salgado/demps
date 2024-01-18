@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { envStore } from '$lib/stores';
-	import { Editor, Widgets, Clipboard } from '$lib/components/codemirror';
+	import { Editor, Widgets, Clipboard, Download } from '$lib/components/codemirror';
 </script>
 
 <section class="h-full">
@@ -8,6 +8,7 @@
 		{#snippet widgets()}
 			<Widgets>
 				<Clipboard />
+				<Download />
 			</Widgets>
 		{/snippet}
 	</Editor>
