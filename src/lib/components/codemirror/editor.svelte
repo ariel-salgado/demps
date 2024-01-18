@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { Action } from 'svelte/action';
 	import type { GeoJSONStore } from '$lib/stores';
 	import type { FeatureCollection } from 'geojson';
@@ -7,16 +8,19 @@
 	import { setContext } from 'svelte';
 	import { EditorView } from '@codemirror/view';
 	import { EditorState } from '@codemirror/state';
-	import { debounce, strEqualsObj } from '$lib/utils';
+	import { cn, debounce, strEqualsObj } from '$lib/utils';
 	import { key, extensions } from '$lib/components/codemirror';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		store: GeoJSONStore;
+		widgets?: Snippet<void>;
 	}
 
-	let { store, class: className, ...props } = $props<Props>();
+	let { store, widgets, class: className, ...props } = $props<Props>();
 
 	let editor: EditorView | undefined = $state();
+	let topPosition: number | undefined = $state();
+	let innerHeight: number | undefined = $state();
 
 	setContext(key, {
 		getEditor: () => editor
@@ -49,6 +53,8 @@
 		editorContainer: HTMLDivElement,
 		features: FeatureCollection
 	) => {
+		topPosition = editorContainer.getBoundingClientRect().top;
+
 		editor = new EditorView({
 			parent: editorContainer,
 			state: EditorState.create({
@@ -70,4 +76,16 @@
 	};
 </script>
 
-<div class="h-full w-full overflow-y-auto" use:initEditor={$store}></div>
+<svelte:window bind:innerHeight />
+
+<div
+	class={cn('flex size-full flex-col border border-x-slate-300', className)}
+	style="max-height: {innerHeight! - topPosition! - 1}px"
+	{...props}
+>
+	<div class="size-full overflow-y-auto" use:initEditor={$store}>
+		{#if editor && widgets}
+			{@render widgets()}
+		{/if}
+	</div>
+</div>
