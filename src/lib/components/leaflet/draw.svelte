@@ -51,7 +51,9 @@
 		if (layer instanceof L.Circle) {
 			const radius = layer.getRadius();
 			const coordinates = layer.getLatLng();
-			feature = L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 18).toGeoJSON(6);
+			feature = window.L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 18).toGeoJSON(
+				6
+			);
 		} else {
 			const coordinates = (layer as Polygon).getLatLngs();
 			feature = new L.Polygon(coordinates).toGeoJSON(6);
