@@ -4,6 +4,7 @@ import type { GeoJSONStore } from '$lib/stores';
 import { key } from './context';
 
 import Map from './map.svelte';
+import Draw from './draw.svelte';
 
 export type MapContext = {
 	getMap: () => L.Map;
@@ -13,4 +14,4 @@ export type MapContext = {
 	getOverlayLayer: () => L.Control.Layers;
 };
 
-export { key, Map };
+export { key, Map, Draw };

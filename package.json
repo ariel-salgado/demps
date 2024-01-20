@@ -20,6 +20,7 @@
 		"@codemirror/search": "^6.5.5",
 		"@codemirror/state": "^6.4.0",
 		"@codemirror/view": "^6.23.0",
+		"@geoman-io/leaflet-geoman-free": "^2.15.0",
 		"@sveltejs/adapter-node": "^3.0.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",

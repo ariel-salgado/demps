@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { envStore } from '$lib/stores';
-	import { Map } from '$lib/components/leaflet';
+	import { Map, Draw } from '$lib/components/leaflet';
 	import { Editor, Widgets, Clipboard, Download } from '$lib/components/codemirror';
 
 	const zoom: number = 15;
@@ -8,7 +8,9 @@
 </script>
 
 <section class="grid h-full grid-flow-col grid-cols-5">
-	<Map class="col-span-3" {center} {zoom} store={envStore} />
+	<Map class="col-span-3" {center} {zoom} store={envStore}>
+		<Draw />
+	</Map>
 	<Editor class="col-span-2" store={envStore}>
 		{#snippet widgets()}
 			<Widgets>
