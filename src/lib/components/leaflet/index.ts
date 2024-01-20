@@ -5,6 +5,7 @@ import { key } from './context';
 
 import Map from './map.svelte';
 import Draw from './draw.svelte';
+import Search from './search.svelte';
 
 export type MapContext = {
 	getMap: () => L.Map;
@@ -14,4 +15,4 @@ export type MapContext = {
 	getOverlayLayer: () => L.Control.Layers;
 };
 
-export { key, Map, Draw };
+export { key, Map, Draw, Search };

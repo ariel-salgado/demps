@@ -77,6 +77,9 @@ devDependencies:
   leaflet:
     specifier: ^1.9.4
     version: 1.9.4
+  leaflet-geosearch:
+    specifier: ^3.11.0
+    version: 3.11.0
   postcss:
     specifier: ^8.4.32
     version: 8.4.33
@@ -467,6 +470,14 @@ packages:
       lodash: 4.17.21
       polygon-clipping: 0.15.3
     dev: true
+
+  /@googlemaps/js-api-loader@1.16.2:
+    resolution: {integrity: sha512-psGw5u0QM6humao48Hn4lrChOM2/rA43ZCm3tKK9qQsEj1/VzqkCqnvGfEOshDbBQflydfaRovbKwZMF4AyqbA==}
+    requiresBuild: true
+    dependencies:
+      fast-deep-equal: 3.1.3
+    dev: true
+    optional: true
 
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -2168,6 +2179,13 @@ packages:
 
   /known-css-properties@0.29.0:
     resolution: {integrity: sha512-Ne7wqW7/9Cz54PDt4I3tcV+hAyat8ypyOGzYRJQfdxnnjeWsTxt1cy8pjvvKeI5kfXuyvULyeeAvwvvtAX3ayQ==}
+    dev: true
+
+  /leaflet-geosearch@3.11.0:
+    resolution: {integrity: sha512-lWmryKXg7S//7q53fMyooCAyAzYxMtozeEmjrQqtkmsPmeHphaKMuFEm/uD4ZwoblBIIMXsUnuNBLvg6bSfjqA==}
+    optionalDependencies:
+      '@googlemaps/js-api-loader': 1.16.2
+      leaflet: 1.9.4
     dev: true
 
   /leaflet@1.9.4:
