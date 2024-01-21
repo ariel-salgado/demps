@@ -14,9 +14,10 @@
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		store: GeoJSONStore;
 		widgets?: Snippet<void>;
+		actions?: Snippet<void>;
 	}
 
-	let { store, widgets, class: className, ...props } = $props<Props>();
+	let { store, widgets, actions, class: className, ...props } = $props<Props>();
 
 	let editor: EditorView | undefined = $state();
 	let topPosition: number | undefined = $state();
@@ -88,4 +89,10 @@
 			{@render widgets()}
 		{/if}
 	</div>
+
+	{#if editor && actions}
+		<div class="rounded-t-md border-t border-t-slate-300 p-6">
+			{@render actions()}
+		</div>
+	{/if}
 </div>

@@ -3,8 +3,11 @@
 	import type { Layer, Polygon } from 'leaflet';
 	import type { MapContext } from '$lib/components/leaflet';
 
-	import { getContext, onMount } from 'svelte';
+	import { getContext } from 'svelte';
 	import { key } from '$lib/components/leaflet';
+
+	import '@geoman-io/leaflet-geoman-free';
+	import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
 
 	const { getMap, getStore, getLeaflet, getFeatureGroup, getOverlayLayer } =
 		getContext<MapContext>(key);
@@ -15,35 +18,20 @@
 	let featureGroup = getFeatureGroup();
 	let overlayLayer = getOverlayLayer();
 
-	onMount(async () => {
-		if (map && !map.pm) {
-			await import('@geoman-io/leaflet-geoman-free');
-			await import('@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css');
-		}
-
-		featureGroup.eachLayer((layer) => {
-			layer.options.pmIgnore = false;
-			window.L.PM.reInitLayer(layer);
-		});
-
-		// @ts-expect-error - Map type is wrong in Geoman
-		window.L.PM.reInitLayer(map);
-
-		map.pm.setGlobalOptions({
-			layerGroup: featureGroup
-		});
-
-		map.pm.addControls({
-			position: 'topleft',
-			drawText: false,
-			drawMarker: false,
-			cutPolygon: false,
-			drawPolyline: false,
-			drawCircleMarker: false
-		});
-
-		map.pm.setLang('es');
+	map.pm.setGlobalOptions({
+		layerGroup: featureGroup
 	});
+
+	map.pm.addControls({
+		position: 'topleft',
+		drawText: false,
+		drawMarker: false,
+		cutPolygon: false,
+		drawPolyline: false,
+		drawCircleMarker: false
+	});
+
+	map.pm.setLang('es');
 
 	const layerToFeature = (layer: Layer): Feature => {
 		let feature: Feature;
@@ -51,9 +39,7 @@
 		if (layer instanceof L.Circle) {
 			const radius = layer.getRadius();
 			const coordinates = layer.getLatLng();
-			feature = window.L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 18).toGeoJSON(
-				6
-			);
+			feature = L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 18).toGeoJSON(6);
 		} else {
 			const coordinates = (layer as Polygon).getLatLngs();
 			feature = new L.Polygon(coordinates).toGeoJSON(6);

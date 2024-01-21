@@ -98,3 +98,5 @@ const persistedStore = <T extends Writable<unknown>>(key: string, initialStore: 
 export type GeoJSONStore = ReturnType<typeof createGeoJSONStore>;
 
 export const envStore = persistedStore<GeoJSONStore>('env', createGeoJSONStore());
+
+export const toleranceStore = persistedStore('tolerance', writable<number>(0.00015));

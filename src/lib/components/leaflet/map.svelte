@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type L from 'leaflet';
 	import type { Action } from 'svelte/action';
 	import type { GeoJSONStore } from '$lib/stores';
 	import type { FeatureCollection } from 'geojson';
@@ -10,29 +9,45 @@
 	import { areEqualGeoJSON } from '$lib/utils';
 	import { key } from '$lib/components/leaflet';
 
+	import * as L from 'leaflet';
+	import 'leaflet/dist/leaflet.css';
+
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		store: GeoJSONStore;
 		center: L.LatLngExpression;
 		zoom: number;
 	}
 
-	const { children, store, center, zoom, class: className, ...props } = $props<Props>();
+	let { children, store, center, zoom, class: className, ...props } = $props<Props>();
 
-	let Leaflet: typeof L;
 	let map: L.Map | undefined = $state();
-	let featureGroup: L.FeatureGroup | undefined = $state();
-	let overlayLayer: L.Control.Layers | undefined = $state();
+	let featureGroup: L.FeatureGroup = $state(new L.FeatureGroup());
+	let overlayLayer: L.Control.Layers = $state(new L.Control.Layers());
 
 	setContext(key, {
 		getMap: () => map,
 		getStore: () => store,
-		getLeaflet: () => Leaflet,
+		getLeaflet: () => L,
 		getFeatureGroup: () => featureGroup,
 		getOverlayLayer: () => overlayLayer
 	});
 
+	const rasterLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution:
+			'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+		updateWhenIdle: true,
+		updateWhenZooming: false
+	});
+
+	const mapOptions: L.MapOptions = {
+		zoom: zoom,
+		center: center,
+		preferCanvas: true,
+		layers: [rasterLayer]
+	};
+
 	const loadFeatures = (features: FeatureCollection) => {
-		Leaflet.geoJSON(features, {
+		L.geoJSON(features, {
 			style: (feature) => {
 				const defaultAttributes = {
 					stroke: '#3388ff',
@@ -57,7 +72,7 @@
 				};
 			},
 			onEachFeature: (_, layer) => {
-				featureGroup!.addLayer(layer);
+				featureGroup.addLayer(layer);
 				// @ts-expect-error - Leaflet types are a mess
 				overlayLayer.addOverlay(layer, layer.feature.properties.nameID || layer.feature.id);
 			}
@@ -71,32 +86,11 @@
 		featureGroup.clearLayers();
 	};
 
-	// @ts-expect-error - Action type doesn't accept async functions
-	const initMap: Action<HTMLDivElement, FeatureCollection> = async (
+	const initMap: Action<HTMLDivElement, FeatureCollection> = (
 		mapContainer: HTMLDivElement,
 		features: FeatureCollection
 	) => {
-		Leaflet = await import('leaflet');
-		await import('leaflet/dist/leaflet.css');
-
-		const rasterLayer = Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution:
-				'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-			updateWhenIdle: true,
-			updateWhenZooming: false
-		});
-
-		const mapOptions: L.MapOptions = {
-			zoom: zoom,
-			center: center,
-			preferCanvas: true,
-			layers: [rasterLayer]
-		};
-
-		map = Leaflet.map(mapContainer, mapOptions);
-
-		featureGroup = Leaflet.featureGroup();
-		overlayLayer = Leaflet.control.layers();
+		map = L.map(mapContainer, mapOptions);
 
 		featureGroup.addTo(map);
 		overlayLayer.addTo(map);
@@ -110,7 +104,7 @@
 		return {
 			update: (update: FeatureCollection) => {
 				if (!areEqualGeoJSON(features, update)) {
-					resetLayers(featureGroup!, overlayLayer!);
+					resetLayers(featureGroup, overlayLayer);
 					loadFeatures(update);
 				}
 			},

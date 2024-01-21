@@ -41,6 +41,12 @@ devDependencies:
   '@sveltejs/vite-plugin-svelte':
     specifier: ^3.0.0
     version: 3.0.1(svelte@5.0.0-next.36)(vite@5.0.11)
+  '@turf/simplify':
+    specifier: ^6.5.0
+    version: 6.5.0
+  '@turf/truncate':
+    specifier: ^6.5.0
+    version: 6.5.0
   '@types/eslint':
     specifier: 8.56.0
     version: 8.56.0
@@ -883,6 +889,19 @@ packages:
       '@turf/invariant': 6.5.0
     dev: true
 
+  /@turf/clean-coords@6.5.0:
+    resolution: {integrity: sha512-EMX7gyZz0WTH/ET7xV8MyrExywfm9qUi0/MY89yNffzGIEHuFfqwhcCqZ8O00rZIPZHUTxpmsxQSTfzJJA1CPw==}
+    dependencies:
+      '@turf/helpers': 6.5.0
+      '@turf/invariant': 6.5.0
+    dev: true
+
+  /@turf/clone@6.5.0:
+    resolution: {integrity: sha512-mzVtTFj/QycXOn6ig+annKrM6ZlimreKYz6f/GSERytOpgzodbQyOgkfwru100O1KQhhjSudKK4DsQ0oyi9cTw==}
+    dependencies:
+      '@turf/helpers': 6.5.0
+    dev: true
+
   /@turf/destination@6.5.0:
     resolution: {integrity: sha512-4cnWQlNC8d1tItOz9B4pmJdWpXqS0vEvv65bI/Pj/genJnsL7evI0/Xw42RvEGROS481MPiU80xzvwxEvhQiMQ==}
     dependencies:
@@ -961,6 +980,15 @@ packages:
       '@turf/helpers': 6.5.0
       '@turf/invariant': 6.5.0
       '@turf/line-intersect': 6.5.0
+      '@turf/meta': 6.5.0
+    dev: true
+
+  /@turf/simplify@6.5.0:
+    resolution: {integrity: sha512-USas3QqffPHUY184dwQdP8qsvcVH/PWBYdXY5am7YTBACaQOMAlf6AKJs9FT8jiO6fQpxfgxuEtwmox+pBtlOg==}
+    dependencies:
+      '@turf/clean-coords': 6.5.0
+      '@turf/clone': 6.5.0
+      '@turf/helpers': 6.5.0
       '@turf/meta': 6.5.0
     dev: true
 
