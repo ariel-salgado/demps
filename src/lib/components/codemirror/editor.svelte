@@ -91,7 +91,7 @@
 	</div>
 
 	{#if editor && actions}
-		<div class="rounded-t-md border-t border-t-slate-300 p-6">
+		<div class="rounded-t-md border-t border-t-slate-300 p-4">
 			{@render actions()}
 		</div>
 	{/if}
