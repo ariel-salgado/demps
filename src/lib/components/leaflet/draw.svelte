@@ -4,13 +4,13 @@
 	import type { MapContext } from '$lib/components/leaflet';
 
 	import { getContext } from 'svelte';
-	import { key } from '$lib/components/leaflet';
+	import { contextKey } from '$lib/components/leaflet';
 
 	import '@geoman-io/leaflet-geoman-free';
 	import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
 
 	const { getMap, getStore, getLeaflet, getFeatureGroup, getOverlayLayer } =
-		getContext<MapContext>(key);
+		getContext<MapContext>(contextKey);
 
 	let map = getMap();
 	let store = getStore();

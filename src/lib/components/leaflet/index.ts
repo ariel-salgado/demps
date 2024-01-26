@@ -1,9 +1,8 @@
 import type L from 'leaflet';
 import type { GeoJSONStore } from '$lib/stores';
 
-import { key } from './context';
-
-import Map from './map.svelte';
+//@ts-expect-error - TS doesn't know about the module context api
+import Map, { contextKey } from './map.svelte';
 import Draw from './draw.svelte';
 import Search from './search.svelte';
 
@@ -15,4 +14,4 @@ export type MapContext = {
 	getOverlayLayer: () => L.Control.Layers;
 };
 
-export { key, Map, Draw, Search };
+export { contextKey, Map, Draw, Search };

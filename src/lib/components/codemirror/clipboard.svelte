@@ -3,14 +3,14 @@
 	import type { EditorContext } from '$lib/components/codemirror';
 
 	import { getContext } from 'svelte';
-	import { key } from '$lib/components/codemirror';
+	import { contextKey } from '$lib/components/codemirror';
 	import { CheckedClipboardIcon, ClipboardIcon } from '$lib/components/icons';
 
 	interface Props extends HTMLButtonAttributes {}
 
 	const { ...props } = $props<Props>();
 
-	const { getEditor } = getContext<EditorContext>(key);
+	const { getEditor } = getContext<EditorContext>(contextKey);
 
 	const editor = getEditor();
 

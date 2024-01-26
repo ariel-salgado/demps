@@ -1,3 +1,7 @@
+<script context="module" lang="ts">
+	export const contextKey = Symbol();
+</script>
+
 <script lang="ts">
 	import type { Action } from 'svelte/action';
 	import type { GeoJSONStore } from '$lib/stores';
@@ -7,7 +11,6 @@
 	import { cn } from '$lib/utils';
 	import { setContext } from 'svelte';
 	import { areEqualGeoJSON } from '$lib/utils';
-	import { key } from '$lib/components/leaflet';
 
 	import * as L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
@@ -24,7 +27,7 @@
 	let featureGroup: L.FeatureGroup = $state(new L.FeatureGroup());
 	let overlayLayer: L.Control.Layers = $state(new L.Control.Layers());
 
-	setContext(key, {
+	setContext(contextKey, {
 		getMap: () => map,
 		getStore: () => store,
 		getLeaflet: () => L,

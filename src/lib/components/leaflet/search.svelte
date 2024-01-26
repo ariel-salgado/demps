@@ -2,12 +2,12 @@
 	import type { MapContext } from '$lib/components/leaflet';
 
 	import { getContext } from 'svelte';
-	import { key } from '$lib/components/leaflet';
+	import { contextKey } from '$lib/components/leaflet';
 	import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 	import 'leaflet-geosearch/dist/geosearch.css';
 
-	const { getMap } = getContext<MapContext>(key);
+	const { getMap } = getContext<MapContext>(contextKey);
 
 	let map = getMap();
 

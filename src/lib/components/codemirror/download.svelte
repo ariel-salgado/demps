@@ -3,14 +3,14 @@
 	import type { EditorContext } from '$lib/components/codemirror';
 
 	import { getContext } from 'svelte';
-	import { key } from '$lib/components/codemirror';
 	import { DownloadIcon } from '$lib/components/icons';
+	import { contextKey } from '$lib/components/codemirror';
 
 	interface Props extends HTMLAnchorAttributes {}
 
 	const { ...props } = $props<Props>();
 
-	const { getEditor } = getContext<EditorContext>(key);
+	const { getEditor } = getContext<EditorContext>(contextKey);
 
 	const editor = getEditor();
 
