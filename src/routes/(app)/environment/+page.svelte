@@ -4,7 +4,7 @@
 	import { envStore, toleranceStore } from '$lib/stores';
 	import { Map, Draw, Search } from '$lib/components/leaflet';
 	import { isValidGeoJSON, preprocessGeoJSON } from '$lib/utils';
-	import { Editor, Widgets, Clipboard, Download } from '$lib/components/codemirror';
+	import { Editor, Widgets, Enhance, Clipboard, Download } from '$lib/components/codemirror';
 
 	const zoom: number = 15;
 	const center: [number, number] = [-33.015348, -71.550499];
@@ -42,6 +42,7 @@
 	<Editor class="col-span-2" store={envStore}>
 		{#snippet widgets()}
 			<Widgets>
+				<Enhance tolerance={toleranceStore} />
 				<Clipboard />
 				<Download />
 			</Widgets>
