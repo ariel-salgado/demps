@@ -1,3 +1,7 @@
+<script context="module" lang="ts">
+	export const contextKey = Symbol();
+</script>
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { Action } from 'svelte/action';
@@ -8,8 +12,8 @@
 	import { setContext } from 'svelte';
 	import { EditorView } from '@codemirror/view';
 	import { EditorState } from '@codemirror/state';
-	import { cn, debounce, strEqualsObj } from '$lib/utils';
-	import { key, extensions } from '$lib/components/codemirror';
+	import { extensions } from '$lib/components/codemirror';
+	import { cn, debounce, isValidGeoJSON, strEqualsObj } from '$lib/utils';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		store: GeoJSONStore;
@@ -23,7 +27,7 @@
 	let topPosition: number | undefined = $state();
 	let innerHeight: number | undefined = $state();
 
-	setContext(key, {
+	setContext(contextKey, {
 		getEditor: () => editor
 	});
 
@@ -33,13 +37,13 @@
 
 	const editorOnChange = EditorView.updateListener.of((v) => {
 		const value = v.state.doc.toString();
-		if (v.docChanged && !strEqualsObj(value, $store)) {
+		if (v.docChanged && !strEqualsObj(value, $store) && isValidGeoJSON(value)) {
 			updateStore(value);
 		}
 	});
 
 	const updateEditor = (value: FeatureCollection) => {
-		if (!strEqualsObj(editor!.state.doc.toString(), value)) {
+		if (!strEqualsObj(editor!.state.doc.toString(), value) && isValidGeoJSON(value)) {
 			editor?.dispatch({
 				changes: {
 					from: 0,
