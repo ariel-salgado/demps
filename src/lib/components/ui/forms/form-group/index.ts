@@ -1,5 +1,5 @@
-import Formgroup from './form-group.svelte';
+import FormGroup from './form-group.svelte';
 
 export {
-    Formgroup
+    FormGroup
 }
