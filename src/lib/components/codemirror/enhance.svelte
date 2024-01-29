@@ -12,7 +12,7 @@
 		tolerance: ToleranceStore;
 	}
 
-	let { tolerance, class: className, ...props } = $props<Props>();
+	const { tolerance, ...props } = $props<Props>();
 
 	let showOptions: boolean = $state(false);
 	let enhanceForm: HTMLDivElement | undefined = $state();
