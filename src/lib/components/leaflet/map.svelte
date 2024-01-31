@@ -100,6 +100,12 @@
 
 		loadFeatures(features);
 
+		if (featureGroup.getBounds().isValid())
+			map.fitBounds(featureGroup.getBounds(), {
+				animate: false,
+				maxZoom: 15
+			});
+
 		map.whenReady(() => {
 			map?.invalidateSize();
 		});
