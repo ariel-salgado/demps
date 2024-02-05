@@ -17,8 +17,8 @@
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		store: GeoJSONStore;
-		widgets?: Snippet<void>;
-		actions?: Snippet<void>;
+		widgets?: Snippet;
+		actions?: Snippet;
 	}
 
 	let { store, widgets, actions, class: className, ...props } = $props<Props>();

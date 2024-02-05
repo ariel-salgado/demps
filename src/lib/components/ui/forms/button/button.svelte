@@ -9,7 +9,7 @@
 		| (HTMLAnchorAttributes & { as: 'a' });
 
 	type Props = {
-		children: Snippet<void>;
+		children: Snippet;
 	} & ButtonOrLinkProps;
 
 	let { children, class: className, ...props } = $props<Props>();

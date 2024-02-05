@@ -3,7 +3,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		children: Snippet<void>;
+		children: Snippet;
 	}
 
 	const { children, ...props } = $props<Props>();

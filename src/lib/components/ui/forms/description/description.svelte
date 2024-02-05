@@ -5,7 +5,7 @@
 	import { cn } from '$lib/utils';
 
 	interface Props extends HTMLAttributes<HTMLParagraphElement> {
-		children: Snippet<void>;
+		children: Snippet;
 	}
 
 	const { children, class: className, ...props } = $props<Props>();

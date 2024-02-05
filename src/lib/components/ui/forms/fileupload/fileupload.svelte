@@ -8,7 +8,7 @@
 		accept: string;
 		files: FileList | null;
 		onUpload: ChangeEventHandler<HTMLInputElement>;
-		children: Snippet<void>;
+		children: Snippet;
 	}
 
 	let { accept, files, onUpload, children, ...props } = $props<Props>();
