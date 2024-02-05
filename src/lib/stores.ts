@@ -106,6 +106,19 @@ const createToleranceStore = (initialState?: keyof typeof toleranceOptions) => {
 	}
 }
 
+const createSimStore = (initialState?: FeatureCollection) => {
+	const data = initialState ?? {
+		type: 'FeatureCollection',
+		features: []
+	};
+
+	const store = writable<FeatureCollection>(data);
+
+	return {
+		...store
+	}
+};
+
 const persistedStore = <T extends Writable<unknown>>(key: string, initialStore: T): T => {
 	const storedValue = browser ? localStorage.getItem(key) : null;
 	const data = storedValue ? JSON.parse(storedValue) : get(initialStore);
@@ -127,10 +140,10 @@ const persistedStore = <T extends Writable<unknown>>(key: string, initialStore: 
 	};
 };
 
+export type SimStore = ReturnType<typeof createSimStore>;
 export type GeoJSONStore = ReturnType<typeof createGeoJSONStore>;
-
 export type ToleranceStore = ReturnType<typeof createToleranceStore>;
 
+export const simStore = persistedStore<SimStore>('sim', createSimStore());
 export const envStore = persistedStore<GeoJSONStore>('env', createGeoJSONStore());
-
 export const toleranceStore = persistedStore<ToleranceStore>('tolerance', createToleranceStore());
