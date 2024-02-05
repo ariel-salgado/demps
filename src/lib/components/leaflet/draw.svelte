@@ -55,10 +55,11 @@
 		const addedFeatureGeoJSON = L.geoJSON(addedFeature);
 
 		featureGroup.addLayer(addedFeatureGeoJSON);
-		overlayLayer.addOverlay(
-			addedFeatureGeoJSON,
-			(addedFeature.properties?.nameID || addedFeature.id) as string
-		);
+		if (overlayLayer)
+			overlayLayer.addOverlay(
+				addedFeatureGeoJSON,
+				(addedFeature.properties?.nameID || addedFeature.id) as string
+			);
 
 		store.addFeature(addedFeature);
 	});
@@ -68,7 +69,7 @@
 
 		// @ts-expect-error - Leaflet types are a mess
 		const removedFeatureID = layer.feature.id as string;
-		overlayLayer.removeLayer(layer);
+		if (overlayLayer) overlayLayer.removeLayer(layer);
 		store.removeFeatureByID(removedFeatureID);
 	});
 
