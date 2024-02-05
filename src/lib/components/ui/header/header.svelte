@@ -29,7 +29,7 @@
 	</nav>
 
 	<div class="inline-flex gap-x-8 p-2">
-		<Button>
+		<Button as="a" href="/simulation">
 			<span>Run</span>
 			<PlayIcon />
 		</Button>
