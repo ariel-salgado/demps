@@ -5,7 +5,7 @@ import type { GeoJSONStore } from '$lib/stores';
 import Map, { contextKey } from './map.svelte';
 import Draw from './draw.svelte';
 import Search from './search.svelte';
-import Cluster from './cluster.svelte';
+import MarkerCluster from './markercluster.svelte';
 
 export type MapContext = {
 	getMap: () => L.Map;
@@ -15,4 +15,4 @@ export type MapContext = {
 	getOverlayLayer: () => L.Control.Layers;
 };
 
-export { contextKey, Map, Draw, Search, Cluster };
+export { contextKey, Map, Draw, Search, MarkerCluster };

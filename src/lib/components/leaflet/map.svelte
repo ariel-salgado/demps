@@ -16,18 +16,18 @@
 	import 'leaflet/dist/leaflet.css';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		store: Writable<FeatureCollection>;
-		center: L.LatLngExpression;
 		zoom: number;
 		overlay?: boolean;
+		center: L.LatLngExpression;
+		store?: Writable<FeatureCollection>;
 	}
 
 	let {
-		children,
-		store,
-		center,
 		zoom,
 		overlay = true,
+		center,
+		store,
+		children,
 		class: className,
 		...props
 	} = $props<Props>();
@@ -88,8 +88,8 @@
 			onEachFeature: (_, layer) => {
 				featureGroup.addLayer(layer);
 				if (overlay)
-					// @ts-expect-error - Leaflet types are a mess
-					overlayLayer.addOverlay(layer, layer.feature.properties.nameID || layer.feature.id);
+					// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
+					overlayLayer?.addOverlay(layer, layer.feature.properties.nameID || layer.feature.id);
 			}
 		});
 	};
@@ -102,16 +102,16 @@
 		featureGroup.clearLayers();
 	};
 
-	const initMap: Action<HTMLDivElement, FeatureCollection> = (
+	const initMap: Action<HTMLDivElement, FeatureCollection | undefined> = (
 		mapContainer: HTMLDivElement,
-		features: FeatureCollection
+		features: FeatureCollection | undefined
 	) => {
 		map = L.map(mapContainer, mapOptions);
 
 		featureGroup.addTo(map);
 		if (overlay) overlayLayer?.addTo(map);
 
-		loadFeatures(features);
+		if (features) loadFeatures(features);
 
 		if (featureGroup.getBounds().isValid())
 			map.fitBounds(featureGroup.getBounds(), {
@@ -124,11 +124,12 @@
 		});
 
 		return {
-			update: (update: FeatureCollection) => {
-				if (!areEqualGeoJSON(features, update)) {
-					resetLayers(featureGroup, overlayLayer);
-					loadFeatures(update);
-				}
+			update: (update: FeatureCollection | undefined) => {
+				if (update)
+					if (!areEqualGeoJSON(features!, update)) {
+						resetLayers(featureGroup, overlayLayer);
+						loadFeatures(update);
+					}
 			},
 
 			destroy: () => {

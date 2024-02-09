@@ -1,5 +1,5 @@
 import type { Updater, Writable } from 'svelte/store';
-import type { FeatureCollection, Feature } from 'geojson';
+import type { FeatureCollection, Feature, Point } from 'geojson';
 
 import { browser } from '$app/environment';
 import { get, writable } from 'svelte/store';
@@ -78,7 +78,7 @@ export const toleranceOptions = {
 	deshabilitado: 0,
 	bajo: 0.0001,
 	medio: 0.00015,
-	alto: 0.0002,
+	alto: 0.0002
 } as const;
 
 const createToleranceStore = (initialState?: keyof typeof toleranceOptions) => {
@@ -95,7 +95,7 @@ const createToleranceStore = (initialState?: keyof typeof toleranceOptions) => {
 			const value = updater(current);
 			return value;
 		});
-	}
+	};
 
 	const subscribe = store.subscribe;
 
@@ -103,8 +103,8 @@ const createToleranceStore = (initialState?: keyof typeof toleranceOptions) => {
 		set,
 		update,
 		subscribe
-	}
-}
+	};
+};
 
 const createSimStore = (initialState?: FeatureCollection) => {
 	const data = initialState ?? {
@@ -116,7 +116,7 @@ const createSimStore = (initialState?: FeatureCollection) => {
 
 	return {
 		...store
-	}
+	} as Writable<FeatureCollection<Point>>;
 };
 
 const persistedStore = <T extends Writable<unknown>>(key: string, initialStore: T): T => {
@@ -144,6 +144,6 @@ export type SimStore = ReturnType<typeof createSimStore>;
 export type GeoJSONStore = ReturnType<typeof createGeoJSONStore>;
 export type ToleranceStore = ReturnType<typeof createToleranceStore>;
 
-export const simStore = persistedStore<SimStore>('sim', createSimStore());
+export const simStore = createSimStore();
 export const envStore = persistedStore<GeoJSONStore>('env', createGeoJSONStore());
 export const toleranceStore = persistedStore<ToleranceStore>('tolerance', createToleranceStore());
