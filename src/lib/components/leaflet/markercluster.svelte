@@ -26,7 +26,7 @@
 	const store = geojson || mapStore;
 
 	// @ts-expect-error - markerClusterGroup is not part of the leaflet types
-	let markers = L.markerClusterGroup({
+	let markers = window.L.markerClusterGroup({
 		animateAddingMarkers: true
 	});
 
