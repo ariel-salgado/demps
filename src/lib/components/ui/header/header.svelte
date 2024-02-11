@@ -13,7 +13,7 @@
 	class="sticky top-0 z-30 flex h-14 w-full items-center justify-evenly gap-x-4 bg-white px-10 shadow"
 >
 	<span class="p-2 text-2xl font-medium">
-		<a href="/">DEMPS</a>
+		<a class="block" href="/">DEMPS</a>
 	</span>
 
 	<nav>
@@ -22,7 +22,7 @@
 				<li
 					class="p-2 font-medium text-slate-500 transition-colors focus-within:text-slate-900 hover:text-slate-900"
 				>
-					<a {href}>{name}</a>
+					<a class="block" {href}>{name}</a>
 				</li>
 			{/each}
 		</ul>
