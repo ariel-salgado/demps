@@ -34,6 +34,11 @@
 	};
 </script>
 
+<svelte:head>
+	<title>DEMPS | Environment</title>
+	<meta name="description" content="DEMPS | Environment" />
+</svelte:head>
+
 <section class="grid h-full grid-flow-col grid-cols-5">
 	<Map class="col-span-3" store={envStore} {center} {zoom}>
 		<Search />

@@ -16,6 +16,11 @@
 	const center: [number, number] = [-33.015348, -71.550499];
 </script>
 
+<svelte:head>
+	<title>DEMPS | Simulation</title>
+	<meta name="description" content="DEMPS | Simulation" />
+</svelte:head>
+
 <section class="h-full">
 	<Map {center} {zoom} overlay={false}>
 		<MarkerCluster geojson={simStore} />
