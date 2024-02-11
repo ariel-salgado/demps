@@ -33,6 +33,11 @@
 
 	map.pm.setLang('es');
 
+	// Add aria-label to the draw buttons
+	document.querySelectorAll('a.leaflet-buttons-control-button').forEach((button) => {
+		button.setAttribute('aria-label', button.parentElement?.getAttribute('title')!);
+	});
+
 	const layerToFeature = (layer: Layer): Feature => {
 		let feature: Feature;
 

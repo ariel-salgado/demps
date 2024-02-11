@@ -46,11 +46,12 @@
 		getOverlayLayer: () => overlayLayer
 	});
 
-	const rasterLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const rasterLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		attribution:
-			'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+			'© <a href="http://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>',
 		updateWhenIdle: true,
-		updateWhenZooming: false
+		updateWhenZooming: false,
+		noWrap: true
 	});
 
 	const mapOptions: L.MapOptions = {

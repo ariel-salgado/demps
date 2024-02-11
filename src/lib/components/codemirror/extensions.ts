@@ -90,6 +90,9 @@ export const extensions: Extension = (() => [
 	highlightActiveLine(),
 	highlightSelectionMatches(),
 	EditorView.lineWrapping,
+	EditorView.contentAttributes.of({
+		'aria-label': 'GeoJSON editor'
+	}),
 	json(),
 	baseTheme,
 	keymap.of([
