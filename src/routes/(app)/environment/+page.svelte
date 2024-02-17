@@ -47,7 +47,7 @@
 	<Editor class="col-span-2" store={envStore}>
 		{#snippet widgets()}
 			<Widgets>
-				<Enhance tolerance={toleranceStore} />
+				<Enhance />
 				<Clipboard />
 				<Download />
 			</Widgets>
