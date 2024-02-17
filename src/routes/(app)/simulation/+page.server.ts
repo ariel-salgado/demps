@@ -5,10 +5,10 @@ export const ssr = false;
 
 const NUM_POINTS = 1000;
 
-export const load: PageServerLoad = async () => {
+export const load = (async () => {
 	const geoJSON = generateGeoJSON(NUM_POINTS);
 	return geoJSON;
-};
+}) satisfies PageServerLoad;
 
 // Mocking
 function generateRandomPoint(polygons: [number, number][][]): Point {
