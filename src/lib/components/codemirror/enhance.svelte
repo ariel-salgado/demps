@@ -1,18 +1,16 @@
 <script lang="ts">
-	import type { ToleranceStore } from '$lib/stores';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	import { capitalize } from '$lib/utils';
 	import { fade } from 'svelte/transition';
+	import { toleranceStore } from '$lib/stores';
 	import { toleranceOptions } from '$lib/stores';
 	import { SparkleIcon } from '$lib/components/icons';
 	import { FormGroup, Label, Select } from '$lib/components/ui/forms';
 
-	interface Props extends HTMLAttributes<HTMLDivElement> {
-		tolerance: ToleranceStore;
-	}
+	interface Props extends HTMLAttributes<HTMLDivElement> {}
 
-	const { tolerance, ...props } = $props<Props>();
+	const { ...props } = $props<Props>();
 
 	let showOptions: boolean = $state(false);
 	let enhanceForm: HTMLDivElement | undefined = $state();
@@ -36,7 +34,7 @@
 	};
 
 	const enhancementOptions = Object.entries(toleranceOptions).map(([key, value]) => {
-		if (value === $tolerance) return { label: capitalize(key), value, selected: true };
+		if (value === $toleranceStore) return { label: capitalize(key), value, selected: true };
 		return { label: capitalize(key), value };
 	});
 </script>
@@ -59,7 +57,7 @@
 		>
 			<FormGroup class="w-60 py-6 focus-within:bg-white hover:bg-white">
 				<Label for="tolerance">Nivel de ajuste</Label>
-				<Select id="tolerance" bind:value={$tolerance} options={enhancementOptions} />
+				<Select id="tolerance" bind:value={$toleranceStore} options={enhancementOptions} />
 			</FormGroup>
 		</div>
 	{/if}
