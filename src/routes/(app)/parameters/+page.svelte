@@ -16,6 +16,31 @@
 	const setSelected = (s: string) => (selected = s);
 </script>
 
+<svelte:head>
+	<title>DEMPS | Parameters</title>
+	<meta name="description" content="DEMPS | Parameters" />
+</svelte:head>
+
+{#snippet navItems(items: Record<string, string | Record<string, string>>, isSubKey: boolean)}
+	{#each Object.entries(items) as [key, value]}
+		<li>
+			<a
+				class={`block w-full rounded-md ${isSubKey ? 'px-10' : 'px-4'} py-2 text-base font-medium capitalize text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900`}
+				class:active={selected === key}
+				onclick={() => {
+					setSelected(key);
+				}}
+				href={`#${key}`}
+				>{key}
+			</a>
+		</li>
+
+		{#if typeof value === 'object'}
+			{@render navItems(value, true)}
+		{/if}
+	{/each}
+{/snippet}
+
 {#snippet formField(field: FormField)}
 	<FormGroup>
 		<Label for={field.attributes.name}>{field.label}</Label>
@@ -44,35 +69,7 @@
 		</h1>
 		<nav>
 			<ul>
-				{#each Object.entries(items) as [key, value]}
-					<li>
-						<a
-							class="block w-full rounded-md px-4 py-2 text-base font-medium capitalize text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
-							class:active={selected === key}
-							onclick={() => {
-								setSelected(key);
-							}}
-							href={`#${key}`}
-							>{key}
-						</a>
-					</li>
-
-					{#if typeof value === 'object'}
-						{#each Object.keys(value) as subKey}
-							<li>
-								<a
-									class="block w-full rounded-md px-10 py-2 text-base font-medium capitalize text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
-									class:active={selected === `${key}-${subKey}`}
-									onclick={() => {
-										setSelected(`${key}-${subKey}`);
-									}}
-									href={`#${subKey}`}
-									>{subKey}
-								</a>
-							</li>
-						{/each}
-					{/if}
-				{/each}
+				{@render navItems(items, false)}
 			</ul>
 		</nav>
 	</aside>
