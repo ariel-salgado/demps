@@ -1,12 +1,17 @@
 <script lang="ts">
 	import type { FormField } from './form';
 
+	import { page } from '$app/stores';
 	import { getFormData } from './form';
 	import { Description, FormGroup, Input, Label, Select } from '$lib/components/ui/forms/';
 
 	const { form, items } = getFormData();
 
-	let selected: string | undefined = $state();
+	let selected: string | undefined = $state($page.url.hash.slice(1));
+
+	$effect(() => {
+		selected = $page.url.hash.slice(1);
+	});
 
 	const setSelected = (s: string) => (selected = s);
 </script>
@@ -47,8 +52,9 @@
 							onclick={() => {
 								setSelected(key);
 							}}
-							href={`#${key}`}>{key}</a
-						>
+							href={`#${key}`}
+							>{key}
+						</a>
 					</li>
 
 					{#if typeof value === 'object'}
@@ -60,8 +66,9 @@
 									onclick={() => {
 										setSelected(`${key}-${subKey}`);
 									}}
-									href={`#${subKey}`}>{subKey}</a
-								>
+									href={`#${subKey}`}
+									>{subKey}
+								</a>
 							</li>
 						{/each}
 					{/if}
