@@ -15,27 +15,32 @@ export type FormField = {
 
 type ConfigForm = Record<string, FormField[] | Record<string, FormField[]>>;
 
-export function flattenForm(
-	obj: ConfigForm = configForm
-): Array<FormField | { title: string } | { subtitle: string }> {
-	let result: Array<FormField | { title: string } | { subtitle: string }> = [];
+export const getFormData = (obj: ConfigForm = configForm) => {
+	let form: Array<FormField | { title: string } | { subtitle: string }> = [];
+	const items: Record<string, string | Record<string, string>> = {};
 
 	for (const key in obj) {
-		result.push({ title: key });
+		form.push({ title: key });
 
 		if (Array.isArray(obj[key])) {
-			result = result.concat(obj[key] as FormField[]);
+			form = form.concat(obj[key] as FormField[]);
+			items[key] = key;
 		} else {
+			const subItems: Record<string, string> = {};
+
 			for (const subKey in obj[key]) {
-				result.push({ subtitle: subKey });
+				form.push({ subtitle: subKey });
 				// @ts-expect-error - This only works for the current nested structure
-				result = result.concat(obj[key][subKey]);
+				form = form.concat(obj[key][subKey]);
+				subItems[subKey] = subKey;
 			}
+
+			items[key] = subItems;
 		}
 	}
 
-	return result;
-}
+	return { form, items };
+};
 
 const configForm: ConfigForm = {
 	general: [
