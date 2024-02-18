@@ -11,6 +11,6 @@
 	const { children, class: className, ...props } = $props<Props>();
 </script>
 
-<p class={cn('text-sm text-slate-500', className)} {...props}>
+<p class={cn('text-sm text-slate-600', className)} {...props}>
 	{@render children()}
 </p>
