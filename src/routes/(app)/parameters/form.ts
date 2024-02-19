@@ -18,28 +18,45 @@ type ConfigForm = Record<string, FormField[] | Record<string, FormField[]>>;
 export const getFormData = (obj: ConfigForm = configForm) => {
 	let form: Array<FormField | { title: string } | { subtitle: string }> = [];
 	const items: Record<string, string | Record<string, string>> = {};
+	const validations: Record<string, z.ZodType> = {};
 
 	for (const key in obj) {
 		form.push({ title: key });
 
 		if (Array.isArray(obj[key])) {
-			form = form.concat(obj[key] as FormField[]);
+			const fields = obj[key] as FormField[];
+			form = form.concat(fields);
 			items[key] = key;
+
+			fields.forEach((field) => {
+				if (field.validation) {
+					validations[field.attributes.name!] = field.validation;
+				}
+			});
 		} else {
 			const subItems: Record<string, string> = {};
 
 			for (const subKey in obj[key]) {
 				form.push({ subtitle: subKey });
-				// @ts-expect-error - This only works for the current nested structure
-				form = form.concat(obj[key][subKey]);
+
+				const subFields = obj[key]![subKey] as FormField[];
+				form = form.concat(subFields);
 				subItems[subKey] = subKey;
+
+				subFields.forEach((field) => {
+					if (field.validation) {
+						validations[field.attributes.name!] = field.validation;
+					}
+				});
 			}
 
 			items[key] = subItems;
 		}
 	}
 
-	return { form, items };
+	const schema = z.object(validations);
+
+	return { form, items, schema };
 };
 
 const configForm: ConfigForm = {
