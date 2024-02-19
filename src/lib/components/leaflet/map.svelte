@@ -4,12 +4,13 @@
 
 <script lang="ts">
 	import type { Action } from 'svelte/action';
-	import type { Writable } from 'svelte/store';
+	import type { GeoJSONStore } from '$lib/stores';
 	import type { FeatureCollection } from 'geojson';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	import { cn } from '$lib/utils';
 	import { setContext } from 'svelte';
+	import { createPopup } from './popup';
 	import { areEqualGeoJSON } from '$lib/utils';
 
 	import * as L from 'leaflet';
@@ -19,7 +20,7 @@
 		zoom: number;
 		overlay?: boolean;
 		center: L.LatLngExpression;
-		store?: Writable<FeatureCollection>;
+		store?: GeoJSONStore;
 	}
 
 	let {
@@ -61,6 +62,22 @@
 		layers: [rasterLayer]
 	};
 
+	const updateFeatureProps = (e: SubmitEvent) => {
+		e.preventDefault();
+		const form = e.target as HTMLFormElement;
+
+		const formData = new FormData(form);
+
+		const id = formData.get('id') as string;
+		const props = Object.fromEntries(formData) as Record<string, string>;
+		delete props.id;
+
+		store?.updateFeatureProps(id, props);
+
+		resetLayers(featureGroup, overlayLayer);
+		loadFeatures($store as FeatureCollection);
+	};
+
 	const loadFeatures = (features: FeatureCollection) => {
 		L.geoJSON(features, {
 			style: (feature) => {
@@ -87,6 +104,7 @@
 				};
 			},
 			onEachFeature: (_, layer) => {
+				layer.bindPopup(createPopup(layer));
 				featureGroup.addLayer(layer);
 				if (overlay)
 					// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
@@ -122,6 +140,16 @@
 
 		map.whenReady(() => {
 			map?.invalidateSize();
+
+			map?.on('popupopen', (event) => {
+				const form = event.popup.getElement()?.querySelector('form');
+				if (form) form.addEventListener('submit', updateFeatureProps);
+			});
+
+			map?.on('popupclose', (event) => {
+				const form = event.popup.getElement()?.querySelector('form');
+				if (form) form.removeEventListener('submit', updateFeatureProps);
+			});
 		});
 
 		return {

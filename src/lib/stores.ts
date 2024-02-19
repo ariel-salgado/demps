@@ -62,11 +62,27 @@ const createGeoJSONStore = (initialState?: FeatureCollection) => {
 		});
 	};
 
+	const updateFeatureProps = (id: string | number, props: Record<string, string | number>) => {
+		store.update((current) => {
+			const index = current.features.findIndex((feature) => String(feature.id) === String(id));
+			if (index !== -1)
+				current.features[index]!.properties = {
+					...(current.features[index]!.properties ?? {}),
+					...props
+				};
+
+			return {
+				...current
+			};
+		});
+	};
+
 	const fns = {
 		addFeature,
 		removeFeatureByID,
 		removeFeatureByCoords,
-		updateFeatureCoords
+		updateFeatureCoords,
+		updateFeatureProps
 	};
 
 	return {
@@ -108,14 +124,14 @@ const createToleranceStore = (initialState?: keyof typeof toleranceOptions) => {
 };
 
 const createConfigStore = (initialState?: ConfigurationSchema) => {
-	const data = initialState ?? {} as ConfigurationSchema;
+	const data = initialState ?? ({} as ConfigurationSchema);
 
 	const store = writable<ConfigurationSchema>(data);
 
 	return {
 		...store
 	} as Writable<ConfigurationSchema>;
-}
+};
 
 const createSimStore = (initialState?: FeatureCollection) => {
 	const data = initialState ?? {
