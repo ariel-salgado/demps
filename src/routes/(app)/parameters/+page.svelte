@@ -3,6 +3,7 @@
 
 	import { page } from '$app/stores';
 	import { getFormData } from './form';
+	import { configStore } from '$lib/stores';
 	import { Description, FormGroup, Input, Label, Select } from '$lib/components/ui/forms/';
 
 	const { form, items } = getFormData();
@@ -10,7 +11,7 @@
 	let selected: string | undefined = $state($page.url.hash.slice(1));
 
 	$effect(() => {
-		selected = $page.url.hash.slice(1);
+		selected = $page.url.hash.slice(1) || 'general';
 	});
 
 	const setSelected = (s: string) => (selected = s);
@@ -45,13 +46,19 @@
 	<FormGroup>
 		<Label for={field.attributes.name}>{field.label}</Label>
 		{#if field.type === 'input'}
-			<Input id={field.attributes.name} {...field.attributes} validation={field.validation} />
+			<Input
+				id={field.attributes.name}
+				{...field.attributes}
+				validation={field.validation}
+				bind:value={$configStore[(field.attributes.name!)]}
+			/>
 		{:else if field.type === 'select'}
 			<Select
 				id={field.attributes.name}
 				{...field.attributes}
 				options={field.options}
 				validation={field.validation}
+				bind:value={$configStore[(field.attributes.name!)]}
 			/>
 		{/if}
 		<Description>{field.description}</Description>

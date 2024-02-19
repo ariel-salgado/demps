@@ -1,3 +1,4 @@
+import type { ConfigurationSchema } from './types';
 import type { Updater, Writable } from 'svelte/store';
 import type { FeatureCollection, Feature, Point } from 'geojson';
 
@@ -106,6 +107,16 @@ const createToleranceStore = (initialState?: keyof typeof toleranceOptions) => {
 	};
 };
 
+const createConfigStore = (initialState?: ConfigurationSchema) => {
+	const data = initialState ?? {} as ConfigurationSchema;
+
+	const store = writable<ConfigurationSchema>(data);
+
+	return {
+		...store
+	} as Writable<ConfigurationSchema>;
+}
+
 const createSimStore = (initialState?: FeatureCollection) => {
 	const data = initialState ?? {
 		type: 'FeatureCollection',
@@ -141,9 +152,11 @@ const persistedStore = <T extends Writable<unknown>>(key: string, initialStore: 
 };
 
 export type SimStore = ReturnType<typeof createSimStore>;
+export type ConfigStore = ReturnType<typeof createConfigStore>;
 export type GeoJSONStore = ReturnType<typeof createGeoJSONStore>;
 export type ToleranceStore = ReturnType<typeof createToleranceStore>;
 
 export const simStore = createSimStore();
 export const envStore = persistedStore<GeoJSONStore>('env', createGeoJSONStore());
+export const configStore = persistedStore<ConfigStore>('config', createConfigStore());
 export const toleranceStore = persistedStore<ToleranceStore>('tolerance', createToleranceStore());
