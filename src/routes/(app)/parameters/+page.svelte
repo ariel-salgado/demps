@@ -1,13 +1,16 @@
 <script lang="ts">
 	import type { FormField } from './form';
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { ConfigurationSchema } from '$lib/types';
 
 	import { page } from '$app/stores';
+	import { enhance } from '$app/forms';
 	import { getFormData } from './form';
 	import { flattenJSON } from '$lib/utils';
 	import { configStore } from '$lib/stores';
 	import { UploadIcon } from '$lib/components/icons';
 	import {
+		Button,
 		Description,
 		Fileupload,
 		FormGroup,
@@ -48,6 +51,36 @@
 
 			reader.readAsText(blob);
 		}
+	};
+
+	const handleSubmit: SubmitFunction = () => {
+		return async ({ result }) => {
+			// @ts-expect-error - data is not in the types
+			if ('errors' in result.data) {
+				// @ts-expect-error - data is not in the types
+				Object.keys(result.data.errors).forEach((id) => {
+					const el = document.getElementById(id);
+					const event = new Event('change', { bubbles: true, cancelable: true });
+					el?.dispatchEvent(event);
+				});
+				return;
+			}
+
+			// @ts-expect-error - data is not in the types
+			const parsedData = JSON.stringify(result.data, null, 2);
+			const blob = new Blob([parsedData], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'parameters.config';
+
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+
+			URL.revokeObjectURL(url);
+		};
 	};
 </script>
 
@@ -101,7 +134,7 @@
 
 <section class="flex divide-x-2">
 	<aside
-		class="sticky top-14 grid h-[calc(100vh-3.5rem)] flex-[1] grid-rows-[auto_1fr_auto] gap-y-4 bg-white px-10 py-8"
+		class="sticky top-14 grid h-[calc(100vh-3.5rem)] flex-[1] grid-rows-[auto_1fr_auto] gap-y-4 bg-white p-8"
 	>
 		<h1
 			class="scroll-m-20 border-b pb-2 pl-5 text-3xl font-semibold capitalize tracking-tight first:mt-0"
@@ -125,9 +158,18 @@
 				<span>Upload Configuration</span>
 				<UploadIcon />
 			</Fileupload>
+
+			<Button type="submit" form="configuration-form">Download Configuration</Button>
 		</div>
 	</aside>
-	<form class="grid flex-[3] grid-cols-2 gap-4 px-10 py-8" data-sveltekit-keepfocus>
+	<form
+		class="grid flex-[3] grid-cols-2 gap-4 px-10 py-8"
+		id="configuration-form"
+		method="POST"
+		action="?/download"
+		use:enhance={handleSubmit}
+		data-sveltekit-keepfocus
+	>
 		{#each form as field}
 			{#if 'title' in field}
 				<h2
