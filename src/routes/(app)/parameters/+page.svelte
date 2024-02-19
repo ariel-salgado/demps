@@ -1,13 +1,24 @@
 <script lang="ts">
 	import type { FormField } from './form';
+	import type { ConfigurationSchema } from '$lib/types';
 
 	import { page } from '$app/stores';
 	import { getFormData } from './form';
+	import { flattenJSON } from '$lib/utils';
 	import { configStore } from '$lib/stores';
-	import { Description, FormGroup, Input, Label, Select } from '$lib/components/ui/forms/';
+	import { UploadIcon } from '$lib/components/icons';
+	import {
+		Description,
+		Fileupload,
+		FormGroup,
+		Input,
+		Label,
+		Select
+	} from '$lib/components/ui/forms/';
 
 	const { form, items } = getFormData();
 
+	let files: FileList | null = $state(null);
 	let selected: string | undefined = $state($page.url.hash.slice(1));
 
 	$effect(() => {
@@ -15,6 +26,29 @@
 	});
 
 	const setSelected = (s: string) => (selected = s);
+
+	const handleUpload = () => {
+		if (!!files && files.length > 0) {
+			const reader = new FileReader();
+
+			reader.onload = () => {
+				const uploadedData = reader.result as string;
+
+				try {
+					const data = JSON.parse(uploadedData);
+					configStore.set(flattenJSON(data) as ConfigurationSchema);
+				} catch (_) {
+					alert('Invalid configuration file');
+					return;
+				}
+			};
+
+			const file = files[0] as File;
+			const blob = new Blob([file], { type: file.type });
+
+			reader.readAsText(blob);
+		}
+	};
 </script>
 
 <svelte:head>
@@ -67,7 +101,7 @@
 
 <section class="flex divide-x-2">
 	<aside
-		class="sticky top-14 grid h-[calc(100vh-3.5rem)] flex-[1] grid-rows-[auto_1fr_auto] gap-y-4 bg-white p-8 shadow-md"
+		class="sticky top-14 grid h-[calc(100vh-3.5rem)] flex-[1] grid-rows-[auto_1fr_auto] gap-y-4 bg-white px-10 py-8"
 	>
 		<h1
 			class="scroll-m-20 border-b pb-2 pl-5 text-3xl font-semibold capitalize tracking-tight first:mt-0"
@@ -79,13 +113,26 @@
 				{@render navItems(items, false)}
 			</ul>
 		</nav>
+
+		<div class="space-y-3">
+			<Fileupload
+				accept=".config"
+				bind:files
+				onUpload={handleUpload}
+				role="button"
+				aria-label="Upload Configuration"
+			>
+				<span>Upload Configuration</span>
+				<UploadIcon />
+			</Fileupload>
+		</div>
 	</aside>
 	<form class="grid flex-[3] grid-cols-2 gap-4 px-10 py-8" data-sveltekit-keepfocus>
 		{#each form as field}
 			{#if 'title' in field}
 				<h2
 					id={field.title}
-					class="col-span-2 scroll-m-20 border-b pb-2 pl-5 text-3xl font-semibold capitalize tracking-tight first:mt-0"
+					class="col-span-2 scroll-m-[5.5rem] border-b pb-2 pl-5 text-3xl font-semibold capitalize tracking-tight first:mt-0"
 				>
 					{field.title}
 				</h2>
