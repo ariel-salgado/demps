@@ -4,9 +4,7 @@ import type { Feature, FeatureCollection } from 'geojson';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-// @ts-expect-error - TS can't find the module
 import simplify from '@turf/simplify';
-// @ts-expect-error - TS can't find the module
 import truncate from '@turf/truncate';
 
 export function cn(...inputs: ClassValue[]) {
@@ -76,4 +74,28 @@ export const preprocessGeoJSON = (geojson: FeatureCollection, tolerance?: number
 
 export const capitalize = (str: string) => {
 	return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
+
+export const flattenJSON = (obj: object, prefix: string = '') => {
+	let flatObj = {};
+
+	for (const key in obj) {
+		if (Object.prototype.hasOwnProperty.call(obj, key)) {
+			const value = obj[key];
+
+			if (typeof value === 'object' && !Array.isArray(value)) {
+				const nestedObj = flattenJSON(value, prefix + key + '.');
+				flatObj = { ...flatObj, ...nestedObj };
+			} else if (Array.isArray(value)) {
+				value.forEach((item, index) => {
+					if (typeof item === 'object') {
+						const nestedObj = flattenJSON(item, prefix + key + '.' + index + '.');
+						flatObj = { ...flatObj, ...nestedObj };
+					} else flatObj[prefix + key + '.' + index] = item;
+				});
+			} else flatObj[prefix + key] = value;
+		}
+	}
+
+	return flatObj;
+};
