@@ -4,6 +4,7 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	import { cn } from '$lib/utils';
+	import { onlyAllowNumbers } from '.';
 
 	interface Props extends HTMLInputAttributes {
 		validation?: z.ZodType;
@@ -30,19 +31,7 @@
 		if (type !== 'number') element.type = 'text';
 
 		if (type === 'number') {
-			element.addEventListener('keydown', (e: KeyboardEvent) => {
-				if (
-					e.key === 'Backspace' ||
-					e.key === 'Delete' ||
-					e.key.startsWith('Arrow') ||
-					e.key === 'Tab'
-				) {
-					return;
-				}
-				if (!/[\d.]/.test(e.key)) {
-					e.preventDefault();
-				}
-			});
+			element.addEventListener('keydown', onlyAllowNumbers);
 		}
 
 		return {
