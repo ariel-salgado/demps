@@ -28,6 +28,27 @@
 		selected = $page.url.hash.slice(1) || 'general';
 	});
 
+	$effect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					const sectionId = entry.target.id;
+
+					if (entry.isIntersecting) {
+						selected = sectionId;
+					}
+				});
+			},
+			{ threshold: 1, rootMargin: '0px 0px -80% 0px' }
+		);
+
+		const sections = document.querySelectorAll('.observed');
+
+		sections.forEach((section) => {
+			observer.observe(section);
+		});
+	});
+
 	const setSelected = (s: string) => (selected = s);
 
 	const handleUpload = () => {
@@ -174,14 +195,14 @@
 			{#if 'title' in field}
 				<h2
 					id={field.title}
-					class="col-span-2 scroll-m-[5.5rem] border-b pb-2 pl-5 text-3xl font-semibold capitalize tracking-tight first:mt-0"
+					class="observed col-span-2 scroll-m-[5.5rem] border-b pb-2 pl-5 text-3xl font-semibold capitalize tracking-tight first:mt-0"
 				>
 					{field.title}
 				</h2>
 			{:else if 'subtitle' in field}
 				<h3
 					id={field.subtitle}
-					class="col-span-2 scroll-m-[4.5rem] pl-5 text-2xl font-semibold capitalize tracking-tight"
+					class="observed col-span-2 scroll-m-[4.5rem] pl-5 text-2xl font-semibold capitalize tracking-tight"
 				>
 					{field.subtitle}
 				</h3>
