@@ -59,11 +59,18 @@
 				const uploadedData = reader.result as string;
 
 				try {
-					const data = JSON.parse(uploadedData);
-					configStore.set(flattenJSON(data) as ConfigurationSchema);
+					const data = flattenJSON(JSON.parse(uploadedData));
+					const form = document.getElementById('configuration-form') as HTMLFormElement;
+
+					const fieldNames = Array.from(form.elements)
+						.filter((element) => element.hasAttribute('name'))
+						.map((element) => element.getAttribute('name'));
+
+					if (Object.keys(data).every((element) => fieldNames.includes(element)))
+						configStore.set(flattenJSON(data) as ConfigurationSchema);
+					else alert('Invalid configuration file');
 				} catch (_) {
 					alert('Invalid configuration file');
-					return;
 				}
 			};
 
