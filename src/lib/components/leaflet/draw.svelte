@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Feature } from 'geojson';
-	import type { Layer, Polygon } from 'leaflet';
+	import { PM, type Layer, type Polygon } from 'leaflet';
 	import type { MapContext } from '$lib/components/leaflet';
 
 	import { getContext } from 'svelte';
@@ -8,6 +8,7 @@
 
 	import '@geoman-io/leaflet-geoman-free';
 	import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
+	import { createPopup } from './popup';
 
 	const { getMap, getStore, getLeaflet, getFeatureGroup, getOverlayLayer } =
 		getContext<MapContext>(contextKey);
@@ -58,6 +59,14 @@
 
 		const addedFeature = layerToFeature(layer);
 		const addedFeatureGeoJSON = L.geoJSON(addedFeature);
+
+		// @ts-expect-error - Leaflet types are a mess
+		const leafletID = addedFeatureGeoJSON._leaflet_id - 1;
+
+		// @ts-expect-error - Leaflet types are a mess
+		const popupLayer = addedFeatureGeoJSON._layers[leafletID];
+
+		addedFeatureGeoJSON.bindPopup(createPopup(popupLayer));
 
 		featureGroup.addLayer(addedFeatureGeoJSON);
 		if (overlayLayer)
