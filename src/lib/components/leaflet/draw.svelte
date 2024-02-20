@@ -9,6 +9,7 @@
 	import '@geoman-io/leaflet-geoman-free';
 	import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
 	import { createPopup } from './popup';
+	import { layer } from '@codemirror/view';
 
 	const { getMap, getStore, getLeaflet, getFeatureGroup, getOverlayLayer } =
 		getContext<MapContext>(contextKey);
@@ -97,5 +98,17 @@
 		const coordinates = editedFeature.geometry.coordinates;
 
 		store.updateFeatureCoords(id, coordinates);
+	});
+
+	featureGroup.on('pm:dragstart', ({ layer }) => {
+		if (layer.hasEventListeners('click')) layer.removeEventListener('click');
+	});
+
+	featureGroup.on('pm:dragend', ({ layer }) => {
+		if (layer.getPopup()) {
+			layer.on('click', () => {
+				layer.openPopup();
+			});
+		}
 	});
 </script>
