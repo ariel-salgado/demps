@@ -2,7 +2,7 @@ export const createPopup = (layer: L.Layer) => {
 	return (
 		`<h3 class="text-base font-semibold text-slate-500">Edit Feature</h3>` +
 		// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
-		`<form id="form-${layer.feature.id}" class="w-[302px] grid grid-cols-2 items-center place-content-center gap-4">` +
+		`<form id="form-${layer.feature.id}" class="w-[300px] grid grid-cols-2 items-center place-content-center gap-4 py-2">` +
 		`<div>` +
 		// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
 		`<label class="block p-1 font-semibold text-slate-500" for="id-${layer.feature.id}">ID</label>` +
