@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { MapContext } from '$lib/components/leaflet';
 
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import { contextKey } from '$lib/components/leaflet';
 	import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
@@ -10,6 +10,15 @@
 	const { getMap } = getContext<MapContext>(contextKey);
 
 	let map = getMap();
+
+	// Add name attribute to search input
+	$effect(() => {
+		untrack(() => {
+			document
+				.querySelector('.leaflet-geosearch-button form input')
+				?.setAttribute('name', 'search');
+		});
+	});
 
 	// @ts-expect-error - no types for leaflet-geosearch
 	const search = new GeoSearchControl({
