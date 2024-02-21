@@ -16,7 +16,7 @@
 
 <Button class="p-0" {...props}>
 	<label
-		class="flex h-full w-full cursor-pointer items-center justify-center gap-x-2 px-4 py-2"
+		class="flex h-full w-full cursor-pointer items-center justify-center gap-x-1 px-4 py-2"
 		for="fileUpload"
 	>
 		{@render children()}
