@@ -9,7 +9,7 @@
 	import { getFormData } from './form';
 	import { flattenJSON } from '$lib/utils';
 	import { configStore } from '$lib/stores';
-	import { UploadIcon } from '$lib/components/icons';
+	import { DownloadIcon, UploadIcon } from '$lib/components/icons';
 	import {
 		Button,
 		Description,
@@ -40,7 +40,7 @@
 					}
 				});
 			},
-			{ threshold: 0.5, rootMargin: '0px 0px -84% 0px' }
+			{ threshold: 1, rootMargin: '0px 0px -84% 0px' }
 		);
 
 		const sections = document.querySelectorAll('.observed');
@@ -187,7 +187,10 @@
 				<UploadIcon />
 			</Fileupload>
 
-			<Button type="submit" form="configuration-form">Download Configuration</Button>
+			<Button type="submit" form="configuration-form">
+				<span>Download Configuration</span>
+				<DownloadIcon />
+			</Button>
 		</div>
 	</aside>
 	<form
