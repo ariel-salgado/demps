@@ -3,6 +3,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { ConfigurationSchema } from '$lib/types';
 
+	import { untrack } from 'svelte';
 	import { page } from '$app/stores';
 	import { enhance } from '$app/forms';
 	import { getFormData } from './form';
@@ -22,10 +23,10 @@
 	const { form, items } = getFormData();
 
 	let files: FileList | null = $state(null);
-	let selected: string | undefined = $state($page.url.hash.slice(1));
+	let selected: string | undefined = $state();
 
-	$effect(() => {
-		selected = $page.url.hash.slice(1) || 'general';
+	$effect.pre(() => {
+		selected = untrack(() => $page.url.hash.slice(1)) || 'general';
 	});
 
 	$effect(() => {
@@ -39,7 +40,7 @@
 					}
 				});
 			},
-			{ threshold: 1, rootMargin: '0px 0px -80% 0px' }
+			{ threshold: 0.5, rootMargin: '0px 0px -84% 0px' }
 		);
 
 		const sections = document.querySelectorAll('.observed');
@@ -66,9 +67,11 @@
 						.filter((element) => element.hasAttribute('name'))
 						.map((element) => element.getAttribute('name'));
 
-					if (Object.keys(data).every((element) => fieldNames.includes(element)))
+					if (Object.keys(data).every((element) => fieldNames.includes(element))) {
 						configStore.set(flattenJSON(data) as ConfigurationSchema);
-					else alert('Invalid configuration file');
+					} else {
+						alert('Invalid configuration file');
+					}
 				} catch (_) {
 					alert('Invalid configuration file');
 				}
@@ -121,11 +124,8 @@
 	{#each Object.entries(items) as [key, value]}
 		<li>
 			<a
-				class={`block w-full rounded-md ${isSubKey ? 'px-10' : 'px-4'} py-2 text-base font-medium capitalize text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900`}
+				class={`block w-full rounded-md ${isSubKey ? 'px-10' : 'px-4'} py-2 text-base font-medium capitalize text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:bg-slate-100 focus-visible:text-slate-900`}
 				class:active={selected === key}
-				onclick={() => {
-					setSelected(key);
-				}}
 				href={`#${key}`}
 				>{key}
 			</a>
@@ -170,7 +170,7 @@
 			Parametros
 		</h1>
 		<nav>
-			<ul>
+			<ul class="space-y-1">
 				{@render navItems(items, false)}
 			</ul>
 		</nav>
@@ -222,6 +222,6 @@
 
 <style lang="postcss">
 	.active {
-		@apply bg-primary-600 text-white hover:bg-primary-700 hover:text-white;
+		@apply bg-primary-700 text-white hover:bg-primary-600 hover:!text-white focus-visible:bg-primary-600 focus-visible:text-white;
 	}
 </style>
