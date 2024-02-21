@@ -19,8 +19,8 @@
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		zoom: number;
 		overlay?: boolean;
-		center: L.LatLngExpression;
 		store?: GeoJSONStore;
+		center: L.LatLngExpression;
 	}
 
 	let {
@@ -48,11 +48,11 @@
 	});
 
 	const rasterLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution:
-			'© <a href="http://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>',
+		noWrap: true,
 		updateWhenIdle: true,
 		updateWhenZooming: false,
-		noWrap: true
+		attribution:
+			'© <a href="http://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>'
 	});
 
 	const mapOptions: L.MapOptions = {
@@ -67,6 +67,8 @@
 		const form = e.target as HTMLFormElement;
 
 		const formData = new FormData(form);
+
+		console.log(formData);
 
 		const id = formData.get('id') as string;
 		const props = Object.fromEntries(formData) as Record<string, string>;
@@ -106,18 +108,21 @@
 			onEachFeature: (_, layer) => {
 				layer.bindPopup(createPopup(layer));
 				featureGroup.addLayer(layer);
-				if (overlay)
+				if (overlay) {
 					// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
 					overlayLayer?.addOverlay(layer, layer.feature.properties.nameID || layer.feature.id);
+				}
 			}
 		});
 	};
 
 	const resetLayers = (featureGroup: L.FeatureGroup, overlayLayer?: L.Control.Layers) => {
-		if (overlayLayer)
+		if (overlayLayer) {
 			featureGroup.eachLayer((layer) => {
 				overlayLayer.removeLayer(layer);
 			});
+		}
+
 		featureGroup.clearLayers();
 	};
 
@@ -128,15 +133,21 @@
 		map = L.map(mapContainer, mapOptions);
 
 		featureGroup.addTo(map);
-		if (overlay) overlayLayer?.addTo(map);
 
-		if (features) loadFeatures(features);
+		if (overlay) {
+			overlayLayer?.addTo(map);
+		}
 
-		if (featureGroup.getBounds().isValid())
+		if (features) {
+			loadFeatures(features);
+		}
+
+		if (featureGroup.getBounds().isValid()) {
 			map.fitBounds(featureGroup.getBounds(), {
 				animate: false,
 				maxZoom: 20
 			});
+		}
 
 		map.whenReady(() => {
 			map?.invalidateSize();

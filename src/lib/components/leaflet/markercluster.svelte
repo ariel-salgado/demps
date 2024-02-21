@@ -30,6 +30,7 @@
 		animateAddingMarkers: true
 	});
 
+	// At every update, clear the markers and add new ones
 	store.subscribe((geojson) => {
 		if (map) {
 			if (usingMapStore) {
@@ -40,13 +41,14 @@
 				});
 			}
 
-			// At every update, clear the markers and add new ones
 			markers.clearLayers();
 
 			geojson.features.forEach((feature) => {
 				if (feature.geometry.type === 'Point') {
-					// @ts-expect-error - marker is not part of the geometry types
-					let marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
+					const marker = L.marker([
+						feature.geometry.coordinates[1]!,
+						feature.geometry.coordinates[0]!
+					]);
 					markers.addLayer(marker);
 				}
 			});

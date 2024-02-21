@@ -13,12 +13,15 @@
 	const { ...props } = $props<Props>();
 
 	let showOptions: boolean = $state(false);
-	let enhanceForm: HTMLDivElement | undefined = $state();
+	let enhanceForm: HTMLFormElement | undefined = $state();
 	let enhanceButton: HTMLDivElement | undefined = $state();
 
 	$effect(() => {
-		if (showOptions) window.addEventListener('click', handleClick);
-		else window.removeEventListener('click', handleClick);
+		if (showOptions) {
+			window.addEventListener('click', handleClick);
+		} else {
+			window.removeEventListener('click', handleClick);
+		}
 	});
 
 	const toggleOptions = () => (showOptions = !showOptions);
@@ -34,7 +37,10 @@
 	};
 
 	const enhancementOptions = Object.entries(toleranceOptions).map(([key, value]) => {
-		if (value === $toleranceStore) return { label: capitalize(key), value, selected: true };
+		if (value === $toleranceStore) {
+			return { label: capitalize(key), value, selected: true };
+		}
+
 		return { label: capitalize(key), value };
 	});
 </script>
@@ -50,7 +56,7 @@
 	</button>
 
 	{#if showOptions}
-		<div
+		<form
 			class="absolute right-6 top-0 rounded-md bg-white shadow outline outline-1 outline-slate-300"
 			bind:this={enhanceForm}
 			transition:fade={{ duration: 150 }}
@@ -59,6 +65,6 @@
 				<Label for="tolerance">Nivel de ajuste</Label>
 				<Select id="tolerance" bind:value={$toleranceStore} options={enhancementOptions} />
 			</FormGroup>
-		</div>
+		</form>
 	{/if}
 </div>

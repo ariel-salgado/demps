@@ -1,22 +1,21 @@
 <script lang="ts">
 	import type { Feature } from 'geojson';
-	import { PM, type Layer, type Polygon } from 'leaflet';
+	import type { Layer, Polygon } from 'leaflet';
 	import type { MapContext } from '$lib/components/leaflet';
 
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
+	import { createPopup } from './popup';
 	import { contextKey } from '$lib/components/leaflet';
 
 	import '@geoman-io/leaflet-geoman-free';
 	import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
-	import { createPopup } from './popup';
-	import { layer } from '@codemirror/view';
 
 	const { getMap, getStore, getLeaflet, getFeatureGroup, getOverlayLayer } =
 		getContext<MapContext>(contextKey);
 
 	let map = getMap();
-	let store = getStore();
 	let L = getLeaflet();
+	let store = getStore();
 	let featureGroup = getFeatureGroup();
 	let overlayLayer = getOverlayLayer();
 
@@ -35,9 +34,13 @@
 
 	map.pm.setLang('es');
 
-	// Add aria-label to the draw buttons
-	document.querySelectorAll('a.leaflet-buttons-control-button').forEach((button) => {
-		button.setAttribute('aria-label', button.parentElement?.getAttribute('title')!);
+	$effect(() => {
+		untrack(() => {
+			// Add aria-label to the draw buttons
+			document.querySelectorAll('a.leaflet-buttons-control-button').forEach((button) => {
+				button.setAttribute('aria-label', button.parentElement?.getAttribute('title')!);
+			});
+		});
 	});
 
 	const layerToFeature = (layer: Layer): Feature => {
@@ -70,11 +73,12 @@
 		addedFeatureGeoJSON.bindPopup(createPopup(popupLayer));
 
 		featureGroup.addLayer(addedFeatureGeoJSON);
-		if (overlayLayer)
+		if (overlayLayer) {
 			overlayLayer.addOverlay(
 				addedFeatureGeoJSON,
 				(addedFeature.properties?.nameID || addedFeature.id) as string
 			);
+		}
 
 		store.addFeature(addedFeature);
 	});
@@ -84,7 +88,10 @@
 
 		// @ts-expect-error - Leaflet types are a mess
 		const removedFeatureID = layer.feature.id as string;
-		if (overlayLayer) overlayLayer.removeLayer(layer);
+		if (overlayLayer) {
+			overlayLayer.removeLayer(layer);
+		}
+
 		store.removeFeatureByID(removedFeatureID);
 	});
 
@@ -101,7 +108,9 @@
 	});
 
 	featureGroup.on('pm:dragstart', ({ layer }) => {
-		if (layer.hasEventListeners('click')) layer.removeEventListener('click');
+		if (layer.hasEventListeners('click')) {
+			layer.removeEventListener('click');
+		}
 	});
 
 	featureGroup.on('pm:dragend', ({ layer }) => {
