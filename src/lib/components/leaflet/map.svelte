@@ -52,7 +52,7 @@
 		updateWhenIdle: true,
 		updateWhenZooming: false,
 		attribution:
-			'© <a href="http://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>'
+			'© <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>'
 	});
 
 	const mapOptions: L.MapOptions = {
@@ -179,6 +179,10 @@
 		};
 	};
 </script>
+
+<svelte:head>
+	<link rel="preconnect" href="https://tile.openstreetmap.org" />
+</svelte:head>
 
 <div class={cn('size-full outline-none', className)} {...props} use:initMap={$store}>
 	{#if map && children}
