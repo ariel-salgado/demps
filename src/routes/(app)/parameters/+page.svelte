@@ -40,7 +40,7 @@
 					}
 				});
 			},
-			{ threshold: 1, rootMargin: '0px 0px -84% 0px' }
+			{ threshold: 1, rootMargin: '-12px 0px -75% 0px' }
 		);
 
 		const sections = document.querySelectorAll('.observed');
@@ -49,8 +49,6 @@
 			observer.observe(section);
 		});
 	});
-
-	const setSelected = (s: string) => (selected = s);
 
 	const handleUpload = () => {
 		if (!!files && files.length > 0) {
@@ -170,7 +168,7 @@
 			Parametros
 		</h1>
 		<nav>
-			<ul class="space-y-1">
+			<ul>
 				{@render navItems(items, false)}
 			</ul>
 		</nav>
