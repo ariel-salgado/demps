@@ -17,9 +17,8 @@ const config = {
 
 		csp: {
 			directives: {
-				"script-src": ["'self'", "'unsafe-inline'"],
-				"default-src": ['self'],
-				"base-uri": ['self'],
+				"default-src": ["self", "unsafe-inline"],
+				"base-uri": ["self"],
 			}
 		}
 	},
