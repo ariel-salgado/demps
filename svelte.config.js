@@ -14,13 +14,6 @@ const config = {
 		adapter: adapter({
 			precompress: true,
 		}),
-
-		csp: {
-			directives: {
-				"default-src": ["self", "unsafe-inline"],
-				"base-uri": ["self"],
-			}
-		}
 	},
 
 	compilerOptions: {
