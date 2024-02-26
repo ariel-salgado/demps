@@ -6,7 +6,7 @@
 	import { getContext } from 'svelte';
 	import { contextKey } from '$lib/components/leaflet';
 
-	import MarkerIcon from '$lib/assets/images/marker-icon-2x-red.png';
+	import MarkerIcon from '$lib/assets/images/marker-icon-2x-violet.png';
 	import MarkerShadow from '$lib/assets/images/marker-shadow.png';
 
 	import 'leaflet.markercluster';
