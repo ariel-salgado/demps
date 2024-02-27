@@ -111,8 +111,8 @@ devDependencies:
     specifier: 5.0.0-next.64
     version: 5.0.0-next.64
   svelte-check:
-    specifier: ^3.6.4
-    version: 3.6.4(postcss-load-config@5.0.3)(postcss@8.4.35)(svelte@5.0.0-next.64)
+    specifier: ^3.6.5
+    version: 3.6.5(postcss-load-config@5.0.3)(postcss@8.4.35)(svelte@5.0.0-next.64)
   tailwind-merge:
     specifier: ^2.2.1
     version: 2.2.1
@@ -197,7 +197,7 @@ packages:
       '@lezer/common': 1.2.1
       '@lezer/highlight': 1.2.0
       '@lezer/lr': 1.4.0
-      style-mod: 4.1.0
+      style-mod: 4.1.1
     dev: true
 
   /@codemirror/lint@6.5.0:
@@ -224,7 +224,7 @@ packages:
     resolution: {integrity: sha512-sBfP4rniPBRQzNakwuQEqjEuiJDWJyF2kqLLqij4WXRoVwPPJfjx966Eq3F7+OPQxDtMt/Q9MWLoZLWjeveBlg==}
     dependencies:
       '@codemirror/state': 6.4.1
-      style-mod: 4.1.0
+      style-mod: 4.1.1
       w3c-keyname: 2.2.8
     dev: true
 
@@ -1294,7 +1294,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.23.0
-      caniuse-lite: 1.0.30001589
+      caniuse-lite: 1.0.30001591
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -1346,8 +1346,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001589
-      electron-to-chromium: 1.4.682
+      caniuse-lite: 1.0.30001591
+      electron-to-chromium: 1.4.683
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
     dev: true
@@ -1375,13 +1375,13 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.23.0
-      caniuse-lite: 1.0.30001589
+      caniuse-lite: 1.0.30001591
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
-  /caniuse-lite@1.0.30001589:
-    resolution: {integrity: sha512-vNQWS6kI+q6sBlHbh71IIeC+sRwK2N3EDySc/updIGhIee2x5z00J4c1242/5/d6EpEMdOnk/m+6tuk4/tcsqg==}
+  /caniuse-lite@1.0.30001591:
+    resolution: {integrity: sha512-PCzRMei/vXjJyL5mJtzNiUCKP59dm8Apqc3PH8gJkMnMXZGox93RbE76jHsmLwmIo6/3nsYIpJtx0O7u5PqFuQ==}
     dev: true
 
   /chalk@4.1.2:
@@ -1662,8 +1662,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
 
-  /electron-to-chromium@1.4.682:
-    resolution: {integrity: sha512-oCglfs8yYKs9RQjJFOHonSnhikPK3y+0SvSYc/YpYJV//6rqc0/hbwd0c7vgK4vrl6y2gJAwjkhkSGWK+z4KRA==}
+  /electron-to-chromium@1.4.683:
+    resolution: {integrity: sha512-FmopjiJjkUzqa5F5Sv+wxd8KimtCxyLFOFgRPwEeMLVmP+vHH/GjNGCuIYrCIchbMSiOe+nG/OPBbR/XoExBNA==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -3230,8 +3230,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /style-mod@4.1.0:
-    resolution: {integrity: sha512-Ca5ib8HrFn+f+0n4N4ScTIA9iTOQ7MaGS1ylHcoVqW9J7w2w8PzN6g9gKmTYgGEBH8e120+RCmhpje6jC5uGWA==}
+  /style-mod@4.1.1:
+    resolution: {integrity: sha512-nFSNaYG2I8jgB3GZ67q7WjnHlZBzyX5OKgx89k6JkPlaNoyMlRstdBvWgo95qRgUa6tUuvpt4zZM6KWCj+oU6Q==}
     dev: true
 
   /stylehacks@6.0.3(postcss@8.4.35):
@@ -3271,8 +3271,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check@3.6.4(postcss-load-config@5.0.3)(postcss@8.4.35)(svelte@5.0.0-next.64):
-    resolution: {integrity: sha512-mY/dqucqm46p72M8yZmn81WPZx9mN6uuw8UVfR3ZKQeLxQg5HDGO3HHm5AZuWZPYNMLJ+TRMn+TeN53HfQ/vsw==}
+  /svelte-check@3.6.5(postcss-load-config@5.0.3)(postcss@8.4.35)(svelte@5.0.0-next.64):
+    resolution: {integrity: sha512-5aLgoQEdadvp8ypvKQ2avhnQ+V9YPQQaWrTFlXFw5g/v8xIQBvo+X/WqxTyD+V/ItDqXg3+abUA53rdDHgUjCA==}
     hasBin: true
     peerDependencies:
       svelte: ^3.55.0 || ^4.0.0-next.0 || ^4.0.0 || ^5.0.0-next.0
