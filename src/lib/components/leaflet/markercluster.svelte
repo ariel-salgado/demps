@@ -37,7 +37,6 @@
 		shadowSize: [41, 41]
 	});
 
-	// @ts-expect-error - markerClusterGroup is not part of the leaflet types
 	let markers = window.L.markerClusterGroup({
 		animateAddingMarkers: true
 	});
