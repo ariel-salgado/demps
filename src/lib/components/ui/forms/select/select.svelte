@@ -34,7 +34,7 @@
 
 <select
 	class={cn(
-		'inline-flex h-9 w-full rounded-md border border-slate-300 px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+		'inline-flex h-9 w-full rounded-md border border-slate-300 px-3 py-2 text-sm ring-offset-white focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
 		className
 	)}
 	class:error={validationError}
@@ -56,6 +56,6 @@
 
 <style lang="postcss">
 	.error {
-		@apply border-2 border-red-600 focus-visible:ring-red-600;
+		@apply border-2 border-red-600 focus-within:ring-red-600;
 	}
 </style>

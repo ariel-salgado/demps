@@ -18,7 +18,7 @@
 {#if props.as === 'a'}
 	<a
 		class={cn(
-			'flex h-9 w-full items-center justify-center gap-x-1 whitespace-nowrap rounded-lg bg-primary-700 px-4 py-2 font-medium text-white ring-offset-white transition-colors hover:bg-primary-600 focus-visible:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+			'flex h-9 w-full items-center justify-center gap-x-1 whitespace-nowrap rounded-lg bg-primary-700 px-4 py-2 font-medium text-white ring-offset-white transition-colors focus-within:bg-primary-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:ring-offset-2 hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50',
 			className
 		)}
 		{...props}
@@ -29,7 +29,7 @@
 	<button
 		type="button"
 		class={cn(
-			'flex h-9 w-full items-center justify-center gap-x-1 whitespace-nowrap rounded-lg bg-primary-700 px-4 py-2 font-medium text-white ring-offset-white transition-colors hover:bg-primary-600 focus-visible:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+			'flex h-9 w-full items-center justify-center gap-x-1 whitespace-nowrap rounded-lg bg-primary-700 px-4 py-2 font-medium text-white ring-offset-white transition-colors focus-within:bg-primary-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:ring-offset-2 hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50',
 			className
 		)}
 		{...props}
