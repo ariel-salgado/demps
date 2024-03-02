@@ -7,8 +7,8 @@
 	import { page } from '$app/stores';
 	import { enhance } from '$app/forms';
 	import { getFormData } from './form';
-	import { flattenJSON } from '$lib/utils';
 	import { configStore } from '$lib/stores';
+	import { deflattenJSON, flattenJSON } from '$lib/utils';
 	import { DownloadIcon, UploadIcon } from '$lib/components/icons';
 	import {
 		Button,
@@ -96,8 +96,8 @@
 			}
 
 			// @ts-expect-error - data is not in the types
-			const parsedData = JSON.stringify(result.data, null, 2);
-			const blob = new Blob([parsedData], { type: 'application/json' });
+			const deflatten = JSON.stringify(deflattenJSON(result.data), null, 4);
+			const blob = new Blob([deflatten], { type: 'application/json' });
 			const url = URL.createObjectURL(blob);
 
 			const a = document.createElement('a');
@@ -122,7 +122,7 @@
 	{#each Object.entries(items) as [key, value]}
 		<li>
 			<a
-				class={`block w-full rounded-md ${isSubKey ? 'px-10' : 'px-4'} py-2 text-base font-medium capitalize text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:bg-slate-100 focus-visible:text-slate-900`}
+				class={`block w-full rounded-md ${isSubKey ? 'px-10' : 'px-4'} py-2 text-base font-medium capitalize text-slate-500 transition-colors focus-within:bg-slate-100 focus-within:text-slate-900 hover:bg-slate-100 hover:text-slate-900`}
 				class:active={selected === key}
 				href={`#${key}`}
 				>{key}
@@ -223,6 +223,6 @@
 
 <style lang="postcss">
 	.active {
-		@apply bg-primary-700 text-white hover:bg-primary-600 hover:!text-white focus-visible:bg-primary-600 focus-visible:text-white;
+		@apply bg-primary-700 text-white focus-within:bg-primary-600 focus-within:text-white hover:bg-primary-600 hover:!text-white;
 	}
 </style>

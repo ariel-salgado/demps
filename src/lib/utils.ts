@@ -99,3 +99,29 @@ export const flattenJSON = (obj: object, prefix: string = '') => {
 
 	return flatObj;
 };
+
+export const deflattenJSON = (obj: object) => {
+	const deflatObj = {};
+
+	for (const key in obj) {
+		if (Object.prototype.hasOwnProperty.call(obj, key)) {
+			const keys = key.split('.');
+			let currentObject: Record<string, string> | string = deflatObj;
+
+			for (let i = 0; i < keys.length - 1; i++) {
+				const currentKey = keys[i] as string;
+				const nextKey = keys[i + 1] as string;
+
+				if (!currentObject[currentKey]) {
+					currentObject[currentKey] = /^\d+$/.test(nextKey) ? [] : {};
+				}
+
+				currentObject = currentObject[currentKey];
+			}
+
+			currentObject[keys[keys.length - 1] as string] = obj[key];
+		}
+	}
+
+	return deflatObj;
+};
