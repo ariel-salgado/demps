@@ -670,7 +670,7 @@ const configForm: ConfigForm = {
 					type: 'text',
 					placeholder: 'Ingrese el modelo',
 					value: 'Residents',
-					disabled: true
+					readonly: true
 				}
 			},
 			{
@@ -964,7 +964,7 @@ const configForm: ConfigForm = {
 					type: 'text',
 					placeholder: 'Ingrese el modelo',
 					value: 'Visitors',
-					disabled: true
+					readonly: true
 				}
 			},
 			{
