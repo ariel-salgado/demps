@@ -38,10 +38,20 @@
 		});
 
 		if (tolerance && tolerance > 0) {
-			processedGeoJSON = simplify(geojson, {
-				tolerance: tolerance,
-				highQuality: true,
-				mutate: true
+			processedGeoJSON.features = geojson.features.map((feature) => {
+				if (feature.properties?.zoneType === 'flood') {
+					const simplifiedFeature = simplify(feature.geometry, {
+						tolerance: tolerance,
+						highQuality: true,
+						mutate: true
+					});
+					return {
+						...feature,
+						geometry: simplifiedFeature
+					};
+				} else {
+					return feature;
+				}
 			});
 		}
 
