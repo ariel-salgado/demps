@@ -1,17 +1,16 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { ChangeEventHandler, HTMLAttributes } from 'svelte/elements';
+	import type { HTMLAttributes } from 'svelte/elements';
 
 	import { Button } from '$lib/components/ui/forms';
 
 	interface Props extends HTMLAttributes<HTMLButtonElement> {
 		accept: string;
 		files: FileList | null;
-		onUpload: ChangeEventHandler<HTMLInputElement>;
 		children: Snippet;
 	}
 
-	let { accept, files, onUpload, children, ...props } = $props<Props>();
+	let { accept, files, children, ...props } = $props<Props>();
 </script>
 
 <Button class="p-0" {...props}>
@@ -22,5 +21,5 @@
 		{@render children()}
 	</label>
 
-	<input class="hidden" type="file" id="fileUpload" {accept} bind:files onchange={onUpload} />
+	<input class="hidden" type="file" id="fileUpload" {accept} bind:files />
 </Button>
