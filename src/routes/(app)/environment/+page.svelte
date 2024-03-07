@@ -1,17 +1,62 @@
 <script lang="ts">
 	import type { FormEventHandler } from 'svelte/elements';
+	import type { Feature, FeatureCollection } from 'geojson';
 
+	import { isValidGeoJSON } from '$lib/utils';
 	import { UploadIcon } from '$lib/components/icons';
 	import { Fileupload } from '$lib/components/ui/forms';
-	import { envStore, toleranceStore } from '$lib/stores';
 	import { Map, Draw, Search } from '$lib/components/leaflet';
-	import { isValidGeoJSON, preprocessGeoJSON } from '$lib/utils';
+	import { envStore, toleranceOptions, toleranceStore } from '$lib/stores';
 	import { Editor, Widgets, Enhance, Clipboard, Download } from '$lib/components/codemirror';
+
+	import simplify from '@turf/simplify';
+	import truncate from '@turf/truncate';
 
 	const zoom: number = 15;
 	const center: [number, number] = [-33.015348, -71.550499];
 
 	let files: FileList | null = $state(null);
+
+	const preprocessGeoJSON = (geojson: FeatureCollection, tolerance?: number) => {
+		const metadata = {
+			'@context': {
+				'@simplified': tolerance! > 0 ? true : false,
+				...(tolerance! > 0
+					? {
+							'@tolerance': Object.keys(toleranceOptions).find(
+								(key) => toleranceOptions[key] === tolerance
+							)
+						}
+					: {})
+			}
+		};
+
+		let processedGeoJSON = truncate(geojson, {
+			precision: 6,
+			coordinates: Number.MAX_VALUE,
+			mutate: true
+		});
+
+		if (tolerance && tolerance > 0) {
+			processedGeoJSON = simplify(geojson, {
+				tolerance: tolerance,
+				highQuality: true,
+				mutate: true
+			});
+		}
+
+		processedGeoJSON.features = processedGeoJSON.features.map(({ id, ...feature }: Feature) => ({
+			id: id || crypto.randomUUID(),
+			...feature
+		}));
+
+		processedGeoJSON = {
+			...metadata,
+			...processedGeoJSON
+		};
+
+		return processedGeoJSON as FeatureCollection;
+	};
 
 	const handleUpload: FormEventHandler<HTMLButtonElement> = (e: Event) => {
 		if (!!files && files.length > 0) {
