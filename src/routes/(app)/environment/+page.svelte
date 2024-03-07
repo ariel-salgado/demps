@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { FormEventHandler } from 'svelte/elements';
+
 	import { UploadIcon } from '$lib/components/icons';
 	import { Fileupload } from '$lib/components/ui/forms';
 	import { envStore, toleranceStore } from '$lib/stores';
@@ -11,7 +13,7 @@
 
 	let files: FileList | null = $state(null);
 
-	const handleUpload = () => {
+	const handleUpload: FormEventHandler<HTMLButtonElement> = (e: Event) => {
 		if (!!files && files.length > 0) {
 			const reader = new FileReader();
 
@@ -24,6 +26,8 @@
 				}
 
 				envStore.set(preprocessGeoJSON(JSON.parse(uploadedData), $toleranceStore));
+
+				(e.target! as HTMLInputElement).value = '';
 			};
 
 			const file = files[0] as File;
@@ -56,7 +60,7 @@
 			<Fileupload
 				accept=".geojson"
 				bind:files
-				onUpload={handleUpload}
+				onchange={handleUpload}
 				role="button"
 				aria-label="Upload GeoJSON"
 			>

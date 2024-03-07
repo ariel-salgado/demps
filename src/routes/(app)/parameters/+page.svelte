@@ -2,6 +2,7 @@
 	import type { FormField } from './form';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { ConfigurationSchema } from '$lib/types';
+	import type { FormEventHandler } from 'svelte/elements';
 
 	import { untrack } from 'svelte';
 	import { page } from '$app/stores';
@@ -50,7 +51,7 @@
 		});
 	});
 
-	const handleUpload = () => {
+	const handleUpload: FormEventHandler<HTMLButtonElement> = (e: Event) => {
 		if (!!files && files.length > 0) {
 			const reader = new FileReader();
 
@@ -72,6 +73,8 @@
 					}
 				} catch (_) {
 					alert('Invalid configuration file');
+				} finally {
+					(e.target! as HTMLInputElement).value = '';
 				}
 			};
 
@@ -177,7 +180,7 @@
 			<Fileupload
 				accept=".config"
 				bind:files
-				onUpload={handleUpload}
+				onchange={handleUpload}
 				role="button"
 				aria-label="Upload Configuration"
 			>
