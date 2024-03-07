@@ -4,7 +4,7 @@ import type { HTMLInputAttributes, HTMLSelectAttributes } from 'svelte/elements'
 import { z } from 'zod';
 
 type InputOrSelectProps =
-	| { attributes: HTMLInputAttributes; type: 'input' }
+	| { attributes: HTMLInputAttributes & { type: 'text' | 'number' }; type: 'input' }
 	| { attributes: HTMLSelectAttributes; type: 'select'; options: SelectOptions };
 
 export type FormField = {
