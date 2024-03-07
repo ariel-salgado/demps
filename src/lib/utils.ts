@@ -49,27 +49,37 @@ export const isValidGeoJSON = (data: string | object): boolean => {
 };
 
 export const preprocessGeoJSON = (geojson: FeatureCollection, tolerance?: number) => {
-	const simplified =
-		tolerance! > 0
-			? simplify(geojson, {
-					tolerance: tolerance,
-					highQuality: true,
-					mutate: true
-				})
-			: geojson;
+	const metadata = {
+		'@context': {
+			'@simplified': tolerance! > 0 ? true : false
+		}
+	};
 
-	const truncated = truncate(simplified, {
+	let processedGeoJSON = truncate(geojson, {
 		precision: 6,
 		coordinates: Number.MAX_VALUE,
 		mutate: true
 	});
 
-	truncated.features = truncated.features.map(({ id, ...feature }: Feature) => ({
+	if (tolerance && tolerance > 0) {
+		processedGeoJSON = simplify(geojson, {
+			tolerance: tolerance,
+			highQuality: true,
+			mutate: true
+		});
+	}
+
+	processedGeoJSON.features = processedGeoJSON.features.map(({ id, ...feature }: Feature) => ({
 		id: id || crypto.randomUUID(),
 		...feature
 	}));
 
-	return truncated as FeatureCollection;
+	processedGeoJSON = {
+		...metadata,
+		...processedGeoJSON
+	};
+
+	return processedGeoJSON as FeatureCollection;
 };
 
 export const capitalize = (str: string) => {
