@@ -5,8 +5,12 @@ import type { FeatureCollection, Feature, Point } from 'geojson';
 import { browser } from '$app/environment';
 import { get, writable } from 'svelte/store';
 
+// https://www.w3.org/TR/json-ld11/#the-context
 const createGeoJSONStore = (initialState?: FeatureCollection) => {
 	const data = initialState ?? {
+		'@context': {
+			'@simplified': false
+		},
 		type: 'FeatureCollection',
 		features: []
 	};
