@@ -1,11 +1,8 @@
 import type { ClassValue } from 'clsx';
-import type { Feature, FeatureCollection } from 'geojson';
+import type { FeatureCollection } from 'geojson';
 
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-
-import simplify from '@turf/simplify';
-import truncate from '@turf/truncate';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -46,40 +43,6 @@ export const isValidGeoJSON = (data: string | object): boolean => {
 	} catch (_) {
 		return false;
 	}
-};
-
-export const preprocessGeoJSON = (geojson: FeatureCollection, tolerance?: number) => {
-	const metadata = {
-		'@context': {
-			'@simplified': tolerance! > 0 ? true : false
-		}
-	};
-
-	let processedGeoJSON = truncate(geojson, {
-		precision: 6,
-		coordinates: Number.MAX_VALUE,
-		mutate: true
-	});
-
-	if (tolerance && tolerance > 0) {
-		processedGeoJSON = simplify(geojson, {
-			tolerance: tolerance,
-			highQuality: true,
-			mutate: true
-		});
-	}
-
-	processedGeoJSON.features = processedGeoJSON.features.map(({ id, ...feature }: Feature) => ({
-		id: id || crypto.randomUUID(),
-		...feature
-	}));
-
-	processedGeoJSON = {
-		...metadata,
-		...processedGeoJSON
-	};
-
-	return processedGeoJSON as FeatureCollection;
 };
 
 export const capitalize = (str: string) => {
