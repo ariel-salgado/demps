@@ -8,10 +8,9 @@
 	import type { FeatureCollection } from 'geojson';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	import { cn } from '$lib/utils';
 	import { setContext } from 'svelte';
 	import { createPopup } from './popup';
-	import { areEqualGeoJSON } from '$lib/utils';
+	import { cn, areEqualObject } from '$lib/utils';
 
 	import * as L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
@@ -25,13 +24,13 @@
 
 	let {
 		zoom,
-		overlay = true,
-		center,
 		store,
+		center,
 		children,
+		overlay = true,
 		class: className,
 		...props
-	} = $props<Props>();
+	}: Props = $props();
 
 	let map: L.Map | undefined = $state();
 	let featureGroup: L.FeatureGroup = $state(new L.FeatureGroup());
@@ -64,11 +63,9 @@
 
 	const updateFeatureProps = (e: SubmitEvent) => {
 		e.preventDefault();
+
 		const form = e.target as HTMLFormElement;
-
 		const formData = new FormData(form);
-
-		console.log(formData);
 
 		const id = formData.get('id') as string;
 		const props = Object.fromEntries(formData) as Record<string, string>;
@@ -77,7 +74,7 @@
 		store?.updateFeatureProps(id, props);
 
 		resetLayers(featureGroup, overlayLayer);
-		loadFeatures($store as FeatureCollection);
+		loadFeatures($store!);
 	};
 
 	const loadFeatures = (features: FeatureCollection) => {
@@ -145,7 +142,7 @@
 		if (featureGroup.getBounds().isValid()) {
 			map.fitBounds(featureGroup.getBounds(), {
 				animate: false,
-				maxZoom: 20
+				maxZoom: 15
 			});
 		}
 
@@ -154,22 +151,21 @@
 
 			map?.on('popupopen', (event) => {
 				const form = event.popup.getElement()?.querySelector('form');
-				if (form) form.addEventListener('submit', updateFeatureProps);
+				form?.addEventListener('submit', updateFeatureProps);
 			});
 
 			map?.on('popupclose', (event) => {
 				const form = event.popup.getElement()?.querySelector('form');
-				if (form) form.removeEventListener('submit', updateFeatureProps);
+				form?.removeEventListener('submit', updateFeatureProps);
 			});
 		});
 
 		return {
-			update: (update: FeatureCollection | undefined) => {
-				if (update)
-					if (!areEqualGeoJSON(features!, update)) {
-						resetLayers(featureGroup, overlayLayer);
-						loadFeatures(update);
-					}
+			update: (updatedFeatures: FeatureCollection | undefined) => {
+				if (!updatedFeatures || areEqualObject(features!, updatedFeatures)) return;
+
+				resetLayers(featureGroup, overlayLayer);
+				loadFeatures(updatedFeatures);
 			},
 
 			destroy: () => {
