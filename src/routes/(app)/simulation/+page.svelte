@@ -2,13 +2,13 @@
 	import type { FeatureCollection, Point } from 'geojson';
 
 	import { simStore } from '$lib/stores';
-	import { Map, MarkerCluster } from '$lib/components/leaflet';
+	import { Map } from '$lib/components/leaflet';
 
 	interface Props {
 		data: FeatureCollection<Point>;
 	}
 
-	let { data } = $props<Props>();
+	let { data }: Props = $props();
 
 	simStore.set(data);
 
@@ -23,6 +23,6 @@
 
 <section class="h-full">
 	<Map {center} {zoom} overlay={false}>
-		<MarkerCluster geojson={simStore} />
+		<!--  -->
 	</Map>
 </section>
