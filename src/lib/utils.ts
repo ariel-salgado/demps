@@ -1,5 +1,4 @@
 import type { ClassValue } from 'clsx';
-import type { FeatureCollection } from 'geojson';
 
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -28,8 +27,8 @@ export const strEqualsObj = (str: string, obj: object) => {
 	}
 };
 
-export const areEqualGeoJSON = (gj1: FeatureCollection, gj2: FeatureCollection) => {
-	if (JSON.stringify(gj1) === JSON.stringify(gj2)) return true;
+export const areEqualObject = (a: object, b: object) => {
+	if (JSON.stringify(a) === JSON.stringify(b)) return true;
 	return false;
 };
 
