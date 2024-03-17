@@ -3,8 +3,8 @@
 	import type { Layer, Polygon } from 'leaflet';
 	import type { MapContext } from '$lib/components/leaflet';
 
-	import { getContext, untrack } from 'svelte';
 	import { createPopup } from './popup';
+	import { getContext, untrack } from 'svelte';
 	import { contextKey } from '$lib/components/leaflet';
 
 	import '@geoman-io/leaflet-geoman-free';
@@ -19,6 +19,8 @@
 	let featureGroup = getFeatureGroup();
 	let overlayLayer = getOverlayLayer();
 
+	map.pm.setLang('es');
+
 	map.pm.setGlobalOptions({
 		layerGroup: featureGroup
 	});
@@ -31,8 +33,6 @@
 		drawPolyline: false,
 		drawCircleMarker: false
 	});
-
-	map.pm.setLang('es');
 
 	$effect(() => {
 		untrack(() => {
@@ -49,7 +49,9 @@
 		if (layer instanceof L.Circle) {
 			const radius = layer.getRadius();
 			const coordinates = layer.getLatLng();
-			feature = L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 18).toGeoJSON(6);
+			feature = window.L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 18).toGeoJSON(
+				6
+			);
 		} else {
 			const coordinates = (layer as Polygon).getLatLngs();
 			feature = new L.Polygon(coordinates).toGeoJSON(6);
@@ -73,6 +75,17 @@
 		addedFeatureGeoJSON.bindPopup(createPopup(popupLayer));
 
 		featureGroup.addLayer(addedFeatureGeoJSON);
+
+		addedFeatureGeoJSON.on('pm:dragstart', () => {
+			addedFeatureGeoJSON.removeEventListener('click');
+		});
+
+		addedFeatureGeoJSON.on('pm:dragend', () => {
+			addedFeatureGeoJSON.addEventListener('click', () => {
+				addedFeatureGeoJSON.openPopup();
+			});
+		});
+
 		if (overlayLayer) {
 			overlayLayer.addOverlay(
 				addedFeatureGeoJSON,
@@ -108,16 +121,12 @@
 	});
 
 	featureGroup.on('pm:dragstart', ({ layer }) => {
-		if (layer.hasEventListeners('click')) {
-			layer.removeEventListener('click');
-		}
+		layer.removeEventListener('click');
 	});
 
 	featureGroup.on('pm:dragend', ({ layer }) => {
-		if (layer.getPopup()) {
-			layer.on('click', () => {
-				layer.openPopup();
-			});
-		}
+		layer.addEventListener('click', () => {
+			layer.openPopup();
+		});
 	});
 </script>
