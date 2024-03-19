@@ -49,7 +49,7 @@
 	const rasterLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		noWrap: true,
 		updateWhenIdle: true,
-		updateWhenZooming: false,
+		updateWhenZooming: true,
 		attribution:
 			'© <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>'
 	});
