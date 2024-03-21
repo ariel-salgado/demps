@@ -30,4 +30,8 @@
 	markerLayer.setData(data);
 
 	markerLayer.addTo(map);
+
+	if (markerLayer.bounds) {
+		map.fitBounds(markerLayer.bounds);
+	}
 </script>
