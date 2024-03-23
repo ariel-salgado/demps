@@ -34,9 +34,7 @@
 
 	let map: L.Map | undefined = $state();
 	let featureGroup: L.FeatureGroup = $state(new L.FeatureGroup());
-	let overlayLayer: L.Control.Layers | undefined = $state(
-		new L.Control.Layers(undefined, undefined, { hideSingleBase: true })
-	);
+	let overlayLayer: L.Control.Layers = $state(new L.Control.Layers(undefined, undefined));
 
 	setContext(contextKey, {
 		getMap: () => map,
@@ -107,7 +105,7 @@
 				featureGroup.addLayer(layer);
 				if (overlay) {
 					// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
-					overlayLayer?.addOverlay(layer, layer.feature.properties.nameID || layer.feature.id);
+					overlayLayer.addOverlay(layer, layer.feature.properties.nameID || layer.feature.id);
 				}
 			}
 		});
@@ -162,8 +160,7 @@
 
 		return {
 			update: (updatedFeatures: FeatureCollection | undefined) => {
-				if (!updatedFeatures || areEqualObject(features!, updatedFeatures)) return;
-
+				if (!updatedFeatures) return;
 				resetLayers(featureGroup, overlayLayer);
 				loadFeatures(updatedFeatures);
 			},
