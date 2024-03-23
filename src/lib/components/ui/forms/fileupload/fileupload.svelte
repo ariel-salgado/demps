@@ -10,7 +10,7 @@
 		children: Snippet;
 	}
 
-	let { accept, files, children, ...props } = $props<Props>();
+	let { accept, files = $bindable(), children, ...props }: Props = $props();
 </script>
 
 <Button class="p-0" {...props}>
