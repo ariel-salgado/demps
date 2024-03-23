@@ -12,7 +12,14 @@
 		validation?: z.ZodType;
 	}
 
-	let { value, placeholder, options, class: className, validation, ...props } = $props<Props>();
+	let {
+		value = $bindable(),
+		placeholder,
+		options,
+		class: className,
+		validation,
+		...props
+	}: Props = $props();
 
 	const hasDefaultValue = options.some((option) => option.selected === true);
 

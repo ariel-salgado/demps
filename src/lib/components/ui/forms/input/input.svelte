@@ -10,7 +10,13 @@
 		validation?: z.ZodType;
 	}
 
-	let { type: type, class: className, value: value, validation, ...props } = $props<Props>();
+	let {
+		type: type,
+		class: className,
+		value: value = $bindable(),
+		validation,
+		...props
+	}: Props = $props();
 
 	let validationError: boolean = $state(false);
 	let inputError: string | undefined = $state();
