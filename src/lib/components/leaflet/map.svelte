@@ -8,9 +8,9 @@
 	import type { FeatureCollection } from 'geojson';
 	import type { HTMLAttributes } from 'svelte/elements';
 
+	import { cn } from '$lib/utils';
 	import { setContext } from 'svelte';
 	import { createPopup } from './popup';
-	import { cn, areEqualObject } from '$lib/utils';
 
 	import * as L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';

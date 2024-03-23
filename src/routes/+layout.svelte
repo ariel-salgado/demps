@@ -1,10 +1,10 @@
 <script lang="ts">
 	import '../app.pcss';
 
+	import { Header } from '$lib/components/ui';
 	import { onNavigate } from '$app/navigation';
-	import { Header } from '$lib/components/ui/header';
 
-	const { children } = $props();
+	let { children } = $props();
 
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;

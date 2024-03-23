@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	import { Button } from '$lib/components/ui/forms';
+	import { Button } from '$lib/components/ui';
 
 	interface Props extends HTMLAttributes<HTMLButtonElement> {
 		accept: string;

@@ -6,7 +6,7 @@
 		children: Snippet;
 	}
 
-	const { children, ...props } = $props<Props>();
+	let { children, ...props }: Props = $props();
 </script>
 
 <div class="sticky top-6 z-10 float-right mr-14 size-0" {...props}>

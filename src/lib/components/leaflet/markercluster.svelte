@@ -17,7 +17,7 @@
 		geojson?: Writable<FeatureCollection<Point>>;
 	}
 
-	let { geojson } = $props<Props>();
+	let { geojson }: Props = $props();
 
 	const { getMap, getStore, getLeaflet } = getContext<MapContext>(contextKey);
 

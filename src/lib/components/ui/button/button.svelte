@@ -12,7 +12,7 @@
 		children: Snippet;
 	} & ButtonOrLinkProps;
 
-	let { children, class: className, ...props } = $props<Props>();
+	let { children, class: className, ...props }: Props = $props();
 </script>
 
 {#if props.as === 'a'}

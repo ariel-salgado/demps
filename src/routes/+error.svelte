@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Button } from '$lib/components/ui/forms';
+	import { Button } from '$lib/components/ui';
 </script>
 
 <section class="grid h-full place-items-center items-center">

@@ -3,14 +3,13 @@
 
 	import { capitalize } from '$lib/utils';
 	import { fade } from 'svelte/transition';
-	import { toleranceStore } from '$lib/stores';
-	import { toleranceOptions } from '$lib/stores';
 	import { SparkleIcon } from '$lib/components/icons';
-	import { FormGroup, Label, Select } from '$lib/components/ui/forms';
+	import { FormGroup, Label, Select } from '$lib/components/ui';
+	import { toleranceStore, toleranceOptions } from '$lib/stores';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {}
 
-	const { ...props } = $props<Props>();
+	let { ...props }: Props = $props();
 
 	let showOptions: boolean = $state(false);
 	let enhanceForm: HTMLFormElement | undefined = $state();

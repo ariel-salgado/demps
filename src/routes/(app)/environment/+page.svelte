@@ -3,8 +3,8 @@
 	import type { Feature, FeatureCollection } from 'geojson';
 
 	import { isValidGeoJSON } from '$lib/utils';
+	import { Fileupload } from '$lib/components/ui';
 	import { UploadIcon } from '$lib/components/icons';
-	import { Fileupload } from '$lib/components/ui/forms';
 	import { Map, Draw, Search } from '$lib/components/leaflet';
 	import { envStore, toleranceOptions, toleranceStore } from '$lib/stores';
 	import { Editor, Widgets, Enhance, Clipboard, Download } from '$lib/components/codemirror';

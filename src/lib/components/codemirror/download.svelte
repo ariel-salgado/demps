@@ -8,7 +8,7 @@
 
 	interface Props extends HTMLAnchorAttributes {}
 
-	const { ...props } = $props<Props>();
+	let { ...props }: Props = $props();
 
 	const { getEditor } = getContext<EditorContext>(contextKey);
 

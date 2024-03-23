@@ -5,7 +5,7 @@
 
 	interface Props extends HTMLAttributes<SVGElement> {}
 
-	const { class: className, ...props } = $props<Props>();
+	let { class: className, ...props }: Props = $props();
 </script>
 
 <svg

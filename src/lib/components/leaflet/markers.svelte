@@ -10,7 +10,7 @@
 		data: [number, number][];
 	}
 
-	const { data }: Props = $props();
+	let { data }: Props = $props();
 
 	const { getMap, getLeaflet } = getContext<MapContext>(contextKey);
 

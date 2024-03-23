@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { Button } from '$lib/components/ui';
 	import { PlayIcon } from '$lib/components/icons';
-	import { Button } from '$lib/components/ui/forms';
 
 	const navItems: { name: string; href: string }[] = [
 		{ name: 'inicio', href: '/' },

@@ -19,7 +19,7 @@
 		Input,
 		Label,
 		Select
-	} from '$lib/components/ui/forms/';
+	} from '$lib/components/ui';
 
 	const { form, items } = getFormData();
 

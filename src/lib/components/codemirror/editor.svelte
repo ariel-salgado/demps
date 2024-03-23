@@ -21,7 +21,7 @@
 		actions?: Snippet;
 	}
 
-	let { store, widgets, actions, class: className, ...props } = $props<Props>();
+	let { store, widgets, actions, class: className, ...props }: Props = $props();
 
 	let editor: EditorView | undefined = $state();
 	let topPosition: number | undefined = $state();
