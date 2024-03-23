@@ -121,6 +121,18 @@
 		featureGroup.clearLayers();
 	};
 
+	const reloadBounds = () => {
+		if (
+			featureGroup.getBounds().isValid() &&
+			!map?.getBounds().intersects(featureGroup.getBounds())
+		) {
+			map?.fitBounds(featureGroup.getBounds(), {
+				animate: false,
+				maxZoom: 15
+			});
+		}
+	};
+
 	const initMap: Action<HTMLDivElement, FeatureCollection | undefined> = (
 		mapContainer: HTMLDivElement,
 		features: FeatureCollection | undefined
@@ -163,6 +175,7 @@
 				if (!updatedFeatures) return;
 				resetLayers(featureGroup, overlayLayer);
 				loadFeatures(updatedFeatures);
+				reloadBounds();
 			},
 
 			destroy: () => {
