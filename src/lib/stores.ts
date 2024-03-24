@@ -5,6 +5,18 @@ import type { FeatureCollection, Feature, Point } from 'geojson';
 import { browser } from '$app/environment';
 import { get, writable } from 'svelte/store';
 
+const areThereFloodZones = (features: Feature[]) => {
+	if (features.length === 0) return false;
+
+	let safeZones: number = 0;
+
+	features.forEach((feature) => {
+		if (feature.properties?.zoneType === 'flood') safeZones++;
+	});
+
+	return safeZones > 0;
+};
+
 // https://www.w3.org/TR/json-ld11/#the-context
 const createGeoJSONStore = (initialState?: FeatureCollection) => {
 	const data = initialState ?? {
@@ -31,6 +43,12 @@ const createGeoJSONStore = (initialState?: FeatureCollection) => {
 			const index = current.features.findIndex((feature) => String(feature.id) === String(id));
 			if (index !== -1) current.features.splice(index, 1);
 
+			if (!areThereFloodZones(current.features)) {
+				current['@context'] = {
+					'@simplified': false
+				};
+			}
+
 			return {
 				...current
 			};
@@ -45,6 +63,12 @@ const createGeoJSONStore = (initialState?: FeatureCollection) => {
 				return featureCoords.toString() === coords.toString();
 			});
 			if (index !== -1) current.features.splice(index, 1);
+
+			if (!areThereFloodZones(current.features)) {
+				current['@context'] = {
+					'@simplified': false
+				};
+			}
 
 			return {
 				...current
