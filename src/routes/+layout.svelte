@@ -14,7 +14,7 @@
 			const newSW = registration.installing;
 			newSW?.addEventListener('statechange', () => {
 				if (newSW.state === 'installed') {
-					const update = confirm('A new version is available. Do you want to update?');
+					const update = confirm('Hay una nueva versión disponible. ¿Desea actualizar?');
 					if (update) {
 						newSW.postMessage({ type: 'SKIP_WAITING' });
 						window.location.reload();
