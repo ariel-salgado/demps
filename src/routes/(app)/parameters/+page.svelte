@@ -144,17 +144,17 @@
 		{#if field.type === 'input'}
 			<Input
 				id={field.attributes.name}
+				bind:value={$configStore[(field.attributes.name!)]}
 				{...field.attributes}
 				validation={field.validation}
-				bind:value={$configStore[(field.attributes.name!)]}
 			/>
 		{:else if field.type === 'select'}
 			<Select
 				id={field.attributes.name}
 				{...field.attributes}
+				bind:value={$configStore[(field.attributes.name!)]}
 				options={field.options}
 				validation={field.validation}
-				bind:value={$configStore[(field.attributes.name!)]}
 			/>
 		{/if}
 		<Description>{field.description}</Description>
