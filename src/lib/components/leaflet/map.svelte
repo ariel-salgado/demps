@@ -133,6 +133,17 @@
 		}
 	};
 
+	const toggleOverlay = () => {
+		if (!overlay) return;
+
+		if (featureGroup.getLayers().length === 0) {
+			map?.removeControl(overlayLayer);
+			return;
+		}
+
+		map?.addControl(overlayLayer);
+	};
+
 	const initMap: Action<HTMLDivElement, FeatureCollection | undefined> = (
 		mapContainer: HTMLDivElement,
 		features: FeatureCollection | undefined
@@ -142,12 +153,14 @@
 		featureGroup.addTo(map);
 
 		if (overlay) {
-			overlayLayer?.addTo(map);
+			map.addControl(overlayLayer);
 		}
 
 		if (features) {
 			loadFeatures(features);
 		}
+
+		toggleOverlay();
 
 		if (featureGroup.getBounds().isValid()) {
 			map.fitBounds(featureGroup.getBounds(), {
@@ -175,6 +188,7 @@
 				if (!updatedFeatures) return;
 				resetLayers(featureGroup, overlayLayer);
 				loadFeatures(updatedFeatures);
+				toggleOverlay();
 				reloadBounds();
 			},
 
