@@ -42,7 +42,8 @@ const baseTheme: Extension = EditorView.baseTheme({
 		userSelect: 'none'
 	},
 	'.cm-gutterElement': {
-		padding: '0 0.2rem'
+		padding: '0 0.2rem',
+		color: '#525252'
 	},
 	'.cm-activeLine': {
 		backgroundColor: '#f3f3f3'
