@@ -41,7 +41,7 @@
 
 <select
 	class={cn(
-		'inline-flex h-9 w-full rounded-md border border-slate-300 px-3 py-2 text-sm ring-offset-white focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+		'inline-flex h-9 w-full rounded-md border border-slate-300 px-3 py-2 text-sm ring-offset-white focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:select-none disabled:bg-slate-100 disabled:text-neutral-600 disabled:ring-offset-slate-100 disabled:focus-within:ring-opacity-0',
 		className
 	)}
 	class:error={validationError}
