@@ -1,10 +1,28 @@
 <script lang="ts">
 	import '../app.pcss';
 
+	import { onMount } from 'svelte';
 	import { Header } from '$lib/components/ui';
 	import { onNavigate } from '$app/navigation';
 
 	let { children } = $props();
+
+	async function detectSWUpdate() {
+		const registration = await navigator.serviceWorker.ready;
+
+		registration.addEventListener('updatefound', () => {
+			const newSW = registration.installing;
+			newSW?.addEventListener('statechange', () => {
+				if (newSW.state === 'installed') {
+					const update = confirm('A new version is available. Do you want to update?');
+					if (update) {
+						newSW.postMessage({ type: 'SKIP_WAITING' });
+						window.location.reload();
+					}
+				}
+			});
+		});
+	}
 
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
@@ -15,6 +33,10 @@
 				await navigation.complete;
 			});
 		});
+	});
+
+	onMount(() => {
+		detectSWUpdate();
 	});
 </script>
 
