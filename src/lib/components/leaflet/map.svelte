@@ -34,6 +34,7 @@
 
 	let map: L.Map | undefined = $state();
 	let featureGroup: L.FeatureGroup = $state(new L.FeatureGroup());
+	let rendererCanvas: L.Renderer = $state(new L.Canvas({ padding: 0.5 }));
 	let overlayLayer: L.Control.Layers = $state(new L.Control.Layers(undefined, undefined));
 
 	setContext(contextKey, {
@@ -45,9 +46,9 @@
 	});
 
 	const rasterLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		noWrap: true,
 		updateWhenIdle: true,
-		updateWhenZooming: true,
+		updateWhenZooming: false,
+		keepBuffer: 4,
 		attribution:
 			'© <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>'
 	});
@@ -56,52 +57,38 @@
 		zoom: zoom,
 		center: center,
 		preferCanvas: true,
-		layers: [rasterLayer]
-	};
-
-	const updateFeatureProps = (e: SubmitEvent) => {
-		e.preventDefault();
-
-		const form = e.target as HTMLFormElement;
-		const formData = new FormData(form);
-
-		const id = formData.get('id') as string;
-		const props = Object.fromEntries(formData) as Record<string, string>;
-		delete props.id;
-
-		store?.updateFeatureProps(id, props);
-
-		resetLayers(featureGroup, overlayLayer);
-		loadFeatures($store!);
+		worldCopyJump: false,
+		layers: [rasterLayer],
+		renderer: rendererCanvas
 	};
 
 	const loadFeatures = (features: FeatureCollection) => {
 		L.geoJSON(features, {
 			style: (feature) => {
-				const defaultAttributes = {
-					stroke: '#3388ff',
-					'stroke-width': 3,
-					'stroke-opacity': 1,
-					fill: '#3388ff',
-					'fill-opacity': 0.2
-				};
+				const attributes = feature?.properties;
 
-				const attributes = {
-					...defaultAttributes,
-					...feature?.properties
-				};
+				if (!attributes)
+					return {
+						smoothFactor: 1.5,
+						renderer: rendererCanvas
+					};
 
 				return {
 					smoothFactor: 1.5,
-					color: attributes.stroke,
-					weight: attributes['stroke-width'],
-					opacity: attributes['stroke-opacity'],
-					fillColor: attributes.fill,
-					fillOpacity: attributes['fill-opacity']
+					renderer: rendererCanvas,
+					...(attributes.fill && { fillColor: attributes.fill }),
+					...(attributes.stroke && { color: attributes.stroke }),
+					// https://github.com/Leaflet/Leaflet/issues/6075
+					...(attributes['stroke-width'] && {
+						weight: !Number.isNaN(attributes['stroke-width']) ? attributes['stroke-width'] : 3
+					}),
+					...(attributes['fill-opacity'] && { fillOpacity: attributes['fill-opacity'] }),
+					...(attributes['stroke-opacity'] && { opacity: attributes['stroke-opacity'] })
 				};
 			},
 			onEachFeature: (_, layer) => {
-				layer.bindPopup(createPopup(layer));
+				layer.bindPopup(L.popup({ content: createPopup(layer), interactive: true }));
+
 				featureGroup.addLayer(layer);
 				if (overlay) {
 					// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
@@ -121,13 +108,26 @@
 		featureGroup.clearLayers();
 	};
 
-	const reloadBounds = () => {
+	const updateFeatureProps = (e: SubmitEvent) => {
+		e.preventDefault();
+
+		const form = e.target as HTMLFormElement;
+		const formData = new FormData(form);
+
+		const id = formData.get('id') as string;
+		const props = Object.fromEntries(formData) as Record<string, string>;
+		delete props.id;
+
+		store?.updateFeatureProps(id, props);
+	};
+
+	const fitBounds = () => {
 		if (
 			featureGroup.getBounds().isValid() &&
 			!map?.getBounds().intersects(featureGroup.getBounds())
 		) {
 			map?.fitBounds(featureGroup.getBounds(), {
-				animate: false,
+				animate: true,
 				maxZoom: 15
 			});
 		}
@@ -152,15 +152,13 @@
 
 		featureGroup.addTo(map);
 
-		if (overlay) {
-			map.addControl(overlayLayer);
-		}
-
 		if (features) {
 			loadFeatures(features);
 		}
 
-		toggleOverlay();
+		if (overlay && featureGroup.getLayers().length > 0) {
+			overlayLayer.addTo(map);
+		}
 
 		if (featureGroup.getBounds().isValid()) {
 			map.fitBounds(featureGroup.getBounds(), {
@@ -189,7 +187,7 @@
 				resetLayers(featureGroup, overlayLayer);
 				loadFeatures(updatedFeatures);
 				toggleOverlay();
-				reloadBounds();
+				fitBounds();
 			},
 
 			destroy: () => {
@@ -201,6 +199,7 @@
 </script>
 
 <svelte:head>
+	<link rel="dns-prefetch" href="https://tile.openstreetmap.org" />
 	<link rel="preconnect" href="https://tile.openstreetmap.org" />
 </svelte:head>
 
