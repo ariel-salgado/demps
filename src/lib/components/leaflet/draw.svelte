@@ -76,16 +76,6 @@
 
 		featureGroup.addLayer(addedFeatureGeoJSON);
 
-		addedFeatureGeoJSON.on('pm:dragstart', () => {
-			addedFeatureGeoJSON.removeEventListener('click');
-		});
-
-		addedFeatureGeoJSON.on('pm:dragend', () => {
-			addedFeatureGeoJSON.addEventListener('click', () => {
-				addedFeatureGeoJSON.openPopup();
-			});
-		});
-
 		if (overlayLayer) {
 			overlayLayer.addOverlay(
 				addedFeatureGeoJSON,
