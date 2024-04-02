@@ -2,6 +2,7 @@
 	import '../app.pcss';
 
 	import { onMount } from 'svelte';
+	import { dev } from '$app/environment';
 	import { Header } from '$lib/components/ui';
 	import { onNavigate } from '$app/navigation';
 
@@ -36,7 +37,7 @@
 	});
 
 	onMount(() => {
-		detectSWUpdate();
+		!dev && detectSWUpdate();
 	});
 </script>
 
