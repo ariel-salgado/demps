@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type * as Leaflet from 'leaflet';
+	import type { Metadata } from '$lib/types';
 	import type { Action } from 'svelte/action';
 	import type { FeatureCollection } from 'geojson';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Environment, Metadata } from '$lib/states.svelte';
+	import type { Environment } from '$lib/states.svelte';
 
 	import { cn } from '$lib/utils';
 	import { onMount, setContext } from 'svelte';
@@ -34,8 +35,13 @@
 	});
 
 	function fitBounds(animate: boolean = false) {
-		if (featureGroup!.getBounds().isValid()) {
-			map?.fitBounds(featureGroup!.getBounds(), {
+		const mapBounds = map?.getBounds();
+		const featureBounds = featureGroup?.getBounds();
+
+		if (!featureBounds?.isValid() || mapBounds?.intersects(featureBounds!)) return;
+
+		if (featureBounds!.isValid()) {
+			map?.fitBounds(featureBounds!, {
 				animate: animate,
 				maxZoom: 15
 			});
@@ -77,6 +83,15 @@
 				overlayLayer?.addOverlay(layer, feature.properties.nameID || feature.id);
 			}
 		});
+	}
+
+	function toggleOverlay() {
+		if (featureGroup?.getLayers().length === 0) {
+			map?.removeControl(overlayLayer!);
+			return;
+		}
+
+		map?.addControl(overlayLayer!);
 	}
 
 	function updateFeatureProps(e: SubmitEvent) {
@@ -126,9 +141,9 @@
 			map.whenReady(() => {
 				map?.invalidateSize();
 				map?.addLayer(featureGroup!);
-				map?.addControl(overlayLayer!);
 
 				loadFeatures(features);
+				toggleOverlay();
 				fitBounds();
 
 				map?.on('popupopen', (event) => {
@@ -150,6 +165,7 @@
 				});
 				featureGroup?.clearLayers();
 				loadFeatures(features);
+				toggleOverlay();
 				fitBounds();
 			},
 

@@ -1,14 +1,16 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { Metadata } from '$lib/types';
 	import type { Action } from 'svelte/action';
+	import type { FeatureCollection } from 'geojson';
 	import type { Environment } from '$lib/states.svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	import { cn } from '$lib/utils';
 	import { setContext } from 'svelte';
 	import { EditorView } from '@codemirror/view';
 	import { EditorState } from '@codemirror/state';
 	import { contextKey, extensions } from '$lib/components/codemirror';
+	import { cn, debounce, isValidGeoJSON, strEqualsObj } from '$lib/utils';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		widgets?: Snippet;
@@ -26,6 +28,29 @@
 		getEditor: () => editor
 	});
 
+	const updateEnvironment = debounce((value: string) => {
+		content.value = JSON.parse(value);
+	}, 750);
+
+	const handleChanges = EditorView.updateListener.of((v) => {
+		const value = v.state.doc.toString();
+		if (v.docChanged && isValidGeoJSON(value) && !strEqualsObj(value, content.value!)) {
+			updateEnvironment(value);
+		}
+	});
+
+	function updateEditor(value: Metadata & FeatureCollection) {
+		if (!strEqualsObj(editor!.state.doc.toString(), value) && isValidGeoJSON(value)) {
+			editor?.dispatch({
+				changes: {
+					from: 0,
+					to: editor.state.doc.length,
+					insert: JSON.stringify(value, null, 2)
+				}
+			});
+		}
+	}
+
 	const initEditor: Action<HTMLDivElement, Environment> = (
 		editorContainer: HTMLDivElement,
 		content: Environment
@@ -36,19 +61,13 @@
 			parent: editorContainer,
 			state: EditorState.create({
 				doc: JSON.stringify(content.value, null, 2),
-				extensions: [extensions]
+				extensions: [extensions, handleChanges]
 			})
 		});
 
 		return {
 			update(content: Environment) {
-				editor?.dispatch({
-					changes: {
-						from: 0,
-						to: editor.state.doc.length,
-						insert: JSON.stringify(content.value, null, 2)
-					}
-				});
+				updateEditor(content.value!);
 			},
 
 			destroy() {
