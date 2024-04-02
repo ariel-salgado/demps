@@ -15,7 +15,7 @@ export const toleranceOptions = {
  * Form fields for feature properties edition
  */
 
-export const formFields = {
+export const popupFields = {
 	id: {
 		type: 'text',
 		defaultValue: '',

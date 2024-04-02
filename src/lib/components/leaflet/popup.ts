@@ -1,7 +1,7 @@
 import type { Feature } from 'geojson';
 import type { HTMLInputAttributes, HTMLSelectAttributes } from 'svelte/elements';
 
-import { formFields } from '$lib';
+import { popupFields } from '$lib';
 
 function spreadAttributes(attributes: HTMLInputAttributes | HTMLSelectAttributes) {
 	return Object.entries(attributes)
@@ -10,7 +10,7 @@ function spreadAttributes(attributes: HTMLInputAttributes | HTMLSelectAttributes
 }
 
 function createFormFields(fields: Record<string, unknown>) {
-	const data = Object.entries(formFields).map(([key, value]) => {
+	const data = Object.entries(popupFields).map(([key, value]) => {
 		if (value.type === 'select') {
 			return `
 				<div>
