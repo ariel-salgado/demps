@@ -1,7 +1,7 @@
+import type { Feature } from 'geojson';
 import type { ClassValue } from 'clsx';
 
 import { clsx } from 'clsx';
-import type { Feature } from 'geojson';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -50,23 +50,26 @@ export function capitalize(str: string) {
 }
 
 export function flattenJSON(obj: object, prefix: string = '') {
-	let flatObj = {};
+	const flatObj: Record<string, unknown> = {};
 
-	for (const key in obj) {
-		if (Object.prototype.hasOwnProperty.call(obj, key)) {
-			const value = obj[key];
+	for (const key of Object.keys(obj)) {
+		const value = obj[key];
+		const fullKey = prefix ? `${prefix}.${key}` : key;
 
-			if (typeof value === 'object' && !Array.isArray(value)) {
-				const nestedObj = flattenJSON(value, prefix + key + '.');
-				flatObj = { ...flatObj, ...nestedObj };
-			} else if (Array.isArray(value)) {
+		if (value && typeof value === 'object') {
+			if (Array.isArray(value)) {
 				value.forEach((item, index) => {
 					if (typeof item === 'object') {
-						const nestedObj = flattenJSON(item, prefix + key + '.' + index + '.');
-						flatObj = { ...flatObj, ...nestedObj };
-					} else flatObj[prefix + key + '.' + index] = item;
+						Object.assign(flatObj, flattenJSON(item, `${fullKey}.${index}`));
+					} else {
+						flatObj[`${fullKey}.${index}`] = item;
+					}
 				});
-			} else flatObj[prefix + key] = value;
+			} else {
+				Object.assign(flatObj, flattenJSON(value, fullKey));
+			}
+		} else {
+			flatObj[fullKey] = value;
 		}
 	}
 
@@ -74,29 +77,20 @@ export function flattenJSON(obj: object, prefix: string = '') {
 }
 
 export function deflattenJSON(obj: object) {
-	const deflatObj = {};
-
-	for (const key in obj) {
-		if (Object.prototype.hasOwnProperty.call(obj, key)) {
+	return Object.keys(obj).reduce(
+		(deflatObj, key) => {
 			const keys = key.split('.');
-			let currentObject: Record<string, string> | string = deflatObj;
-
+			let currentObj = deflatObj;
 			for (let i = 0; i < keys.length - 1; i++) {
 				const currentKey = keys[i] as string;
-				const nextKey = keys[i + 1] as string;
-
-				if (!currentObject[currentKey]) {
-					currentObject[currentKey] = /^\d+$/.test(nextKey) ? [] : {};
-				}
-
-				currentObject = currentObject[currentKey];
+				currentObj[currentKey] = currentObj?.[currentKey] || (/^\d+$/.test(keys[i + 1]!) ? [] : {});
+				currentObj = currentObj[currentKey] as Record<string, unknown>;
 			}
-
-			currentObject[keys[keys.length - 1] as string] = obj[key];
-		}
-	}
-
-	return deflatObj;
+			currentObj[keys.at(-1)!] = obj[key];
+			return deflatObj;
+		},
+		{} as Record<string, unknown>
+	);
 }
 
 export function totalFloodZones(features: Feature[]) {
