@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Metadata } from '$lib/states.svelte';
+	import type { Metadata } from '$lib/types';
 	import type { Feature, FeatureCollection } from 'geojson';
 
 	import { toleranceOptions } from '$lib';
@@ -8,7 +8,7 @@
 
 	import { UploadIcon } from '$lib/components/icons';
 	import { Fileupload } from '$lib/components/ui/fileupload';
-	import { Map, Draw, Search } from '$lib/components/leaflet';
+	import { Map, Search, Draw } from '$lib/components/leaflet';
 	import { Editor, Widgets, Clipboard, Download, Enhance } from '$lib/components/codemirror';
 
 	import simplify from '@turf/simplify';

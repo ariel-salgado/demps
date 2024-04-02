@@ -1,3 +1,12 @@
+import type { toleranceOptions } from '$lib';
+
+export type Metadata = {
+	'@context': {
+		'@simplified': boolean;
+		'@tolerance'?: keyof typeof toleranceOptions;
+	};
+};
+
 export type SelectOptions = {
 	label: string | null;
 	value: string | number | boolean;

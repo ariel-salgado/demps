@@ -1,81 +1,7 @@
 import type { Feature } from 'geojson';
-import type {
-	HTMLInputAttributes,
-	HTMLInputTypeAttribute,
-	HTMLSelectAttributes
-} from 'svelte/elements';
+import type { HTMLInputAttributes, HTMLSelectAttributes } from 'svelte/elements';
 
-type InputField = {
-	type: HTMLInputTypeAttribute;
-	attributes: HTMLInputAttributes;
-};
-
-type SelectField = {
-	type: 'select';
-	options: string[];
-	attributes: HTMLSelectAttributes;
-};
-
-type FormField = {
-	defaultValue: string | number;
-} & (InputField | SelectField);
-
-const formFields: Record<string, FormField> = {
-	id: {
-		type: 'text',
-		defaultValue: '',
-		attributes: {
-			readonly: true
-		}
-	},
-	nameID: {
-		type: 'text',
-		defaultValue: '',
-		attributes: {}
-	},
-	zoneType: {
-		type: 'select',
-		defaultValue: '',
-		attributes: {},
-		options: ['initial', 'flood', 'safe']
-	},
-	stroke: {
-		type: 'color',
-		defaultValue: '#3388ff',
-		attributes: {}
-	},
-	'stroke-width': {
-		type: 'number',
-		defaultValue: 3,
-		attributes: {
-			min: 0,
-			step: 1
-		}
-	},
-	'stroke-opacity': {
-		type: 'number',
-		defaultValue: 1,
-		attributes: {
-			min: 0,
-			max: 1,
-			step: 0.1
-		}
-	},
-	fill: {
-		type: 'color',
-		defaultValue: '#3388ff',
-		attributes: {}
-	},
-	'fill-opacity': {
-		type: 'number',
-		defaultValue: 0.2,
-		attributes: {
-			min: 0,
-			max: 1,
-			step: 0.1
-		}
-	}
-};
+import { formFields } from '$lib';
 
 function spreadAttributes(attributes: HTMLInputAttributes | HTMLSelectAttributes) {
 	return Object.entries(attributes)
@@ -91,7 +17,7 @@ function createFormFields(fields: Record<string, unknown>) {
 					<label class="block min-w-max font-semibold text-slate-500 text-sm leading-relaxed pl-1" for="${key}">${key}</label>
 					<select class="h-9 w-full py-1.5 px-3 rounded-md border border-slate-300 text-sm" id="${key}" name="${key}" ${spreadAttributes(value.attributes)}>
 						<option value="" disabled selected>Seleccione ${key}</option>
-						${(value as SelectField).options.map((option) => `<option value="${option}" ${option === fields[key] && `selected`}>${option}</option>`).join('')}
+						${value.options.map((option) => `<option value="${option}" ${option === fields[key] && `selected`}>${option}</option>`).join('')}
 					</select>
 				</div>
 			`;

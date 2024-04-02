@@ -1,14 +1,8 @@
+import type { Metadata } from '$lib/types';
 import type { Feature, FeatureCollection } from 'geojson';
 
 import { toleranceOptions } from '$lib';
 import { browser } from '$app/environment';
-
-export type Metadata = {
-	'@context': {
-		'@simplified': boolean;
-		'@tolerance'?: keyof typeof toleranceOptions;
-	};
-};
 
 function saveToLocalStorage(key: string, value: unknown) {
 	localStorage.setItem(key, JSON.stringify(value));
@@ -28,7 +22,7 @@ export function createEnvironment(initialValue?: Metadata & FeatureCollection) {
 		},
 		type: 'FeatureCollection',
 		features: []
-	};
+	} as Metadata & FeatureCollection;
 
 	const v: Metadata & FeatureCollection = storedValue
 		? JSON.parse(storedValue)
