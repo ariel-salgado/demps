@@ -1,19 +1,17 @@
-import type L from 'leaflet';
-import type { GeoJSONStore } from '$lib/stores';
+import type { Environment } from '$lib/states.svelte';
 
-//@ts-expect-error - TS doesn't know about the module context api
-import Map, { contextKey } from './map.svelte';
+import Map from './map.svelte';
 import Draw from './draw.svelte';
 import Search from './search.svelte';
-import Markers from './markers.svelte';
-import MarkerCluster from './markercluster.svelte';
+import Canvas from './canvas.svelte';
+
+export const contextKey = Symbol();
 
 export type MapContext = {
-	getMap: () => L.Map;
-	getStore: () => GeoJSONStore;
-	getLeaflet: () => typeof L;
+	getMap: () => Map;
+	getEnvironment: () => Environment;
 	getFeatureGroup: () => L.FeatureGroup;
 	getOverlayLayer: () => L.Control.Layers;
 };
 
-export { contextKey, Map, Draw, Search, Markers, MarkerCluster };
+export { Map, Draw, Search, Canvas };

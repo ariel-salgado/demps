@@ -1,113 +1,123 @@
 <script lang="ts">
 	import type { Feature } from 'geojson';
-	import type { Layer, Polygon } from 'leaflet';
 	import type { MapContext } from '$lib/components/leaflet';
 
-	import { createPopup } from './popup';
-	import { getContext, untrack } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { contextKey } from '$lib/components/leaflet';
 
-	import '@geoman-io/leaflet-geoman-free';
-	import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
-
-	const { getMap, getStore, getLeaflet, getFeatureGroup, getOverlayLayer } =
+	const { getMap, getEnvironment, getFeatureGroup, getOverlayLayer } =
 		getContext<MapContext>(contextKey);
 
 	let map = getMap();
-	let L = getLeaflet();
-	let store = getStore();
+	let environment = getEnvironment();
 	let featureGroup = getFeatureGroup();
 	let overlayLayer = getOverlayLayer();
 
-	map.pm.setLang('es');
+	onMount(async () => {
+		if (!map.pm) {
+			await import('@geoman-io/leaflet-geoman-free');
+			await import('@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css');
+		}
 
-	map.pm.setGlobalOptions({
-		layerGroup: featureGroup
-	});
+		// @ts-expect-error - https://geoman.io/docs/lazy-loading
+		window.L.PM.reInitLayer(map);
+		window.L.PM.reInitLayer(featureGroup);
 
-	map.pm.addControls({
-		position: 'topleft',
-		drawText: false,
-		drawMarker: false,
-		cutPolygon: false,
-		drawPolyline: false,
-		drawCircleMarker: false
-	});
+		map.pm.setLang('es');
 
-	$effect(() => {
-		untrack(() => {
-			// Add aria-label to the draw buttons
-			document.querySelectorAll('a.leaflet-buttons-control-button').forEach((button) => {
-				button.setAttribute('aria-label', button.parentElement?.getAttribute('title')!);
-			});
+		map.pm.setGlobalOptions({
+			resizableCircle: true,
+			layerGroup: featureGroup
+		});
+
+		map.pm.addControls({
+			position: 'topleft',
+			drawText: false,
+			drawMarker: false,
+			cutPolygon: false,
+			drawPolyline: false,
+			drawCircleMarker: false
+		});
+
+		// Add aria-label to the draw buttons
+		window.document.querySelectorAll('a.leaflet-buttons-control-button').forEach((button) => {
+			button.setAttribute('aria-label', button.parentElement?.getAttribute('title')!);
 		});
 	});
 
-	const layerToFeature = (layer: Layer): Feature => {
-		let feature: Feature;
+	function layerToPolygon<T extends L.Polygon | L.Circle>(layer: L.Layer) {
+		let feature: T | undefined;
 
-		if (layer instanceof L.Circle) {
-			const radius = layer.getRadius();
+		if (layer instanceof window.L.Polygon) {
+			const coordinates = layer.getLatLngs();
+			feature = new window.L.Polygon(coordinates) as T;
+		} else if (layer instanceof window.L.Circle) {
 			const coordinates = layer.getLatLng();
-			feature = window.L.PM.Utils.circleToPolygon(new L.Circle(coordinates, radius), 18).toGeoJSON(
-				6
-			);
+			const radius = Number(layer.getRadius().toFixed(6));
+			feature = new window.L.Circle(coordinates, radius) as T;
 		} else {
-			const coordinates = (layer as Polygon).getLatLngs();
-			feature = new L.Polygon(coordinates).toGeoJSON(6);
+			return;
 		}
 
-		return { id: crypto.randomUUID(), ...feature, properties: {} };
-	};
+		return feature;
+	}
+
+	function polygonToGeoJSON(feature: L.Polygon | L.Circle): Feature | undefined {
+		let featureGeoJSON: Feature | undefined;
+
+		if (feature instanceof window.L.Circle) {
+			featureGeoJSON = window.L.PM.Utils.circleToPolygon(feature as L.Circle, 18).toGeoJSON(6);
+			featureGeoJSON.properties = {
+				...featureGeoJSON.properties,
+				radius: Number((feature as L.Circle).getRadius().toFixed(6)),
+				center: [
+					Number((feature as L.Circle).getLatLng().lat.toFixed(6)),
+					Number((feature as L.Circle).getLatLng().lng.toFixed(6))
+				]
+			};
+		} else if (feature instanceof window.L.Polygon) {
+			featureGeoJSON = feature.toGeoJSON(6);
+		} else {
+			return;
+		}
+
+		// @ts-expect-error - id is an added property
+		featureGeoJSON = { id: feature.id, ...featureGeoJSON };
+
+		return featureGeoJSON;
+	}
 
 	map.on('pm:create', ({ layer }) => {
 		featureGroup.removeLayer(layer);
 
-		const addedFeature = layerToFeature(layer);
-		const addedFeatureGeoJSON = L.geoJSON(addedFeature);
+		let feature = layerToPolygon(layer);
 
-		// @ts-expect-error - Leaflet types are a mess
-		const leafletID = addedFeatureGeoJSON._leaflet_id - 1;
+		if (!feature) return;
 
-		// @ts-expect-error - Leaflet types are a mess
-		const popupLayer = addedFeatureGeoJSON._layers[leafletID];
+		const randomID = crypto.randomUUID().split('-').at(-1) as string;
 
-		addedFeatureGeoJSON.bindPopup(createPopup(popupLayer));
+		// @ts-expect-error - Adding the id to the layer for future reference
+		feature.id = randomID;
+		featureGroup.addLayer(feature);
+		overlayLayer.addOverlay(feature, randomID);
 
-		featureGroup.addLayer(addedFeatureGeoJSON);
+		let featureGeoJSON = polygonToGeoJSON(feature);
 
-		if (overlayLayer) {
-			overlayLayer.addOverlay(
-				addedFeatureGeoJSON,
-				(addedFeature.properties?.nameID || addedFeature.id) as string
-			);
-		}
+		environment.addFeature(featureGeoJSON!);
+	});
 
-		store.addFeature(addedFeature);
+	featureGroup.on('pm:edit', ({ layer }) => {
+		let featureGeoJSON = polygonToGeoJSON(layer as L.Polygon | L.Circle);
+
+		// @ts-expect-error - id is an added property
+		environment.updateFeature(layer.id, featureGeoJSON);
 	});
 
 	map.on('pm:remove', ({ layer }) => {
 		featureGroup.removeLayer(layer);
+		overlayLayer.removeLayer(layer);
 
-		// @ts-expect-error - Leaflet types are a mess
-		const removedFeatureID = layer.feature.id as string;
-		if (overlayLayer) {
-			overlayLayer.removeLayer(layer);
-		}
-
-		store.removeFeatureByID(removedFeatureID);
-	});
-
-	// It handles edit, drag and rotate events
-	featureGroup.on('pm:edit', ({ layer }) => {
-		// @ts-expect-error - Geoman types are missing
-		const editedFeature = layer.toGeoJSON(6) as Feature;
-		const id = editedFeature.id as string;
-
-		// @ts-expect-error - Geoman types are missing
-		const coordinates = editedFeature.geometry.coordinates;
-
-		store.updateFeatureCoords(id, coordinates);
+		environment.removeFeature(layer.id as number);
 	});
 
 	featureGroup.on('pm:dragstart', ({ layer }) => {

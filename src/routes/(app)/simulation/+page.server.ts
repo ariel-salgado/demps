@@ -1,7 +1,5 @@
 import type { PageServerLoad } from './$types';
 
-export const ssr = false;
-
 const NUM_POINTS: number = 40000;
 
 export const load = (async () => {

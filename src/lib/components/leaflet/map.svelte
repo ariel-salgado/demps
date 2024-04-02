@@ -1,77 +1,51 @@
-<script context="module" lang="ts">
-	export const contextKey = Symbol();
-</script>
-
 <script lang="ts">
+	import type * as Leaflet from 'leaflet';
 	import type { Action } from 'svelte/action';
-	import type { GeoJSONStore } from '$lib/stores';
 	import type { FeatureCollection } from 'geojson';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import type { Environment, Metadata } from '$lib/states.svelte';
 
 	import { cn } from '$lib/utils';
-	import { setContext } from 'svelte';
-	import { createPopup } from './popup';
-
-	import * as L from 'leaflet';
-	import 'leaflet/dist/leaflet.css';
+	import { onMount, setContext } from 'svelte';
+	import { SpinnerIcon } from '$lib/components/icons';
+	import { contextKey } from '$lib/components/leaflet';
+	import { createPopup } from '$lib/components/leaflet/popup';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		zoom: number;
-		overlay?: boolean;
-		store?: GeoJSONStore;
-		center: L.LatLngExpression;
+		center: [number, number];
+		environment?: Environment;
 	}
 
-	let {
-		zoom,
-		store,
-		center,
-		children,
-		overlay = true,
-		class: className,
-		...props
-	}: Props = $props();
+	let { zoom, center, environment, children, class: className, ...props }: Props = $props();
+
+	let L: typeof Leaflet;
 
 	let map: L.Map | undefined = $state();
-	let featureGroup: L.FeatureGroup = $state(new L.FeatureGroup());
-	let rendererCanvas: L.Renderer = $state(new L.Canvas({ padding: 0.5 }));
-	let overlayLayer: L.Control.Layers = $state(new L.Control.Layers(undefined, undefined));
+	let rendererCanvas: L.Renderer | undefined = $state();
+	let featureGroup: L.FeatureGroup | undefined = $state();
+	let overlayLayer: L.Control.Layers | undefined = $state();
 
 	setContext(contextKey, {
 		getMap: () => map,
-		getStore: () => store,
-		getLeaflet: () => L,
+		getEnvironment: () => environment,
 		getFeatureGroup: () => featureGroup,
 		getOverlayLayer: () => overlayLayer
 	});
 
-	const rasterLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		updateWhenIdle: true,
-		updateWhenZooming: false,
-		keepBuffer: 4,
-		attribution:
-			'© <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>'
-	});
+	function fitBounds(animate: boolean = false) {
+		if (featureGroup!.getBounds().isValid()) {
+			map?.fitBounds(featureGroup!.getBounds(), {
+				animate: animate,
+				maxZoom: 15
+			});
+		}
+	}
 
-	const mapOptions: L.MapOptions = {
-		zoom: zoom,
-		center: center,
-		preferCanvas: true,
-		worldCopyJump: false,
-		layers: [rasterLayer],
-		renderer: rendererCanvas
-	};
-
-	const loadFeatures = (features: FeatureCollection) => {
-		L.geoJSON(features, {
+	function loadFeatures(features) {
+		window.L.geoJSON(features, {
 			style: (feature) => {
 				const attributes = feature?.properties;
-
-				if (!attributes)
-					return {
-						smoothFactor: 1.5,
-						renderer: rendererCanvas
-					};
 
 				return {
 					smoothFactor: 1.5,
@@ -86,29 +60,26 @@
 					...(attributes['stroke-opacity'] && { opacity: attributes['stroke-opacity'] })
 				};
 			},
-			onEachFeature: (_, layer) => {
-				layer.bindPopup(L.popup({ content: createPopup(layer), interactive: true }));
+			onEachFeature: (feature, layer) => {
+				if (feature.properties.radius && feature.properties.center) {
+					const radius = feature.properties.radius;
+					const center = new L.LatLng(feature.properties.center[0], feature.properties.center[1]);
 
-				featureGroup.addLayer(layer);
-				if (overlay) {
-					// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
-					overlayLayer.addOverlay(layer, layer.feature.properties.nameID || layer.feature.id);
+					layer = new L.Circle(center, radius);
 				}
+
+				// @ts-expect-error - Adding the id to the layer for future reference
+				layer.id = feature.id;
+
+				layer.bindPopup(createPopup(feature));
+
+				featureGroup?.addLayer(layer);
+				overlayLayer?.addOverlay(layer, feature.properties.nameID || feature.id);
 			}
 		});
-	};
+	}
 
-	const resetLayers = (featureGroup: L.FeatureGroup, overlayLayer?: L.Control.Layers) => {
-		if (overlayLayer) {
-			featureGroup.eachLayer((layer) => {
-				overlayLayer.removeLayer(layer);
-			});
-		}
-
-		featureGroup.clearLayers();
-	};
-
-	const updateFeatureProps = (e: SubmitEvent) => {
+	function updateFeatureProps(e: SubmitEvent) {
 		e.preventDefault();
 
 		const form = e.target as HTMLFormElement;
@@ -118,79 +89,71 @@
 		const props = Object.fromEntries(formData) as Record<string, string>;
 		delete props.id;
 
-		store?.updateFeatureProps(id, props);
-	};
+		environment?.updateFeatureProps(id, props);
+	}
 
-	const fitBounds = () => {
-		if (
-			featureGroup.getBounds().isValid() &&
-			!map?.getBounds().intersects(featureGroup.getBounds())
-		) {
-			map?.fitBounds(featureGroup.getBounds(), {
-				animate: true,
-				maxZoom: 15
-			});
-		}
-	};
-
-	const toggleOverlay = () => {
-		if (!overlay) return;
-
-		if (featureGroup.getLayers().length === 0) {
-			map?.removeControl(overlayLayer);
-			return;
-		}
-
-		map?.addControl(overlayLayer);
-	};
-
-	const initMap: Action<HTMLDivElement, FeatureCollection | undefined> = (
-		mapContainer: HTMLDivElement,
-		features: FeatureCollection | undefined
+	const initMap: Action<HTMLDivElement, Metadata & FeatureCollection> = (
+		mapContainer,
+		features
 	) => {
-		map = L.map(mapContainer, mapOptions);
+		onMount(async () => {
+			L = await import('leaflet');
+			await import('leaflet/dist/leaflet.css');
 
-		featureGroup.addTo(map);
+			rendererCanvas = new L.Canvas();
+			featureGroup = new L.FeatureGroup();
+			overlayLayer = new L.Control.Layers();
 
-		if (features) {
-			loadFeatures(features);
-		}
-
-		if (overlay && featureGroup.getLayers().length > 0) {
-			overlayLayer.addTo(map);
-		}
-
-		if (featureGroup.getBounds().isValid()) {
-			map.fitBounds(featureGroup.getBounds(), {
-				animate: false,
-				maxZoom: 15
-			});
-		}
-
-		map.whenReady(() => {
-			map?.invalidateSize();
-
-			map?.on('popupopen', (event) => {
-				const form = event.popup.getElement()?.querySelector('form');
-				form?.addEventListener('submit', updateFeatureProps);
+			const rasterLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				keepBuffer: 4,
+				updateWhenIdle: true,
+				updateWhenZooming: false,
+				attribution:
+					'© <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>'
 			});
 
-			map?.on('popupclose', (event) => {
-				const form = event.popup.getElement()?.querySelector('form');
-				form?.removeEventListener('submit', updateFeatureProps);
+			const mapOptions: L.MapOptions = {
+				zoom: zoom,
+				center: center,
+				preferCanvas: true,
+				worldCopyJump: false,
+				layers: [rasterLayer],
+				renderer: rendererCanvas
+			};
+
+			map = L.map(mapContainer!, mapOptions);
+
+			map.whenReady(() => {
+				map?.invalidateSize();
+				map?.addLayer(featureGroup!);
+				map?.addControl(overlayLayer!);
+
+				loadFeatures(features);
+				fitBounds();
+
+				map?.on('popupopen', (event) => {
+					const form = event.popup.getElement()?.querySelector('form');
+					form?.addEventListener('submit', updateFeatureProps);
+				});
+
+				map?.on('popupclose', (event) => {
+					const form = event.popup.getElement()?.querySelector('form');
+					form?.removeEventListener('submit', updateFeatureProps);
+				});
 			});
 		});
 
 		return {
-			update: (updatedFeatures: FeatureCollection | undefined) => {
-				if (!updatedFeatures) return;
-				resetLayers(featureGroup, overlayLayer);
-				loadFeatures(updatedFeatures);
-				toggleOverlay();
+			update(features) {
+				featureGroup?.eachLayer((layer) => {
+					overlayLayer?.removeLayer(layer);
+				});
+				featureGroup?.clearLayers();
+				loadFeatures(features);
 				fitBounds();
 			},
 
-			destroy: () => {
+			destroy() {
 				map?.remove();
 				map = undefined;
 			}
@@ -203,8 +166,15 @@
 	<link rel="preconnect" href="https://tile.openstreetmap.org" />
 </svelte:head>
 
-<div class={cn('size-full outline-none', className)} {...props} use:initMap={$store}>
+<div
+	class={cn('grid size-full items-center justify-items-center outline-none', className)}
+	aria-label="Mapa"
+	use:initMap={environment?.value!}
+	{...props}
+>
 	{#if map && children}
 		{@render children()}
+	{:else}
+		<SpinnerIcon class="size-10" />
 	{/if}
 </div>

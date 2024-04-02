@@ -1,6 +1,7 @@
 import type { ClassValue } from 'clsx';
 
 import { clsx } from 'clsx';
+import type { Feature } from 'geojson';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -19,20 +20,20 @@ export function debounce<T extends (...args: Parameters<T>) => void>(
 	};
 }
 
-export const strEqualsObj = (str: string, obj: object) => {
+export function strEqualsObj(str: string, obj: object) {
 	try {
 		return JSON.stringify(JSON.parse(str)) === JSON.stringify(obj);
 	} catch (_) {
 		return false;
 	}
-};
+}
 
-export const areEqualObject = (a: object, b: object) => {
+export function areEqualObject(a: object, b: object) {
 	if (JSON.stringify(a) === JSON.stringify(b)) return true;
 	return false;
-};
+}
 
-export const isValidGeoJSON = (data: string | object): boolean => {
+export function isValidGeoJSON(data: string | object): boolean {
 	try {
 		const geojson = typeof data === 'string' ? JSON.parse(data) : data;
 
@@ -42,13 +43,13 @@ export const isValidGeoJSON = (data: string | object): boolean => {
 	} catch (_) {
 		return false;
 	}
-};
+}
 
-export const capitalize = (str: string) => {
+export function capitalize(str: string) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
-};
+}
 
-export const flattenJSON = (obj: object, prefix: string = '') => {
+export function flattenJSON(obj: object, prefix: string = '') {
 	let flatObj = {};
 
 	for (const key in obj) {
@@ -70,9 +71,9 @@ export const flattenJSON = (obj: object, prefix: string = '') => {
 	}
 
 	return flatObj;
-};
+}
 
-export const deflattenJSON = (obj: object) => {
+export function deflattenJSON(obj: object) {
 	const deflatObj = {};
 
 	for (const key in obj) {
@@ -96,4 +97,16 @@ export const deflattenJSON = (obj: object) => {
 	}
 
 	return deflatObj;
-};
+}
+
+export function totalFloodZones(features: Feature[]) {
+	if (features.length === 0) return 0;
+
+	let floodZones: number = 0;
+
+	features.map((feature) => {
+		if (feature.properties?.zoneType === 'flood') floodZones++;
+	});
+
+	return floodZones;
+}

@@ -1,27 +1,22 @@
-<script context="module" lang="ts">
-	export const contextKey = Symbol();
-</script>
-
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { Action } from 'svelte/action';
-	import type { GeoJSONStore } from '$lib/stores';
-	import type { FeatureCollection } from 'geojson';
+	import type { Environment } from '$lib/states.svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
+	import { cn } from '$lib/utils';
 	import { setContext } from 'svelte';
 	import { EditorView } from '@codemirror/view';
 	import { EditorState } from '@codemirror/state';
-	import { extensions } from '$lib/components/codemirror';
-	import { cn, debounce, isValidGeoJSON, strEqualsObj } from '$lib/utils';
+	import { contextKey, extensions } from '$lib/components/codemirror';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		store: GeoJSONStore;
 		widgets?: Snippet;
 		actions?: Snippet;
+		content: Environment;
 	}
 
-	let { store, widgets, actions, class: className, ...props }: Props = $props();
+	let { widgets, actions, content, class: className, ...props }: Props = $props();
 
 	let editor: EditorView | undefined = $state();
 	let topPosition: number | undefined = $state();
@@ -31,46 +26,29 @@
 		getEditor: () => editor
 	});
 
-	const updateStore = debounce((value: string) => {
-		store.set(JSON.parse(value));
-	}, 750);
-
-	const editorOnChange = EditorView.updateListener.of((v) => {
-		const value = v.state.doc.toString();
-		if (v.docChanged && !strEqualsObj(value, $store) && isValidGeoJSON(value)) {
-			updateStore(value);
-		}
-	});
-
-	const updateEditor = (value: FeatureCollection) => {
-		if (!strEqualsObj(editor!.state.doc.toString(), value) && isValidGeoJSON(value)) {
-			editor?.dispatch({
-				changes: {
-					from: 0,
-					to: editor.state.doc.length,
-					insert: JSON.stringify(value, null, 2)
-				}
-			});
-		}
-	};
-
-	const initEditor: Action<HTMLDivElement, FeatureCollection> = (
+	const initEditor: Action<HTMLDivElement, Environment> = (
 		editorContainer: HTMLDivElement,
-		features: FeatureCollection
+		content: Environment
 	) => {
 		topPosition = editorContainer.getBoundingClientRect().top;
 
 		editor = new EditorView({
 			parent: editorContainer,
 			state: EditorState.create({
-				doc: JSON.stringify(features, null, 2),
-				extensions: [extensions, editorOnChange]
+				doc: JSON.stringify(content.value, null, 2),
+				extensions: [extensions]
 			})
 		});
 
 		return {
-			update(value: FeatureCollection) {
-				updateEditor(value);
+			update(content: Environment) {
+				editor?.dispatch({
+					changes: {
+						from: 0,
+						to: editor.state.doc.length,
+						insert: JSON.stringify(content.value, null, 2)
+					}
+				});
 			},
 
 			destroy() {
@@ -88,7 +66,7 @@
 	style="max-height: {innerHeight! - topPosition! - 1}px"
 	{...props}
 >
-	<div class="size-full overflow-y-auto" use:initEditor={$store}>
+	<div class="size-full overflow-y-auto" use:initEditor={content}>
 		{#if editor && widgets}
 			{@render widgets()}
 		{/if}

@@ -1,95 +1,136 @@
 import type { Feature } from 'geojson';
+import type {
+	HTMLInputAttributes,
+	HTMLInputTypeAttribute,
+	HTMLSelectAttributes
+} from 'svelte/elements';
 
-type Field = {
-	id: string;
-	type: string;
-	defaultValue: string | number;
-	attributes: Record<string, unknown>;
-	options?: string[];
-	placeholder?: string;
+type InputField = {
+	type: HTMLInputTypeAttribute;
+	attributes: HTMLInputAttributes;
 };
 
-const fields: Field[] = [
-	{ id: 'id', type: 'text', defaultValue: '', attributes: { readonly: true } },
-	{ id: 'nameID', type: 'text', defaultValue: '', attributes: {} },
-	{
-		id: 'zoneType',
+type SelectField = {
+	type: 'select';
+	options: string[];
+	attributes: HTMLSelectAttributes;
+};
+
+type FormField = {
+	defaultValue: string | number;
+} & (InputField | SelectField);
+
+const formFields: Record<string, FormField> = {
+	id: {
+		type: 'text',
+		defaultValue: '',
+		attributes: {
+			readonly: true
+		}
+	},
+	nameID: {
+		type: 'text',
+		defaultValue: '',
+		attributes: {}
+	},
+	zoneType: {
 		type: 'select',
 		defaultValue: '',
 		attributes: {},
-		options: ['initial', 'flood', 'safe'],
-		placeholder: 'Select zone type'
+		options: ['initial', 'flood', 'safe']
 	},
-	{ id: 'stroke', type: 'color', defaultValue: '#3388ff', attributes: {} },
-	{ id: 'stroke-width', type: 'number', defaultValue: 3, attributes: { min: 0 } },
-	{
-		id: 'stroke-opacity',
+	stroke: {
+		type: 'color',
+		defaultValue: '#3388ff',
+		attributes: {}
+	},
+	'stroke-width': {
+		type: 'number',
+		defaultValue: 3,
+		attributes: {
+			min: 0,
+			step: 1
+		}
+	},
+	'stroke-opacity': {
 		type: 'number',
 		defaultValue: 1,
-		attributes: { min: 0, max: 1, step: 0.1 }
+		attributes: {
+			min: 0,
+			max: 1,
+			step: 0.1
+		}
 	},
-	{ id: 'fill', type: 'color', defaultValue: '#3388ff', attributes: {} },
-	{
-		id: 'fill-opacity',
+	fill: {
+		type: 'color',
+		defaultValue: '#3388ff',
+		attributes: {}
+	},
+	'fill-opacity': {
 		type: 'number',
 		defaultValue: 0.2,
-		attributes: { min: 0, max: 1, step: 0.1 }
+		attributes: {
+			min: 0,
+			max: 1,
+			step: 0.1
+		}
 	}
-];
+};
 
-const formatAttributes = (attributes: Record<string, unknown>) => {
+function spreadAttributes(attributes: HTMLInputAttributes | HTMLSelectAttributes) {
 	return Object.entries(attributes)
 		.map(([key, value]) => `${key}="${value}"`)
 		.join(' ');
-};
+}
 
-const createFormField = (field: Field, feature: Feature) => {
-	const attributes = formatAttributes(field.attributes);
-	const value = field.id === 'id' ? feature.id : feature.properties![field.id];
-	const defaultValue =
-		field.id === 'zoneType'
-			? feature.properties![field.id] || field.placeholder
-			: value || field.defaultValue;
-	const isPlaceholderSelected =
-		field.id === 'zoneType' && !field.options?.includes(defaultValue as string);
+function createFormFields(fields: Record<string, unknown>) {
+	const data = Object.entries(formFields).map(([key, value]) => {
+		if (value.type === 'select') {
+			return `
+				<div>
+					<label class="block min-w-max font-semibold text-slate-500 text-sm leading-relaxed pl-1" for="${key}">${key}</label>
+					<select class="h-9 w-full py-1.5 px-3 rounded-md border border-slate-300 text-sm" id="${key}" name="${key}" ${spreadAttributes(value.attributes)}>
+						<option value="" disabled selected>Seleccione ${key}</option>
+						${(value as SelectField).options.map((option) => `<option value="${option}" ${option === fields[key] && `selected`}>${option}</option>`).join('')}
+					</select>
+				</div>
+			`;
+		} else {
+			return `
+				<div>
+					<label class="block min-w-max font-semibold text-slate-500 text-sm leading-relaxed pl-1" for="${key}">${key}</label>
+					<input class="h-9 w-full py-1.5 px-3 rounded-md border border-slate-300 text-sm ${value.type === `text` && `read-only:cursor-not-allowed`} read-only:select-none read-only:bg-slate-100 read-only:text-neutral-600" type="${value.type}" id="${key}" name="${key}" value="${fields[key] || value.defaultValue}" ${spreadAttributes(value.attributes)} placeholder="Ingrese ${key}" />
+				</div>
+			`;
+		}
+	});
 
-	switch (field.type) {
-		case 'select':
-			return (
-				`<div>` +
-				`<label class="block p-1 font-semibold text-slate-500" for="${field.id}-${feature.id}">${field.id}</label>` +
-				`<select class="w-full px-2 py-1.5 rounded border border-slate-300 ${isPlaceholderSelected ? 'text-slate-500' : ''}" id="${field.id}-${feature.id}" name="${field.id}" ${attributes}>` +
-				`<option value="" disabled ${isPlaceholderSelected ? 'selected' : ''}>` +
-				`${field.placeholder}` +
-				`</option>` +
-				(field.options || [])
-					.map(
-						(option) =>
-							`<option value="${option}" ${defaultValue === option ? 'selected' : ''}>${option}</option>`
-					)
-					.join('') +
-				`</select>` +
-				`</div>`
-			);
-		default:
-			return (
-				`<div>` +
-				`<label class="block p-1 font-semibold text-slate-500" for="${field.id}-${feature.id}">${field.id}</label>` +
-				`<input class="w-full px-3 py-1.5 rounded border border-slate-300 read-only:bg-neutral-200 read-only:text-neutral-600" type="${field.type}" id="${field.id}-${feature.id}" name="${field.id}" value="${defaultValue}" placeholder="Feature ${field.id}" ${attributes}>` +
-				`</div>`
-			);
-	}
-};
+	return data.join('');
+}
 
-export const createPopup = (layer: L.Layer) => {
-	return (
-		`<h3 class="text-base font-semibold text-slate-500">Edit Feature</h3>` +
-		// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
-		`<form id="form-${layer.feature.id}" class="w-[300px] grid grid-cols-2 items-center place-content-center gap-4 py-2">` +
-		// @ts-expect-error - Property 'feature' does not exist on type 'Layer'
-		fields.map((field) => createFormField(field, layer.feature)).join('') +
-		`<hr class="col-span-2" />` +
-		`<button class="w-full px-3 py-1.5 text-white bg-primary-700 rounded hover:bg-primary-600 col-span-2">Save</button>` +
-		`</form>`
-	);
-};
+function createForm(fields: Record<string, unknown>) {
+	const formFields = createFormFields(fields);
+
+	return `
+		<div class="py-2 w-[350px]">
+			<span class="w-full text-xl font-semibold block">Editar característica</span>
+			<span class="block h-px w-full bg-neutral-300 mt-2"></span>
+			<form>
+				<div class="grid grid-cols-2 py-4 gap-4 items-center place-content-center">
+					${formFields}
+				</div>
+				<span class="block h-px w-full bg-neutral-300 mt-2 mb-4"></span>
+				<button type="submit" class="flex h-9 w-full items-center justify-center gap-x-1 whitespace-nowrap rounded-lg bg-primary-700 px-4 py-2 font-medium text-white ring-offset-white transition-colors focus-within:bg-primary-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-600 focus-within:ring-offset-2 hover:bg-primary-600 text-base">Guardar</button>
+			</form>
+		</div>
+	`;
+}
+
+export function createPopup(feature: Feature) {
+	const { id, properties } = feature;
+
+	const content = createForm({ id, ...properties });
+	const popup = window.L.popup({ content: content, interactive: true, maxWidth: 500 });
+
+	return popup;
+}

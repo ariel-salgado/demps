@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	import { Map, Markers } from '$lib/components/leaflet';
+	import { Map, Canvas } from '$lib/components/leaflet';
 
 	interface Props {
 		data: PageData;
@@ -23,7 +23,7 @@
 	<h2 class="absolute bottom-0 z-[500] bg-white px-2 py-0.5 text-xs opacity-90">
 		Currently showing <span class="font-bold">{numPoints} agents</span>
 	</h2>
-	<Map {center} {zoom} overlay={false}>
-		<Markers data={agents} />
+	<Map {center} {zoom}>
+		<Canvas {agents} />
 	</Map>
 </section>
