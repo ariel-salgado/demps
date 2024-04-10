@@ -13,9 +13,9 @@ export type FormField = {
 	validation?: z.ZodType;
 } & InputOrSelectProps;
 
-type ConfigForm = Record<string, FormField[] | Record<string, FormField[]>>;
+type ParametersForm = Record<string, FormField[] | Record<string, FormField[]>>;
 
-export const getFormData = (obj: ConfigForm = configForm) => {
+export const getFormData = (obj: ParametersForm = parametersForm) => {
 	let form: Array<FormField | { title: string } | { subtitle: string }> = [];
 	const items: Record<string, string | Record<string, string>> = {};
 	const validations: Record<string, z.ZodType> = {};
@@ -59,7 +59,17 @@ export const getFormData = (obj: ConfigForm = configForm) => {
 	return { form, items, schema };
 };
 
-const configForm: ConfigForm = {
+export function parseParameterForm(form = parametersForm, subKey?: string) {
+	return Object.entries(form).map(([key, value]) => {
+		if (!Array.isArray(value)) {
+			return parseParameterForm(value, key);
+		}
+
+		console.log(subKey, key, value);
+	});
+}
+
+const parametersForm: ParametersForm = {
 	general: [
 		{
 			label: 'Duration',

@@ -7,7 +7,7 @@
 	import { untrack } from 'svelte';
 	import { page } from '$app/stores';
 	import { enhance } from '$app/forms';
-	import { getFormData } from './form';
+	import { getFormData, parseParameterForm } from './form';
 	import { configStore } from '$lib/stores';
 	import { deflattenJSON, flattenJSON } from '$lib/utils';
 	import { DownloadIcon, UploadIcon } from '$lib/components/icons';
@@ -20,6 +20,8 @@
 		Label,
 		Select
 	} from '$lib/components/ui';
+
+	parseParameterForm();
 
 	const { form, items } = getFormData();
 
