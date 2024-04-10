@@ -1,4 +1,10 @@
+import type { z } from 'zod';
 import type { toleranceOptions } from '$lib';
+import type {
+	HTMLInputAttributes,
+	HTMLInputTypeAttribute,
+	HTMLSelectAttributes
+} from 'svelte/elements';
 
 export type Metadata = {
 	'@context': {
@@ -7,13 +13,40 @@ export type Metadata = {
 	};
 };
 
+type InputOrSelectProps =
+	| { attributes: HTMLInputAttributes & { type: 'text' | 'number' }; type: 'input' }
+	| { attributes: HTMLSelectAttributes; type: 'select'; options: SelectOptions };
+
 export type SelectOptions = {
 	label: string | null;
 	value: string | number | boolean;
 	selected?: boolean | undefined;
 }[];
 
-export type ConfigurationSchema = {
+export type FormField = {
+	label: string;
+	description?: string;
+	validation?: z.ZodType;
+} & InputOrSelectProps;
+
+export type FormFields = Record<string, FormField[] | Record<string, FormField[]>>;
+
+type InputPopupField = {
+	type: HTMLInputTypeAttribute;
+	defaultValue: string | number | boolean;
+	attributes: HTMLInputAttributes;
+};
+
+type SelectPopupField = {
+	type: 'select';
+	defaultValue: string | number;
+	attributes: HTMLSelectAttributes;
+	options: string[];
+};
+
+export type PopupFields = Record<string, InputPopupField | SelectPopupField>;
+
+export type ParametersSchema = {
 	duration: number;
 	calibration: number;
 	quadSize: number;
