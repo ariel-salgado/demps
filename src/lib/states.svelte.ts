@@ -1,5 +1,5 @@
-import type { Metadata } from '$lib/types';
 import type { Feature, FeatureCollection } from 'geojson';
+import type { Metadata, ParametersSchema } from '$lib/types';
 
 import { toleranceOptions } from '$lib';
 import { browser } from '$app/environment';
@@ -101,5 +101,30 @@ export function createTolerance(
 	};
 }
 
+export function createParameters(initialValue?: ParametersSchema) {
+	const storedValue = getFromLocalStorage('parameters');
+	const defaultValue = {} as ParametersSchema;
+
+	const v = storedValue
+		? (JSON.parse(storedValue) as ParametersSchema)
+		: initialValue ?? defaultValue;
+
+	let value: ParametersSchema = $state(v);
+
+	$effect(() => {
+		saveToLocalStorage('parameters', value);
+	});
+
+	return {
+		get value(): ParametersSchema {
+			return value;
+		},
+		set value(newValue: ParametersSchema) {
+			value = newValue;
+		}
+	};
+}
+
 export type Environment = ReturnType<typeof createEnvironment>;
+export type Parameters = ReturnType<typeof createParameters>;
 export type Tolerance = ReturnType<typeof createTolerance>;
