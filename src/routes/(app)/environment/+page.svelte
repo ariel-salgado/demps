@@ -3,7 +3,6 @@
 	import type { Feature, FeatureCollection } from 'geojson';
 
 	import { toleranceOptions } from '$lib';
-	import { isValidGeoJSON } from '$lib/utils';
 	import { createEnvironment, createTolerance } from '$lib/states.svelte';
 
 	import { UploadIcon } from '$lib/components/icons';
@@ -29,18 +28,15 @@
 			reader.onload = () => {
 				const uploadedData = reader.result as string;
 
-				if (!isValidGeoJSON(uploadedData)) {
+				try {
+					const geojson = preprocessGeoJSON(uploadedData);
+					if (!geojson) return;
+					environment.value = geojson;
+				} catch (_) {
 					alert('Archivo GeoJSON inválido.');
-					return;
+				} finally {
+					(e.target! as HTMLInputElement).value = '';
 				}
-
-				const geojson = preprocessGeoJSON(uploadedData);
-
-				if (!geojson) return;
-
-				environment.value = geojson;
-
-				(e.target! as HTMLInputElement).value = '';
 			};
 
 			const file = files[0] as File;
