@@ -19,7 +19,7 @@
 			await import('@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css');
 		}
 
-		// @ts-expect-error - https://geoman.io/docs/lazy-loading
+		// @ts-expect-error - reInitLayer accepts the map object
 		window.L.PM.reInitLayer(map);
 		window.L.PM.reInitLayer(featureGroup);
 
@@ -27,7 +27,8 @@
 
 		map.pm.setGlobalOptions({
 			resizableCircle: true,
-			layerGroup: featureGroup
+			layerGroup: featureGroup,
+			limitMarkersToCount: 20
 		});
 
 		map.pm.addControls({
@@ -62,13 +63,16 @@
 		return feature;
 	}
 
-	function polygonToGeoJSON(feature: L.Polygon | L.Circle): Feature | undefined {
+	function polygonToGeoJSON<T extends L.Polygon | L.Circle>(feature: T) {
 		let featureGeoJSON: Feature | undefined;
 
 		if (feature instanceof window.L.Circle) {
+			// @ts-expect-error - id is an added property
+			const properties = environment.getFeatureById(feature.id)?.properties;
+
 			featureGeoJSON = window.L.PM.Utils.circleToPolygon(feature as L.Circle, 18).toGeoJSON(6);
 			featureGeoJSON.properties = {
-				...featureGeoJSON.properties,
+				...properties,
 				radius: Number((feature as L.Circle).getRadius().toFixed(6)),
 				center: [
 					Number((feature as L.Circle).getLatLng().lat.toFixed(6)),
@@ -87,7 +91,7 @@
 		return featureGeoJSON;
 	}
 
-	map.on('pm:create', ({ layer }) => {
+	map.on('pm:create', ({ layer }: { layer: L.Layer }) => {
 		featureGroup.removeLayer(layer);
 
 		let feature = layerToPolygon(layer);
@@ -96,7 +100,7 @@
 
 		const randomID = crypto.randomUUID().split('-').at(-1) as string;
 
-		// @ts-expect-error - Adding the id to the layer for future reference
+		// @ts-expect-error - Adding id property to the layer for future reference
 		feature.id = randomID;
 		featureGroup.addLayer(feature);
 		overlayLayer.addOverlay(feature, randomID);
@@ -113,10 +117,11 @@
 		environment.updateFeature(layer.id, featureGeoJSON);
 	});
 
-	map.on('pm:remove', ({ layer }) => {
+	map.on('pm:remove', ({ layer }: { layer: L.Layer }) => {
 		featureGroup.removeLayer(layer);
 		overlayLayer.removeLayer(layer);
 
+		// @ts-expect-error - id is an added property
 		environment.removeFeature(layer.id as number);
 	});
 
