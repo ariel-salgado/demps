@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type * as Leaflet from 'leaflet';
-	import type { Metadata } from '$lib/types';
 	import type { Action } from 'svelte/action';
 	import type { FeatureCollection } from 'geojson';
 	import type { HTMLAttributes } from 'svelte/elements';
@@ -9,8 +8,7 @@
 	import { cn } from '$lib/utils';
 	import { onMount, setContext } from 'svelte';
 	import { SpinnerIcon } from '$lib/components/icons';
-	import { contextKey } from '$lib/components/leaflet';
-	import { createPopup } from '$lib/components/leaflet/popup';
+	import { contextKey, createPopup } from '$lib/components/leaflet';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
 		zoom: number;
@@ -21,7 +19,6 @@
 	let { zoom, center, environment, children, class: className, ...props }: Props = $props();
 
 	let L: typeof Leaflet;
-
 	let map: L.Map | undefined = $state();
 	let rendererCanvas: L.Renderer | undefined = $state();
 	let featureGroup: L.FeatureGroup | undefined = $state();
@@ -40,30 +37,44 @@
 
 		if (!featureBounds?.isValid() || mapBounds?.intersects(featureBounds!)) return;
 
-		if (featureBounds!.isValid()) {
-			map?.fitBounds(featureBounds!, {
-				animate: animate,
-				maxZoom: 15
-			});
-		}
+		map?.fitBounds(featureBounds!, {
+			animate: animate,
+			maxZoom: 15
+		});
 	}
 
-	function loadFeatures(features) {
+	function resetLayers() {
+		featureGroup?.eachLayer((layer) => {
+			overlayLayer?.removeLayer(layer);
+		});
+		featureGroup?.clearLayers();
+	}
+
+	function castProperties(properties: { [key: string]: any }) {
+		const toConvert = ['stroke-width', 'fill-opacity', 'stroke-opacity'];
+
+		for (const target of toConvert) {
+			if (properties[target] && !Number.isNaN(properties[target])) {
+				properties[target] = Number(properties[target]);
+			}
+		}
+
+		return properties;
+	}
+
+	function loadFeatures(features: FeatureCollection) {
 		window.L.geoJSON(features, {
 			style: (feature) => {
-				const attributes = feature?.properties;
+				const properties = castProperties(feature?.properties);
 
 				return {
 					smoothFactor: 1.5,
 					renderer: rendererCanvas,
-					...(attributes.fill && { fillColor: attributes.fill }),
-					...(attributes.stroke && { color: attributes.stroke }),
-					// https://github.com/Leaflet/Leaflet/issues/6075
-					...(attributes['stroke-width'] && {
-						weight: !Number.isNaN(attributes['stroke-width']) ? attributes['stroke-width'] : 3
-					}),
-					...(attributes['fill-opacity'] && { fillOpacity: attributes['fill-opacity'] }),
-					...(attributes['stroke-opacity'] && { opacity: attributes['stroke-opacity'] })
+					...(properties.fill && { fillColor: properties.fill }),
+					...(properties.stroke && { color: properties.stroke }),
+					...(properties['stroke-width'] && { weight: properties['stroke-width'] }),
+					...(properties['fill-opacity'] && { fillOpacity: properties['fill-opacity'] }),
+					...(properties['stroke-opacity'] && { opacity: properties['stroke-opacity'] })
 				};
 			},
 			onEachFeature: (feature, layer) => {
@@ -71,7 +82,7 @@
 					const radius = feature.properties.radius;
 					const center = new L.LatLng(feature.properties.center[0], feature.properties.center[1]);
 
-					layer = new L.Circle(center, radius);
+					layer = new L.Circle(center, radius).setStyle(layer.options);
 				}
 
 				// @ts-expect-error - Adding the id to the layer for future reference
@@ -101,15 +112,15 @@
 		const formData = new FormData(form);
 
 		const id = formData.get('id') as string;
-		const props = Object.fromEntries(formData) as Record<string, string>;
+		let props = castProperties(Object.fromEntries(formData));
 		delete props.id;
 
 		environment?.updateFeatureProps(id, props);
 	}
 
-	const initMap: Action<HTMLDivElement, Metadata & FeatureCollection> = (
-		mapContainer,
-		features
+	const initMap: Action<HTMLDivElement, FeatureCollection> = (
+		mapContainer: HTMLDivElement,
+		features: FeatureCollection
 	) => {
 		onMount(async () => {
 			L = await import('leaflet');
@@ -159,11 +170,8 @@
 		});
 
 		return {
-			update(features) {
-				featureGroup?.eachLayer((layer) => {
-					overlayLayer?.removeLayer(layer);
-				});
-				featureGroup?.clearLayers();
+			update(features: FeatureCollection) {
+				resetLayers();
 				loadFeatures(features);
 				toggleOverlay();
 				fitBounds();
