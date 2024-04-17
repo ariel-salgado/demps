@@ -10,8 +10,7 @@
 		"sourceMap": true,
 		"strict": true,
 		"noUncheckedIndexedAccess": true,
-		"moduleResolution": "bundler",
-		"noImplicitAny": false
+		"moduleResolution": "bundler"
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//
