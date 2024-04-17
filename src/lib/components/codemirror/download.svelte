@@ -36,7 +36,7 @@
 	onclick={downloadGeoJSON}
 	tabindex="0"
 	role="button"
-	aria-label="Download data"
+	aria-label="Descargar GeoJSON"
 	data-sveltekit-preload-data="false"
 	{...props}
 >
