@@ -2,17 +2,6 @@ import type { PopupFields, FormFields } from '$lib/types';
 
 /**
  * @Environment
- * Tolerance options for flood zones simplification
- */
-export const toleranceOptions = {
-	deshabilitado: 0,
-	bajo: 0.0001,
-	medio: 0.00015,
-	alto: 0.0002
-} as const;
-
-/**
- * @Environment
  * Form fields for feature properties edition
  */
 export const popupFields: PopupFields = {

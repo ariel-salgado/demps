@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { Metadata } from '$lib/types';
 	import type { Action } from 'svelte/action';
 	import type { FeatureCollection } from 'geojson';
 	import type { Environment } from '$lib/states.svelte';
@@ -39,7 +38,7 @@
 		}
 	});
 
-	function updateEditor(value: Metadata & FeatureCollection) {
+	function updateEditor(value: FeatureCollection) {
 		if (!strEqualsObj(editor!.state.doc.toString(), value) && isValidGeoJSON(value)) {
 			editor?.dispatch({
 				changes: {

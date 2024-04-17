@@ -1,22 +1,19 @@
 <script lang="ts">
-	import type { Metadata } from '$lib/types';
 	import type { Feature, FeatureCollection } from 'geojson';
 
-	import { toleranceOptions } from '$lib';
-	import { createEnvironment, createTolerance } from '$lib/states.svelte';
+	import { createEnvironment } from '$lib/states.svelte';
 
 	import { UploadIcon } from '$lib/components/icons';
 	import { Fileupload } from '$lib/components/ui/fileupload';
 	import { Map, Search, Draw } from '$lib/components/leaflet';
-	import { Editor, Widgets, Clipboard, Download, Enhance } from '$lib/components/codemirror';
+	import { Editor, Widgets, Clipboard, Download } from '$lib/components/codemirror';
 
-	import simplify from '@turf/simplify';
+	// @ts-ignore
 	import truncate from '@turf/truncate';
 
 	const zoom = 15;
 	const center: [number, number] = [-33.015348, -71.550002];
 
-	const tolerance = createTolerance();
 	const environment = createEnvironment();
 
 	let files: FileList | null = $state(null);
@@ -30,7 +27,9 @@
 
 				try {
 					const geojson = preprocessGeoJSON(uploadedData);
+
 					if (!geojson) return;
+
 					environment.value = geojson;
 				} catch (_) {
 					alert('Archivo GeoJSON inválido.');
@@ -56,44 +55,20 @@
 			}
 		}
 
-		// Simplify flood zones
-		let totalZonesSimplified: number = 0;
-		let geojson: Feature[] | FeatureCollection = data.features.map((feature: Feature) => {
-			feature = { id: feature.id || (crypto.randomUUID().split('-').at(-1) as string), ...feature };
-			if (feature.properties?.zoneType === 'flood' && tolerance.value! > 0) {
-				totalZonesSimplified++;
-				return simplify(feature, {
-					tolerance: tolerance.value,
-					highQuality: true,
-					mutate: true
-				}) as Feature;
-			}
-			return feature;
-		});
+		const features: Feature[] = [];
 
-		// Truncate coordinates to 6 decimals
-		geojson = truncate(
-			{ type: 'FeatureCollection', features: geojson },
+		for (let feature of data.features) {
+			const randomID = crypto.randomUUID().split('-').at(-1) as string;
+			feature = { id: String(feature.id) || randomID, ...feature };
+			features.push(feature);
+		}
+
+		const geojson = truncate(
+			{ type: 'FeatureCollection', features: features },
 			{ precision: 6, coordinates: 2, mutate: true }
 		) as FeatureCollection;
 
-		// Add metadata
-		const simplified: boolean = totalZonesSimplified > 0 && tolerance.value! > 0;
-		const toleranceValue: keyof typeof toleranceOptions | undefined =
-			totalZonesSimplified > 0
-				? (Object.keys(toleranceOptions).find(
-						(key) => toleranceOptions[key] === tolerance.value
-					) as keyof typeof toleranceOptions)
-				: undefined;
-
-		const metadata: Metadata = {
-			'@context': {
-				'@simplified': simplified,
-				...(toleranceValue && { '@tolerance': toleranceValue })
-			}
-		};
-
-		return { ...metadata, ...geojson } as Metadata & FeatureCollection;
+		return geojson;
 	}
 </script>
 
@@ -110,7 +85,6 @@
 	<Editor class="col-span-1" content={environment}>
 		{#snippet widgets()}
 			<Widgets>
-				<Enhance {tolerance} />
 				<Clipboard />
 				<Download />
 			</Widgets>

@@ -1,17 +1,9 @@
 import type { z } from 'zod';
-import type { toleranceOptions } from '$lib';
 import type {
 	HTMLInputAttributes,
 	HTMLInputTypeAttribute,
 	HTMLSelectAttributes
 } from 'svelte/elements';
-
-export type Metadata = {
-	'@context': {
-		'@simplified': boolean;
-		'@tolerance'?: keyof typeof toleranceOptions;
-	};
-};
 
 type InputOrSelectProps =
 	| { attributes: HTMLInputAttributes & { type: 'text' | 'number' }; type: 'input' }

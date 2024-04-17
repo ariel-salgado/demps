@@ -2,7 +2,6 @@ import type { EditorView } from '@codemirror/view';
 
 import Editor from './editor.svelte';
 import Widgets from './widgets.svelte';
-import Enhance from './enhance.svelte';
 import Download from './download.svelte';
 import Clipboard from './clipboard.svelte';
 
@@ -14,4 +13,4 @@ export type EditorContext = {
 
 export const contextKey = Symbol();
 
-export { Editor, Widgets, Enhance, Download, Clipboard };
+export { Editor, Widgets, Download, Clipboard };
