@@ -5,19 +5,20 @@
 	import { contextKey } from '$lib/components/leaflet';
 
 	interface Props {
-		agents: [number, number][];
+		coordinates: [number, number][];
 	}
 
-	let { agents }: Props = $props();
+	let { coordinates }: Props = $props();
 
 	const { getMap } = getContext<MapContext>(contextKey);
 
 	let map = getMap();
 
 	onMount(async () => {
+		// @ts-ignore
 		await import('leaflet-maskcanvas');
 
-		// @ts-expect-error - maskCanvas is not typed
+		// @ts-ignore
 		const markerLayer = window.L.TileLayer.maskCanvas({
 			radius: 1,
 			useAbsoluteRadius: true,
@@ -27,12 +28,14 @@
 			lineColor: '#6A3D9E'
 		});
 
-		markerLayer.setData(agents);
+		markerLayer.setData(coordinates);
+
+		const bounds = markerLayer.bounds;
 
 		markerLayer.addTo(map);
 
-		if (markerLayer.bounds) {
-			map.fitBounds(markerLayer.bounds);
+		if (bounds.isValid()) {
+			map.fitBounds(bounds);
 		}
 	});
 </script>
