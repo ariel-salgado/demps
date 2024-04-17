@@ -1,13 +1,12 @@
 import type { Actions } from '@sveltejs/kit';
 
-import { getFormData } from './form';
-
 export const prerender = false;
 
 export const actions = {
 	download: async ({ request }) => {
-		const { schema } = getFormData();
 		const formData = Object.fromEntries(await request.formData());
+
+		/* const { schema } = getFormData();
 
 		const result = schema.safeParse(formData);
 
@@ -16,6 +15,8 @@ export const actions = {
 				errors: result.error.flatten().fieldErrors
 			};
 		}
+
+		 */
 
 		return formData;
 	}
