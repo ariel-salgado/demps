@@ -16,7 +16,7 @@
 
 <svelte:head>
 	<title>DEMPS | Simulation</title>
-	<meta name="description" content="DEMPS | Simulation" />
+	<meta name="description" content="Simulación" />
 </svelte:head>
 
 <section class="h-full">
@@ -24,6 +24,6 @@
 		Currently showing <span class="font-bold">{numPoints} agents</span>
 	</h2>
 	<Map {center} {zoom}>
-		<Canvas {agents} />
+		<Canvas coordinates={agents} />
 	</Map>
 </section>

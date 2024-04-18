@@ -59,7 +59,7 @@
 
 		for (let feature of data.features) {
 			const randomID = crypto.randomUUID().split('-').at(-1) as string;
-			feature = { id: String(feature.id) || randomID, ...feature };
+			feature = { id: feature.id ? String(feature.id) : randomID, ...feature };
 			features.push(feature);
 		}
 
@@ -74,7 +74,7 @@
 
 <svelte:head>
 	<title>DEMPS | Environment</title>
-	<meta name="description" content="DEMPS | Environment" />
+	<meta name="description" content="Configuración de entorno" />
 </svelte:head>
 
 <section class="grid size-full grid-cols-3">
@@ -95,9 +95,9 @@
 				bind:files
 				onchange={handleUpload}
 				role="button"
-				aria-label="Upload GeoJSON"
+				aria-label="Cargar GeoJSON"
 			>
-				<span>Upload GeoJSON</span>
+				<span>Cargar GeoJSON</span>
 				<UploadIcon />
 			</Fileupload>
 		{/snippet}

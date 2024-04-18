@@ -1,10 +1,12 @@
 <script lang="ts">
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { FormField, FormFields, ParametersSchema } from '$lib/types';
 
 	import { page } from '$app/stores';
-	import { flattenJSON } from '$lib/utils';
+	import { enhance } from '$app/forms';
 	import { parametersFormFields } from '$lib';
 	import { createParameters } from '$lib/states.svelte';
+	import { flattenJSON, deflattenJSON } from '$lib/utils';
 	import { DownloadIcon, UploadIcon } from '$lib/components/icons';
 	import {
 		Button,
@@ -15,8 +17,6 @@
 		Label,
 		Select
 	} from '$lib/components/ui';
-	import { enhance } from '$app/forms';
-	import type { SubmitFunction } from '@sveltejs/kit';
 
 	const parameters = createParameters();
 
@@ -92,7 +92,7 @@
 			}
 
 			// @ts-expect-error - data is not in the types
-			const deflatten = JSON.stringify(deflattenJSON(result.data), null, 4);
+			const deflatten = JSON.stringify(deflattenJSON(result.data), null, '\t');
 			const blob = new Blob([deflatten], { type: 'application/json' });
 			const url = URL.createObjectURL(blob);
 
@@ -175,6 +175,11 @@
 	</FormGroup>
 {/snippet}
 
+<svelte:head>
+	<title>DEMPS | Parameters</title>
+	<meta name="description" content="Configuración de parámetros" />
+</svelte:head>
+
 <section class="flex divide-x-2">
 	<aside class="sticky top-14 flex h-[calc(100vh-3.5rem)] flex-1 flex-col justify-between p-10">
 		<div>
@@ -198,7 +203,7 @@
 				<span> Cargar configuración </span>
 				<UploadIcon />
 			</Fileupload>
-			<Button>
+			<Button type="submit" form="parameters-form">
 				<span> Descargar configuración </span>
 				<DownloadIcon />
 			</Button>
