@@ -11,6 +11,9 @@
 	let { coordinates }: Props = $props();
 
 	const { getMap } = getContext<MapContext>(contextKey);
+	const halfLength = Math.ceil(coordinates.length / 2);
+	const firstHalf = coordinates.slice(0, halfLength);
+	const secondHalf = coordinates.slice(halfLength);
 
 	let map = getMap();
 
@@ -19,7 +22,7 @@
 		await import('leaflet-maskcanvas');
 
 		// @ts-ignore
-		const markerLayer = window.L.TileLayer.maskCanvas({
+		const markerLayer1 = window.L.TileLayer.maskCanvas({
 			radius: 1,
 			useAbsoluteRadius: true,
 			color: '#7E4BB9',
@@ -28,14 +31,27 @@
 			lineColor: '#6A3D9E'
 		});
 
-		markerLayer.setData(coordinates);
+		// @ts-ignore
+		const markerLayer2 = window.L.TileLayer.maskCanvas({
+			radius: 1,
+			useAbsoluteRadius: true,
+			color: '#3D8C40',
+			opacity: 1,
+			noMask: true,
+			lineColor: '#3D8C40'
+		});
 
-		const bounds = markerLayer.bounds;
+		markerLayer1.setData(firstHalf);
+		markerLayer2.setData(secondHalf);
 
-		markerLayer.addTo(map);
+		const bounds1 = markerLayer1.bounds;
+		const bounds2 = markerLayer2.bounds;
 
-		if (bounds.isValid()) {
-			map.fitBounds(bounds);
+		markerLayer1.addTo(map);
+		markerLayer2.addTo(map);
+
+		if (bounds1.isValid() && bounds2.isValid()) {
+			map.fitBounds(bounds1.extend(bounds2));
 		}
 	});
 </script>
