@@ -5,8 +5,8 @@
 
 	const navItems: { name: string; href: string }[] = [
 		{ name: 'inicio', href: '/' },
-		{ name: 'environment', href: '/environment' },
-		{ name: 'parameters', href: '/parameters' }
+		{ name: 'entorno', href: '/entorno' },
+		{ name: 'parametros', href: '/parametros' }
 	];
 </script>
 
@@ -32,8 +32,8 @@
 	</nav>
 
 	<div class="inline-flex gap-x-8 p-2">
-		<Button as="a" href="/simulation">
-			<span>Run</span>
+		<Button as="a" href="/simulacion">
+			<span>Ejecutar</span>
 			<PlayIcon />
 		</Button>
 	</div>
