@@ -1,5 +1,7 @@
 import type { PopupFields, FormFields } from '$lib/types';
 
+import { z } from 'zod';
+
 /**
  * @Environment
  * Form fields for feature properties edition
@@ -60,6 +62,45 @@ export const popupFields: PopupFields = {
 		}
 	}
 } as const;
+
+export function getValidationSchema() {
+	const validations: Record<string, z.ZodType> = {};
+	const stack = Object.entries(parametersFormFields);
+
+	while (stack.length) {
+		// @ts-expect-error - stack has an iterator.
+		const [key, value] = stack.pop();
+
+		if (Array.isArray(value)) {
+			for (const item of value) {
+				if (
+					typeof item === 'object' &&
+					item !== null &&
+					'validation' in item &&
+					'attributes' in item
+				) {
+					const {
+						validation,
+						attributes: { name }
+					} = item;
+					if (name) {
+						validations[name] = validation;
+					}
+				} else {
+					// @ts-expect-error - The value is too complex to be typed.
+					stack.push(...Object.entries(item).map(([k, v]) => [`${key}.${k}`, v]));
+				}
+			}
+		} else if (typeof value === 'object' && value !== null) {
+			// @ts-expect-error - The value is too complex to be typed.
+			stack.push(...Object.entries(value).map(([k, v]) => [`${key}.${k}`, v]));
+		}
+	}
+
+	const schema = z.object(validations);
+
+	return schema;
+}
 
 /**
  * @Parameters
