@@ -29,7 +29,7 @@ type InputPopupField = {
 	attributes: HTMLInputAttributes;
 };
 
-type SelectPopupField = {
+export type SelectPopupField = {
 	type: 'select';
 	defaultValue: string | number;
 	attributes: HTMLSelectAttributes;
