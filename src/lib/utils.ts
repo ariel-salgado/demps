@@ -53,14 +53,14 @@ export function flattenJSON(obj: object, prefix: string = '') {
 	const flatObj: Record<string, unknown> = {};
 
 	for (const key of Object.keys(obj)) {
-		const value = obj[key];
+		const value: Array<unknown> = obj[key as keyof typeof obj];
 		const fullKey = prefix ? `${prefix}.${key}` : key;
 
 		if (value && typeof value === 'object') {
 			if (Array.isArray(value)) {
 				value.forEach((item, index) => {
 					if (typeof item === 'object') {
-						Object.assign(flatObj, flattenJSON(item, `${fullKey}.${index}`));
+						Object.assign(flatObj, flattenJSON(item!, `${fullKey}.${index}`));
 					} else {
 						flatObj[`${fullKey}.${index}`] = item;
 					}
@@ -86,7 +86,7 @@ export function deflattenJSON(obj: object) {
 				currentObj[currentKey] = currentObj?.[currentKey] || (/^\d+$/.test(keys[i + 1]!) ? [] : {});
 				currentObj = currentObj[currentKey] as Record<string, unknown>;
 			}
-			currentObj[keys.at(-1)!] = obj[key];
+			currentObj[keys.at(-1)!] = obj[key as keyof typeof obj];
 			return deflatObj;
 		},
 		{} as Record<string, unknown>
