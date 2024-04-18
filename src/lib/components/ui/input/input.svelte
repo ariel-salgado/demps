@@ -57,7 +57,7 @@
 	class:error={validationError}
 	{...props}
 	bind:value
-	on:change={validateField}
+	onchange={validateField}
 	use:initInput
 />
 

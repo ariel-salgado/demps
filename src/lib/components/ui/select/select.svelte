@@ -46,7 +46,7 @@
 	)}
 	class:error={validationError}
 	bind:value
-	on:change={validateField}
+	onchange={validateField}
 	{...props}
 >
 	{#if placeholder}
