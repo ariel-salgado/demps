@@ -19,10 +19,10 @@
 	let { zoom, center, environment, children, class: className, ...props }: Props = $props();
 
 	let L: typeof Leaflet;
-	let map: L.Map | undefined = $state();
-	let rendererCanvas: L.Renderer | undefined = $state();
-	let featureGroup: L.FeatureGroup | undefined = $state();
-	let overlayLayer: L.Control.Layers | undefined = $state();
+	let map: Leaflet.Map | undefined = $state();
+	let rendererCanvas: Leaflet.Renderer | undefined = $state();
+	let featureGroup: Leaflet.FeatureGroup | undefined = $state();
+	let overlayLayer: Leaflet.Control.Layers | undefined = $state();
 
 	setContext(contextKey, {
 		getMap: () => map,
@@ -50,7 +50,7 @@
 		featureGroup?.clearLayers();
 	}
 
-	function castProperties(properties: { [key: string]: any }) {
+	function castProperties(properties: { [key: string]: string | number }) {
 		const toConvert = ['stroke-width', 'fill-opacity', 'stroke-opacity'];
 
 		for (const target of toConvert) {
@@ -64,6 +64,7 @@
 
 	function loadFeatures(features: FeatureCollection) {
 		window.L.geoJSON(features, {
+			// @ts-expect-error - Some style properties are numbers
 			style: (feature) => {
 				const properties = castProperties(feature?.properties);
 
@@ -112,7 +113,7 @@
 		const formData = new FormData(form);
 
 		const id = formData.get('id') as string;
-		let props = castProperties(Object.fromEntries(formData));
+		let props = castProperties(Object.fromEntries(formData) as { [key: string]: string | number });
 		delete props.id;
 
 		environment?.updateFeatureProps(id, props);
@@ -138,7 +139,7 @@
 					'© <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM Contributors</a>'
 			});
 
-			const mapOptions: L.MapOptions = {
+			const mapOptions: Leaflet.MapOptions = {
 				zoom: zoom,
 				center: center,
 				preferCanvas: true,
@@ -193,7 +194,7 @@
 <div
 	class={cn('grid size-full items-center justify-items-center outline-none', className)}
 	aria-label="Mapa"
-	use:initMap={environment?.value!}
+	use:initMap={environment!.value!}
 	{...props}
 >
 	{#if map && children}

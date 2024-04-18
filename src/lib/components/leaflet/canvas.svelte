@@ -18,10 +18,10 @@
 	let map = getMap();
 
 	onMount(async () => {
-		// @ts-ignore
+		// @ts-expect-error - maskCanvas is not recognized
 		await import('leaflet-maskcanvas');
 
-		// @ts-ignore
+		// @ts-expect-error - maskCanvas is not recognized
 		const markerLayer1 = window.L.TileLayer.maskCanvas({
 			radius: 1,
 			useAbsoluteRadius: true,
@@ -31,7 +31,7 @@
 			lineColor: '#6A3D9E'
 		});
 
-		// @ts-ignore
+		// @ts-expect-error - maskCanvas is not recognized
 		const markerLayer2 = window.L.TileLayer.maskCanvas({
 			radius: 1,
 			useAbsoluteRadius: true,

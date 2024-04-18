@@ -27,5 +27,8 @@ module.exports = {
 				parser: '@typescript-eslint/parser'
 			}
 		}
-	]
+	],
+	rules: {
+		'svelte/valid-compile': 'off'
+	}
 };

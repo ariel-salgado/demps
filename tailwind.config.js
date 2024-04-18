@@ -17,7 +17,7 @@ const config = {
 					900: 'hsl(var(--clr-primary-900) / <alpha-value>)',
 					950: 'hsl(var(--clr-primary-950) / <alpha-value>)'
 				}
-			},
+			}
 		}
 	},
 	plugins: []

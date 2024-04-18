@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Feature } from 'geojson';
+	import type { Polygon, Circle, Layer } from 'leaflet';
 	import type { MapContext } from '$lib/components/leaflet';
 
 	import { getContext, onMount } from 'svelte';
@@ -42,11 +43,11 @@
 
 		// Add aria-label to the draw buttons
 		window.document.querySelectorAll('a.leaflet-buttons-control-button').forEach((button) => {
-			button.setAttribute('aria-label', button.parentElement?.getAttribute('title')!);
+			button.setAttribute('aria-label', button.parentElement!.getAttribute('title')!);
 		});
 	});
 
-	function layerToPolygon<T extends L.Polygon | L.Circle>(layer: L.Layer) {
+	function layerToPolygon<T extends Polygon | Circle>(layer: Layer) {
 		let feature: T | undefined;
 
 		if (layer instanceof window.L.Polygon) {
@@ -63,20 +64,20 @@
 		return feature;
 	}
 
-	function polygonToGeoJSON<T extends L.Polygon | L.Circle>(feature: T) {
+	function polygonToGeoJSON<T extends Polygon | Circle>(feature: T) {
 		let featureGeoJSON: Feature | undefined;
 
 		if (feature instanceof window.L.Circle) {
 			// @ts-expect-error - id is an added property
 			const properties = environment.getFeatureById(feature.id)?.properties;
 
-			featureGeoJSON = window.L.PM.Utils.circleToPolygon(feature as L.Circle, 18).toGeoJSON(6);
+			featureGeoJSON = window.L.PM.Utils.circleToPolygon(feature as Circle, 18).toGeoJSON(6);
 			featureGeoJSON.properties = {
 				...properties,
-				radius: Number((feature as L.Circle).getRadius().toFixed(6)),
+				radius: Number((feature as Circle).getRadius().toFixed(6)),
 				center: [
-					Number((feature as L.Circle).getLatLng().lat.toFixed(6)),
-					Number((feature as L.Circle).getLatLng().lng.toFixed(6))
+					Number((feature as Circle).getLatLng().lat.toFixed(6)),
+					Number((feature as Circle).getLatLng().lng.toFixed(6))
 				]
 			};
 		} else if (feature instanceof window.L.Polygon) {
@@ -91,7 +92,7 @@
 		return featureGeoJSON;
 	}
 
-	map.on('pm:create', ({ layer }: { layer: L.Layer }) => {
+	map.on('pm:create', ({ layer }: { layer: Layer }) => {
 		featureGroup.removeLayer(layer);
 
 		let feature = layerToPolygon(layer);
@@ -111,13 +112,13 @@
 	});
 
 	featureGroup.on('pm:edit', ({ layer }) => {
-		let featureGeoJSON = polygonToGeoJSON(layer as L.Polygon | L.Circle);
+		let featureGeoJSON = polygonToGeoJSON(layer as Polygon | Circle);
 
 		// @ts-expect-error - id is an added property
 		environment.updateFeature(layer.id, featureGeoJSON);
 	});
 
-	map.on('pm:remove', ({ layer }: { layer: L.Layer }) => {
+	map.on('pm:remove', ({ layer }: { layer: Layer }) => {
 		featureGroup.removeLayer(layer);
 		overlayLayer.removeLayer(layer);
 

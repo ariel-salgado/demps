@@ -8,7 +8,7 @@
 	import { Map, Search, Draw } from '$lib/components/leaflet';
 	import { Editor, Widgets, Clipboard, Download } from '$lib/components/codemirror';
 
-	// @ts-ignore
+	// @ts-expect-error - Missing type definitions
 	import truncate from '@turf/truncate';
 
 	const zoom = 15;
