@@ -1,4 +1,5 @@
 import type { Feature } from 'geojson';
+import type { SelectPopupField } from '$lib/types';
 import type { HTMLInputAttributes, HTMLSelectAttributes } from 'svelte/elements';
 
 import { popupFields } from '$lib';
@@ -17,7 +18,7 @@ function createFormFields(fields: Record<string, unknown>) {
 					<label class="block min-w-max font-semibold text-slate-500 text-sm leading-relaxed pl-1" for="${key}">${key}</label>
 					<select class="h-9 w-full py-1.5 px-3 rounded-md border border-slate-300 text-sm" id="${key}" name="${key}" ${spreadAttributes(value.attributes)}>
 						<option value="" disabled selected>Seleccione ${key}</option>
-						${value.options.map((option) => `<option value="${option}" ${option === fields[key] && `selected`}>${option}</option>`).join('')}
+						${(value as SelectPopupField).options.map((option) => `<option value="${option}" ${option === fields[key] && `selected`}>${option}</option>`).join('')}
 					</select>
 				</div>
 			`;
