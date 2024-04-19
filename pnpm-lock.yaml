@@ -12,8 +12,8 @@ importers:
         specifier: ^6.16.0
         version: 6.16.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.3)(@lezer/common@1.2.1)
       '@codemirror/commands':
-        specifier: ^6.4.0
-        version: 6.4.0
+        specifier: ^6.5.0
+        version: 6.5.0
       '@codemirror/lang-json':
         specifier: ^6.0.1
         version: 6.0.1
@@ -44,12 +44,6 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.1.0
         version: 3.1.0(svelte@5.0.0-next.108)(vite@5.2.9)
-      '@turf/simplify':
-        specifier: ^6.5.0
-        version: 6.5.0
-      '@turf/truncate':
-        specifier: ^6.5.0
-        version: 6.5.0
       '@types/eslint':
         specifier: ^8.56.10
         version: 8.56.10
@@ -117,8 +111,8 @@ importers:
         specifier: ^3.6.9
         version: 3.6.9(postcss-load-config@5.0.3(jiti@1.21.0)(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.108)
       tailwind-merge:
-        specifier: ^2.2.2
-        version: 2.2.2
+        specifier: ^2.3.0
+        version: 2.3.0
       tailwindcss:
         specifier: ^3.4.3
         version: 3.4.3
@@ -161,8 +155,8 @@ packages:
       '@codemirror/view': ^6.0.0
       '@lezer/common': ^1.0.0
 
-  '@codemirror/commands@6.4.0':
-    resolution: {integrity: sha512-HB3utD5GxCvEhSyj5EuG9KpuQQhFpxalh3lwrspyL/GeSNDe4c6JDxVzL12SJ+7gUknHjZzmq7OPCb9QPgiRmQ==}
+  '@codemirror/commands@6.5.0':
+    resolution: {integrity: sha512-rK+sj4fCAN/QfcY9BEzYMgp4wwL/q5aj/VfNSoH1RWPF9XS/dUwBkvlL3hpWgEjOqlpdN1uLC9UkjJ4tmyjJYg==}
 
   '@codemirror/lang-json@6.0.1':
     resolution: {integrity: sha512-+T1flHdgpqDDlJZ2Lkil/rLiRy684WMLc74xUnjJH48GQdfJo/pudlTRreZmKwzP8/tGdKf83wlbAdOCzlJOGQ==}
@@ -574,12 +568,6 @@ packages:
   '@turf/boolean-point-on-line@6.5.0':
     resolution: {integrity: sha512-A1BbuQ0LceLHvq7F/P7w3QvfpmZqbmViIUPHdNLvZimFNLo4e6IQunmzbe+8aSStH9QRZm3VOflyvNeXvvpZEQ==}
 
-  '@turf/clean-coords@6.5.0':
-    resolution: {integrity: sha512-EMX7gyZz0WTH/ET7xV8MyrExywfm9qUi0/MY89yNffzGIEHuFfqwhcCqZ8O00rZIPZHUTxpmsxQSTfzJJA1CPw==}
-
-  '@turf/clone@6.5.0':
-    resolution: {integrity: sha512-mzVtTFj/QycXOn6ig+annKrM6ZlimreKYz6f/GSERytOpgzodbQyOgkfwru100O1KQhhjSudKK4DsQ0oyi9cTw==}
-
   '@turf/destination@6.5.0':
     resolution: {integrity: sha512-4cnWQlNC8d1tItOz9B4pmJdWpXqS0vEvv65bI/Pj/genJnsL7evI0/Xw42RvEGROS481MPiU80xzvwxEvhQiMQ==}
 
@@ -609,9 +597,6 @@ packages:
 
   '@turf/nearest-point-on-line@6.5.0':
     resolution: {integrity: sha512-WthrvddddvmymnC+Vf7BrkHGbDOUu6Z3/6bFYUGv1kxw8tiZ6n83/VG6kHz4poHOfS0RaNflzXSkmCi64fLBlg==}
-
-  '@turf/simplify@6.5.0':
-    resolution: {integrity: sha512-USas3QqffPHUY184dwQdP8qsvcVH/PWBYdXY5am7YTBACaQOMAlf6AKJs9FT8jiO6fQpxfgxuEtwmox+pBtlOg==}
 
   '@turf/square@6.5.0':
     resolution: {integrity: sha512-BM2UyWDmiuHCadVhHXKIx5CQQbNCpOxB6S/aCNOCLbhCeypKX5Q0Aosc5YcmCJgkwO5BERCC6Ee7NMbNB2vHmQ==}
@@ -942,8 +927,8 @@ packages:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
 
-  devalue@4.3.2:
-    resolution: {integrity: sha512-KqFl6pOgOW+Y6wJgu80rHpo2/3H07vr8ntR9rkkFIRETewbf5GaYYcakYfiKz89K+sLsuPkQIZaXDMjUObZwWg==}
+  devalue@4.3.3:
+    resolution: {integrity: sha512-UH8EL6H2ifcY8TbD2QsxwCC/pr5xSwPvv85LrLXVihmHVC3T3YqTCIwnR5ak0yO1KYqlxrPVOA/JVZJYPy2ATg==}
 
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
@@ -975,8 +960,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.4.743:
-    resolution: {integrity: sha512-AYgFmGUanfwZd4QmlGl9KBjoHRvJi6FUnbmfSr6NUk2JKCdHRHpljFGgxLp7L5h0p7uANrLzv0OgHo4TaCk4gA==}
+  electron-to-chromium@1.4.744:
+    resolution: {integrity: sha512-nAGcF0yeKKfrP13LMFr5U1eghfFSvFLg302VUFzWlcjPOnUYd52yU5x6PBYrujhNbc4jYmZFrGZFK+xasaEzVA==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -1983,8 +1968,8 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
-  tailwind-merge@2.2.2:
-    resolution: {integrity: sha512-tWANXsnmJzgw6mQ07nE3aCDkCK4QdT3ThPMCzawoYA2Pws7vSTCvz3Vrjg61jVUGfFZPJzxEP+NimbcW+EdaDw==}
+  tailwind-merge@2.3.0:
+    resolution: {integrity: sha512-vkYrLpIP+lgR0tQCG6AP7zZXCTLc1Lnv/CCRT3BqJ9CZ3ui2++GPaGb1x/ILsINIMSYqqvrpqjUFsMNLlW99EA==}
 
   tailwindcss@3.4.3:
     resolution: {integrity: sha512-U7sxQk/n397Bmx4JHbJx/iSOOv5G+II3f1kpLpY2QeUv5DcPdcTsYLlusZfq1NthHS1c1cZoyFmmkex1rzke0A==}
@@ -2148,7 +2133,7 @@ snapshots:
       '@codemirror/view': 6.26.3
       '@lezer/common': 1.2.1
 
-  '@codemirror/commands@6.4.0':
+  '@codemirror/commands@6.5.0':
     dependencies:
       '@codemirror/language': 6.10.1
       '@codemirror/state': 6.4.1
@@ -2464,7 +2449,7 @@ snapshots:
       '@sveltejs/vite-plugin-svelte': 3.1.0(svelte@5.0.0-next.108)(vite@5.2.9)
       '@types/cookie': 0.6.0
       cookie: 0.6.0
-      devalue: 4.3.2
+      devalue: 4.3.3
       esm-env: 1.0.0
       import-meta-resolve: 4.0.0
       kleur: 4.1.5
@@ -2530,15 +2515,6 @@ snapshots:
       '@turf/helpers': 6.5.0
       '@turf/invariant': 6.5.0
 
-  '@turf/clean-coords@6.5.0':
-    dependencies:
-      '@turf/helpers': 6.5.0
-      '@turf/invariant': 6.5.0
-
-  '@turf/clone@6.5.0':
-    dependencies:
-      '@turf/helpers': 6.5.0
-
   '@turf/destination@6.5.0':
     dependencies:
       '@turf/helpers': 6.5.0
@@ -2598,13 +2574,6 @@ snapshots:
       '@turf/helpers': 6.5.0
       '@turf/invariant': 6.5.0
       '@turf/line-intersect': 6.5.0
-      '@turf/meta': 6.5.0
-
-  '@turf/simplify@6.5.0':
-    dependencies:
-      '@turf/clean-coords': 6.5.0
-      '@turf/clone': 6.5.0
-      '@turf/helpers': 6.5.0
       '@turf/meta': 6.5.0
 
   '@turf/square@6.5.0':
@@ -2814,7 +2783,7 @@ snapshots:
   browserslist@4.23.0:
     dependencies:
       caniuse-lite: 1.0.30001611
-      electron-to-chromium: 1.4.743
+      electron-to-chromium: 1.4.744
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
 
@@ -2966,7 +2935,7 @@ snapshots:
 
   detect-indent@6.1.0: {}
 
-  devalue@4.3.2: {}
+  devalue@4.3.3: {}
 
   didyoumean@1.2.2: {}
 
@@ -3000,7 +2969,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.4.743: {}
+  electron-to-chromium@1.4.744: {}
 
   emoji-regex@8.0.0: {}
 
@@ -3964,7 +3933,7 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.0.0
 
-  tailwind-merge@2.2.2:
+  tailwind-merge@2.3.0:
     dependencies:
       '@babel/runtime': 7.24.4
 

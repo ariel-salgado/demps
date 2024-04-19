@@ -8,9 +8,6 @@
 	import { Map, Search, Draw } from '$lib/components/leaflet';
 	import { Editor, Widgets, Clipboard, Download } from '$lib/components/codemirror';
 
-	// @ts-expect-error - Missing type definitions
-	import truncate from '@turf/truncate';
-
 	const zoom = 15;
 	const center: [number, number] = [-33.015348, -71.550002];
 
@@ -63,12 +60,7 @@
 			features.push(feature);
 		}
 
-		const geojson = truncate(
-			{ type: 'FeatureCollection', features: features },
-			{ precision: 6, coordinates: 2, mutate: true }
-		) as FeatureCollection;
-
-		return geojson;
+		return { type: 'FeatureCollection', features } as FeatureCollection;
 	}
 </script>
 
