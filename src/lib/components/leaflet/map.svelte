@@ -119,9 +119,9 @@
 		environment?.updateFeatureProps(id, props);
 	}
 
-	const initMap: Action<HTMLDivElement, FeatureCollection> = (
+	const initMap: Action<HTMLDivElement, FeatureCollection | undefined> = (
 		mapContainer: HTMLDivElement,
-		features: FeatureCollection
+		features: FeatureCollection | undefined
 	) => {
 		onMount(async () => {
 			L = await import('leaflet');
@@ -154,9 +154,11 @@
 				map?.invalidateSize();
 				map?.addLayer(featureGroup!);
 
-				loadFeatures(features);
-				toggleOverlay();
-				fitBounds();
+				if (features) {
+					loadFeatures(features);
+					toggleOverlay();
+					fitBounds();
+				}
 
 				map?.on('popupopen', (event) => {
 					const form = event.popup.getElement()?.querySelector('form');
@@ -171,11 +173,13 @@
 		});
 
 		return {
-			update(features: FeatureCollection) {
-				resetLayers();
-				loadFeatures(features);
-				toggleOverlay();
-				fitBounds();
+			update(features: FeatureCollection | undefined) {
+				if (features) {
+					resetLayers();
+					loadFeatures(features);
+					toggleOverlay();
+					fitBounds();
+				}
 			},
 
 			destroy() {
@@ -194,7 +198,7 @@
 <div
 	class={cn('grid size-full items-center justify-items-center outline-none', className)}
 	aria-label="Mapa"
-	use:initMap={environment!.value!}
+	use:initMap={environment?.value}
 	{...props}
 >
 	{#if map && children}
