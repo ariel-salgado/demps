@@ -29,6 +29,7 @@ module.exports = {
 		}
 	],
 	rules: {
-		'svelte/valid-compile': 'off'
+		'svelte/valid-compile': 'off',
+		"@typescript-eslint/no-explicit-any": 'off',
 	}
 };
