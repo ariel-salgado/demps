@@ -212,7 +212,7 @@ test.describe('Editor', () => {
 		expect(errors.length).toBe(0);
 	});
 
-	test('Subir GeoJSON', async ({ page }) => {
+	test('Cargar GeoJSON', async ({ page }) => {
 		const __filename = fileURLToPath(import.meta.url);
 		const __dirname = path.dirname(__filename);
 
