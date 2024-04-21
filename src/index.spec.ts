@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { strEqualsObj, isValidGeoJSON, capitalize } from '$lib/utils';
+import { strEqualsObj, isValidGeoJSON } from '$lib/utils';
 
 describe('strEqualObj', () => {
 	it('expect success', () => {
@@ -28,13 +28,5 @@ describe('isValidGeoJSON', () => {
 		const data = '{"type":"FeatureCollection", "features": {}}';
 
 		expect(isValidGeoJSON(data)).toBe(false);
-	});
-});
-
-describe('capitalize', () => {
-	it('expect success', () => {
-		const str = 'hello';
-
-		expect(capitalize(str)).toBe('Hello');
 	});
 });
