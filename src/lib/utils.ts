@@ -1,4 +1,3 @@
-import type { Feature } from 'geojson';
 import type { ClassValue } from 'clsx';
 
 import { clsx } from 'clsx';
@@ -26,11 +25,6 @@ export function strEqualsObj(str: string, obj: object) {
 	} catch (_) {
 		return false;
 	}
-}
-
-export function areEqualObject(a: object, b: object) {
-	if (JSON.stringify(a) === JSON.stringify(b)) return true;
-	return false;
 }
 
 export function isValidGeoJSON(data: string | object): boolean {
@@ -91,16 +85,4 @@ export function deflattenJSON(obj: object) {
 		},
 		{} as Record<string, unknown>
 	);
-}
-
-export function totalFloodZones(features: Feature[]) {
-	if (features.length === 0) return 0;
-
-	let floodZones: number = 0;
-
-	features.map((feature) => {
-		if (feature.properties?.zoneType === 'flood') floodZones++;
-	});
-
-	return floodZones;
 }
