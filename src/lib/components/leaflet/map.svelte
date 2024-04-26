@@ -32,10 +32,12 @@
 	});
 
 	function fitBounds(animate: boolean = false) {
+		if (featureGroup?.getLayers().length === 0) return;
+
 		const mapBounds = map?.getBounds();
 		const featureBounds = featureGroup?.getBounds();
 
-		if (!featureBounds?.isValid() || mapBounds?.intersects(featureBounds!)) return;
+		if (!featureBounds?.isValid() || !mapBounds?.intersects(featureBounds!)) return;
 
 		map?.fitBounds(featureBounds!, {
 			animate: animate,
@@ -178,7 +180,7 @@
 					resetLayers();
 					loadFeatures(features);
 					toggleOverlay();
-					fitBounds();
+					fitBounds(true);
 				}
 			},
 
