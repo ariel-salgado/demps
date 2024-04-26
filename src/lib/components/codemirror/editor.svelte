@@ -29,7 +29,7 @@
 
 	const updateEnvironment = debounce((value: string) => {
 		content.value = JSON.parse(value);
-	}, 750);
+	}, 1000);
 
 	const handleChanges = EditorView.updateListener.of((v) => {
 		const value = v.state.doc.toString();
