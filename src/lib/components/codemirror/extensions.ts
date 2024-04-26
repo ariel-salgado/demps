@@ -42,6 +42,7 @@ const baseTheme: Extension = EditorView.baseTheme({
 		userSelect: 'none'
 	},
 	'.cm-gutterElement': {
+		minWidth: '2rem !important',
 		padding: '0 0.2rem',
 		color: '#525252'
 	},
