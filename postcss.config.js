@@ -3,7 +3,7 @@ const config = {
 		tailwindcss: {},
 		autoprefixer: {},
 		cssnano: {
-			preset: 'default'
+			preset: 'advanced'
 		}
 	}
 };
