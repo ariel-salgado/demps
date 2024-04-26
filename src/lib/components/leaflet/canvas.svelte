@@ -11,6 +11,7 @@
 	let { coordinates }: Props = $props();
 
 	const { getMap } = getContext<MapContext>(contextKey);
+
 	const halfLength = Math.ceil(coordinates.length / 2);
 	const firstHalf = coordinates.slice(0, halfLength);
 	const secondHalf = coordinates.slice(halfLength);
