@@ -18,8 +18,6 @@
 	}
 
 	onMount(async () => {
-		await import('leaflet-easybutton');
-
 		const toolbar = document.querySelector('div[class="leaflet-top leaflet-left"');
 		const layerToggle = document.createElement('div');
 
@@ -39,7 +37,7 @@
 		);
 
 		layerToggle.innerHTML = `
-		<div class="relative">
+			<div class="relative">
 				<button
 					id="layer-toggle"
 					class="z-[2] size-[30px] leading-[30px] p-[5px] relative border-0 border-solid border-[#E5E7EB] bg-white  focus-within:bg-[#F4F4F4] hover:bg-[#F4F4F4]"
@@ -60,7 +58,7 @@
 					</svg>
 				</button>
 			</div>
-			`;
+		`;
 
 		toolbar?.appendChild(layerToggle);
 
