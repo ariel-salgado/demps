@@ -40,7 +40,7 @@
 			<div class="relative">
 				<button
 					id="layer-toggle"
-					class="z-[2] size-[30px] leading-[30px] p-[5px] relative border-0 border-solid border-[#E5E7EB] bg-white  focus-within:bg-[#F4F4F4] hover:bg-[#F4F4F4]"
+					class="flex items-center justify-center z-[2] size-[30px] leading-[30px] p-[5px] relative border-0 border-solid border-[#E5E7EB] bg-white focus-within:bg-[#F4F4F4] hover:bg-[#F4F4F4]"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +48,7 @@
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
-						class="size-5 block stroke-[#5B5B5B] stroke-[2.5]"
+						class="size-full block stroke-[#5B5B5B] stroke-[2.5]"
 					>
 						<path
 							stroke-linecap="round"
