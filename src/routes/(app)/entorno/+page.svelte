@@ -1,11 +1,10 @@
 <script lang="ts">
 	import type { Feature, FeatureCollection } from 'geojson';
 
-	import { createEnvironment } from '$lib/states.svelte';
-
 	import { UploadIcon } from '$lib/components/icons';
+	import { createEnvironment } from '$lib/states.svelte';
 	import { Fileupload } from '$lib/components/ui/fileupload';
-	import { Map, Search, Draw } from '$lib/components/leaflet';
+	import { Map, Search, Draw, LayerToggle } from '$lib/components/leaflet';
 	import { Editor, Widgets, Clipboard, Download } from '$lib/components/codemirror';
 
 	const zoom = 15;
@@ -73,6 +72,7 @@
 	<Map class="col-span-2" {zoom} {center} {environment}>
 		<Search />
 		<Draw />
+		<LayerToggle />
 	</Map>
 	<Editor class="col-span-1" content={environment}>
 		{#snippet widgets()}

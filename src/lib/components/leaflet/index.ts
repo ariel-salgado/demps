@@ -4,6 +4,8 @@ import Map from './map.svelte';
 import Draw from './draw.svelte';
 import Search from './search.svelte';
 import Canvas from './canvas.svelte';
+import LayerToggle from './layer-toggle.svelte';
+
 import { createPopup } from './popup';
 
 export const contextKey = Symbol();
@@ -15,4 +17,4 @@ export type MapContext = {
 	getOverlayLayer: () => L.Control.Layers;
 };
 
-export { Map, Draw, Search, Canvas, createPopup };
+export { Map, Draw, Search, Canvas, LayerToggle, createPopup };

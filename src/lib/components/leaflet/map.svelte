@@ -129,6 +129,27 @@
 			L = await import('leaflet');
 			await import('leaflet/dist/leaflet.css');
 
+			L.Control.Layers.include({
+				showLayers: function () {
+					for (const i in this._layers) {
+						if (this._layers[i].overlay) {
+							if (!this._map.hasLayer(this._layers[i].layer)) {
+								this._map.addLayer(this._layers[i].layer);
+							}
+						}
+					}
+				},
+				hideLayers: function () {
+					for (const i in this._layers) {
+						if (this._layers[i].overlay) {
+							if (this._map.hasLayer(this._layers[i].layer)) {
+								this._map.removeLayer(this._layers[i].layer);
+							}
+						}
+					}
+				}
+			});
+
 			rendererCanvas = new L.Canvas();
 			featureGroup = new L.FeatureGroup();
 			overlayLayer = new L.Control.Layers();
@@ -180,7 +201,6 @@
 					resetLayers();
 					loadFeatures(features);
 					toggleOverlay();
-					fitBounds(true);
 				}
 			},
 
