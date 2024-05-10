@@ -4,9 +4,8 @@
 	import { getContext, onMount } from 'svelte';
 	import { contextKey } from '$lib/components/leaflet';
 
-	const { getMap, getOverlayLayer } = getContext<MapContext>(contextKey);
+	const { getOverlayLayer } = getContext<MapContext>(contextKey);
 
-	let map = getMap();
 	let overlayLayer = getOverlayLayer();
 
 	let hiddenLayers: boolean = $state(false);
@@ -17,26 +16,26 @@
 		hiddenLayers = !hiddenLayers;
 	}
 
-	onMount(async () => {
-		const toolbar = document.querySelector('div[class="leaflet-top leaflet-left"');
-		const layerToggle = document.createElement('div');
+	const toolbar = document.querySelector('div[class="leaflet-top leaflet-left"');
+	const layerToggle = document.createElement('div');
+	toolbar?.appendChild(layerToggle);
 
-		layerToggle.classList.add(
-			'clear-both',
-			'float-left',
-			'relative',
-			'z-[8]',
-			'pointer-events-auto',
-			'ml-[10px]',
-			'mt-[10px]',
-			'cursor-auto',
-			'overflow-hidden',
-			'rounded-[0.25rem]',
-			'border-2',
-			'border-black/20'
-		);
+	layerToggle.classList.add(
+		'clear-both',
+		'float-left',
+		'relative',
+		'z-[8]',
+		'pointer-events-auto',
+		'ml-[10px]',
+		'mt-[10px]',
+		'cursor-auto',
+		'overflow-hidden',
+		'rounded-[0.25rem]',
+		'border-2',
+		'border-black/20'
+	);
 
-		layerToggle.innerHTML = `
+	layerToggle.innerHTML = `
 			<div class="relative">
 				<button
 					id="layer-toggle"
@@ -60,18 +59,15 @@
 			</div>
 		`;
 
-		toolbar?.appendChild(layerToggle);
+	const layerToggleBtn = document.getElementById('layer-toggle');
 
-		const layerToggleBtn = document.getElementById('layer-toggle');
+	layerToggleBtn?.addEventListener('click', function () {
+		toggleLayers();
 
-		layerToggleBtn?.addEventListener('click', function () {
-			toggleLayers();
-
-			return () => {
-				layerToggleBtn?.removeEventListener('click', function () {
-					toggleLayers();
-				});
-			};
-		});
+		return () => {
+			layerToggleBtn?.removeEventListener('click', function () {
+				toggleLayers();
+			});
+		};
 	});
 </script>
